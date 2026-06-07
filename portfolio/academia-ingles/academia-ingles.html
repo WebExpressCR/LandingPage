@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GlobalSpeak Academy — WebExpressCR Portfolio</title>
+<meta name="description" content="Academia de inglés para niños y jóvenes en Costa Rica — demo de sitio web por WebExpressCR">
+<link rel="icon" type="image/svg+xml" href="../../imgs/SmallLogo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<style>
+/* ── Variables ── */
+html.light {
+  --bg: #fffac0;
+  --surface: #ffffff;
+  --text: #1119a0;
+  --text-body: #242468;
+  --text-muted: #4652c8;
+  --accent: #f01612;
+  --secondary: #27b82d;
+  --tertiary: #0a80f8;
+  --highlight: #fb8c00;
+  --border: #ccd0f0;
+  --glass-bg: rgba(255,250,192,0.92);
+}
+html.dark {
+  --bg: #0a0a38;
+  --surface: #151560;
+  --text: #dde0ff;
+  --text-body: #bbc0ff;
+  --text-muted: #6070e8;
+  --accent: #ff2e2a;
+  --secondary: #47d44d;
+  --tertiary: #1a9aff;
+  --highlight: #ffa726;
+  --border: #202080;
+  --glass-bg: rgba(10,10,56,0.92);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+::selection { background: rgba(255, 46, 42, 0.25); color: inherit; }
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  color: var(--text-body);
+  line-height: 1.7;
+  overflow-x: hidden;
+  transition: background 0.3s, color 0.3s;
+}
+a { color: var(--tertiary); text-decoration: none; }
+button { cursor: pointer; font-family: 'Nunito', sans-serif; }
+input, textarea, select { font-family: 'Nunito', sans-serif; }
+.container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+section { padding: 5rem 0; }
+
+/* ── Navbar ── */
+#navbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 3px solid var(--accent);
+}
+.nav-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 76px; padding: 0 1.5rem; max-width: 1200px; margin: 0 auto;
+  position: relative;
+}
+.nav-back {
+  font-size: 0.82rem; font-weight: 700;
+  color: var(--text-muted);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.25s;
+}
+.nav-back:hover { color: #FF7F00; }
+.nav-logo-center {
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+}
+.nav-controls { display: flex; align-items: center; gap: 0.5rem; }
+.nav-btn {
+  display: flex; align-items: center; gap: 0.35rem;
+  padding: 0.45rem 1rem;
+  font-size: 0.82rem; font-weight: 700;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  color: var(--text);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+.nav-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ── Back bar ── */
+.back-bar { padding: 76px 0 0; }
+.back-link {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-size: 0.82rem; font-weight: 700;
+  color: var(--text-muted);
+  padding: 0.5rem 1rem;
+  margin: 0.75rem 0;
+  border: 2px solid var(--border);
+  border-radius: 20px;
+  transition: all 0.25s;
+}
+.back-link:hover { color: var(--accent); border-color: var(--accent); }
+
+/* ── Section header ── */
+.section-header { text-align: center; margin-bottom: 3rem; }
+.section-tag {
+  display: inline-block;
+  font-family: 'Fredoka One', cursive;
+  font-size: 0.85rem; letter-spacing: 0.08em;
+  color: var(--highlight);
+  margin-bottom: 0.5rem;
+}
+.section-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  color: var(--text);
+  margin-bottom: 0.75rem;
+  position: relative;
+  display: inline-block;
+}
+.section-title::before {
+  content: '★';
+  position: absolute;
+  left: -1.6rem; top: 50%;
+  transform: translateY(-50%);
+  font-size: 1rem;
+  color: var(--highlight);
+  opacity: 0.7;
+}
+.section-title::after {
+  content: '★';
+  position: absolute;
+  right: -1.6rem; top: 50%;
+  transform: translateY(-50%);
+  font-size: 1rem;
+  color: var(--highlight);
+  opacity: 0.7;
+}
+.section-sub { color: var(--text-muted); max-width: 520px; margin: 0 auto; font-size: 0.95rem; }
+
+/* ── Buttons ── */
+.btn {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.8rem 1.8rem;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.92rem; font-weight: 800;
+  border-radius: 20px; border: none;
+  cursor: pointer; text-decoration: none;
+  transition: background-color 0.2s;
+}
+.btn:active { transform: translateY(3px); }
+.btn-accent { background: var(--accent); color: #fff; }
+.btn-accent:hover { background: #c62828; }
+.btn-secondary { background: var(--secondary); color: #fff; }
+.btn-secondary:hover { background: #2e7d32; }
+.btn-tertiary { background: var(--tertiary); color: #fff; }
+.btn-tertiary:hover { background: #1565c0; }
+.btn-outline { background: transparent; border: 2px solid var(--border); color: var(--text); }
+.btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ── Wavy divider ── */
+.wave-divider { line-height: 0; overflow: hidden; }
+.wave-divider svg { display: block; }
+
+/* ── Hero ── */
+#hero {
+  padding-top: 68px;
+  min-height: 100vh;
+  display: flex; align-items: center;
+  background: var(--bg);
+  position: relative;
+  overflow: hidden;
+}
+#hero::before {
+  content: '';
+  position: absolute;
+  width: 300px; height: 300px;
+  background: rgba(229,57,53,0.08);
+  border-radius: 50%;
+  top: 10%; right: 5%;
+  pointer-events: none;
+}
+#hero::after {
+  content: '';
+  position: absolute;
+  width: 200px; height: 200px;
+  background: rgba(67,160,71,0.08);
+  border-radius: 50%;
+  bottom: 15%; left: 3%;
+  pointer-events: none;
+}
+.hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; position: relative; z-index: 1; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: rgba(229,57,53,0.1);
+  border: 2px solid rgba(229,57,53,0.3);
+  color: var(--accent);
+  font-size: 0.78rem; font-weight: 800;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  margin-bottom: 1.5rem;
+}
+.hero-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(2.6rem, 6vw, 4.2rem);
+  color: var(--text);
+  line-height: 1.05;
+  margin-bottom: 1.25rem;
+}
+.hero-title em { font-style: normal; color: var(--accent); }
+.hero-tagline { font-size: 1.05rem; color: var(--text-muted); margin-bottom: 2.5rem; max-width: 420px; }
+.hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+.hero-stats { display: flex; gap: 2rem; margin-top: 2.5rem; padding-top: 2rem; border-top: 2px dashed var(--border); }
+.stat-num { font-family: 'Fredoka One', cursive; font-size: 2rem; color: var(--accent); line-height: 1; }
+.stat-label { font-size: 0.72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
+.hero-visual {
+  background: var(--surface);
+  border: 3px solid var(--border);
+  border-radius: 24px;
+  padding: 2rem;
+  display: flex; flex-direction: column; gap: 1rem;
+}
+.level-progress { display: flex; flex-direction: column; gap: 0.5rem; }
+.lp-label { font-family: 'Fredoka One', cursive; font-size: 1rem; color: var(--text); display: flex; justify-content: space-between; }
+.lp-bar { height: 12px; background: var(--border); border-radius: 20px; overflow: hidden; }
+.lp-fill { height: 100%; border-radius: 20px; }
+.lp-blue { background: var(--tertiary); width: 85%; }
+.lp-green { background: var(--secondary); width: 65%; }
+.lp-orange { background: var(--highlight); width: 45%; }
+@media(max-width: 768px) { .hero-grid { grid-template-columns: 1fr; } .hero-visual { display: none; } }
+
+/* ── Wave ── */
+.wave-top { background: var(--surface); position: relative; }
+
+/* ── Levels ── */
+#levels { background: var(--surface); }
+.levels-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+@media(max-width: 900px) { .levels-grid { grid-template-columns: 1fr 1fr; } }
+@media(max-width: 600px) { .levels-grid { grid-template-columns: 1fr; } }
+
+.level-card {
+  border-radius: 20px;
+  padding: 1.75rem;
+  border: 3px solid transparent;
+  transition: transform 0.25s, border-color 0.25s;
+}
+.level-card:hover { transform: translateY(-4px); border-color: rgba(0,0,0,0.1); }
+.lc-a1 { background: #ff8a65; }
+.lc-a2 { background: #ffb74d; }
+.lc-b1 { background: #fff176; }
+.lc-b2 { background: #a5d6a7; }
+.lc-c1 { background: #81d4fa; }
+.lc-c2 { background: #ce93d8; }
+html.dark .lc-a1 { background: #d44700; }
+html.dark .lc-a2 { background: #c97a00; }
+html.dark .lc-b1 { background: #c4b000; }
+html.dark .lc-b2 { background: #52885c; }
+html.dark .lc-c1 { background: #0990c7; }
+html.dark .lc-c2 { background: #7c3a8a; }
+
+.level-badge {
+  display: inline-block;
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.4rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: 12px;
+  color: #fff;
+  margin-bottom: 0.75rem;
+}
+.lb-a1 { background: var(--highlight); }
+.lb-a2 { background: var(--accent); }
+.lb-b1 { background: var(--secondary); }
+.lb-b2 { background: var(--tertiary); }
+.lb-c1 { background: #8e24aa; }
+.lb-c2 { background: #00838f; }
+
+.level-name { font-family: 'Fredoka One', cursive; font-size: 1.15rem; color: var(--text); margin-bottom: 0.35rem; }
+.level-desc { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1rem; }
+.level-detail { display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.25rem; }
+.level-detail i { flex-shrink: 0; color: var(--secondary); }
+.level-price { font-family: 'Fredoka One', cursive; font-size: 1.3rem; color: var(--text); margin-top: 0.75rem; }
+.enroll-btn {
+  display: flex; align-items: center; justify-content: center; gap: 0.4rem;
+  width: 100%; margin-top: 1rem;
+  padding: 0.6rem;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.82rem; font-weight: 800;
+  border-radius: 14px; border: none; background: rgba(0,0,0,0.08);
+  color: var(--text); cursor: pointer;
+  transition: background-color 0.2s;
+  text-decoration: none;
+}
+.enroll-btn:hover { background: rgba(0,0,0,0.15); }
+.enroll-btn:active { transform: translateY(2px); }
+
+/* ── Level card text force white ── */
+.level-card *, .level-card h3, .level-card p, .level-card .duration, .level-card .price, .level-card .schedule,
+.level-card .level-name, .level-card .level-desc, .level-card .level-detail, .level-card .level-price {
+  color: #ffffff !important;
+}
+.level-card .level-detail i { color: rgba(255,255,255,0.85) !important; }
+
+/* ── Method ── */
+#method { }
+.method-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+@media(max-width: 600px) { .method-grid { grid-template-columns: 1fr; } }
+.method-card {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 20px;
+  padding: 2rem;
+  display: flex; gap: 1.25rem;
+  transition: border-color 0.25s;
+}
+.method-card:hover { border-color: var(--tertiary); }
+.method-icon {
+  flex-shrink: 0; width: 52px; height: 52px;
+  border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem;
+}
+.mi-1 { background: rgba(229,57,53,0.12); color: var(--accent); }
+.mi-2 { background: rgba(67,160,71,0.12); color: var(--secondary); }
+.mi-3 { background: rgba(30,136,229,0.12); color: var(--tertiary); }
+.mi-4 { background: rgba(251,140,0,0.12); color: var(--highlight); }
+.method-num { font-size: 0.65rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.3rem; }
+.method-title { font-family: 'Fredoka One', cursive; font-size: 1rem; color: var(--text); margin-bottom: 0.5rem; }
+.method-desc { font-size: 0.83rem; color: var(--text-muted); line-height: 1.6; }
+
+/* ── Method icon containers (Change 4) ── */
+.method-icon-container { display:flex; align-items:center; justify-content:center; width:72px; height:72px; border-radius:16px; flex-shrink:0; }
+.method-icon-comunicativo { background:rgba(255,127,0,0.15); color:#FF7F00; }
+.method-icon-espaciada { background:rgba(74,144,217,0.22); color:#4a90d9; }
+
+/* ── Teachers ── */
+#teachers { background: var(--surface); }
+.teachers-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+@media(max-width: 900px) { .teachers-grid { grid-template-columns: 1fr 1fr; } }
+@media(max-width: 600px) { .teachers-grid { grid-template-columns: 1fr; } }
+.teacher-card {
+  border: 2px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--bg);
+  transition: transform 0.25s, border-color 0.25s;
+}
+.teacher-card:hover { transform: translateY(-4px); border-color: var(--tertiary); }
+.teacher-avatar {
+  height: 160px;
+  display: flex; align-items: center; justify-content: center;
+}
+.ta-1 { background: #ff7043; }
+.ta-2 { background: #29b6f6; }
+.ta-3 { background: #ab47bc; }
+.avatar-initials { font-family: 'Fredoka One', cursive; font-size: 3rem; color: rgba(255,255,255,0.92); }
+.teacher-body { padding: 1.25rem; }
+.teacher-name { font-family: 'Fredoka One', cursive; font-size: 1.1rem; color: var(--text); margin-bottom: 0.2rem; }
+.teacher-role { font-size: 0.78rem; font-weight: 700; color: var(--tertiary); margin-bottom: 0.5rem; }
+.teacher-bio { font-size: 0.8rem; color: var(--text-muted); line-height: 1.6; }
+
+/* ── FAQ ── */
+#faq { }
+.faq-list { max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; gap: 0.75rem; }
+.faq-item {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  transition: border-color 0.25s;
+}
+.faq-item.active { border-color: #FF7F00; }
+.faq-trigger {
+  width: 100%; padding: 1.1rem 1.5rem;
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  background: transparent; border: none;
+  color: var(--text-body); font-size: 0.93rem; font-weight: 700;
+  text-align: left; cursor: pointer;
+  transition: background 0.25s, border-left 0.25s, color 0.25s;
+}
+/* Legacy .faq-question alias */
+.faq-question {
+  width: 100%; padding: 1.1rem 1.5rem;
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  background: transparent; border: none;
+  color: var(--text-body); font-size: 0.93rem; font-weight: 700;
+  text-align: left; cursor: pointer;
+  transition: background 0.25s, border-left 0.25s, color 0.25s;
+}
+.faq-item.active .faq-trigger,
+.faq-item.active .faq-question {
+  border-left: 3px solid #FF7F00;
+  background: rgba(255,127,0,0.08);
+  color: #FF7F00;
+}
+.faq-chevron {
+  flex-shrink: 0; color: var(--text-muted);
+  transition: transform 0.3s ease;
+}
+.faq-item.active .faq-chevron { transform: rotate(180deg); color: #FF7F00; }
+.faq-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease;
+  padding: 0 1.5rem;
+  font-size: 0.87rem; color: var(--text-muted); line-height: 1.7;
+}
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease;
+  padding: 0 1.5rem;
+  font-size: 0.87rem; color: var(--text-muted); line-height: 1.7;
+}
+.faq-item.active .faq-content,
+.faq-item.active .faq-answer { max-height: 1000px; padding-bottom: 1.25rem; }
+
+/* ── CTA Banner ── */
+#cta-banner {
+  background: var(--tertiary);
+  padding: 5rem 0;
+  text-align: center;
+}
+#cta-banner .cta-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(2rem, 5vw, 3rem);
+  color: #fff; margin-bottom: 1rem;
+}
+#cta-banner .cta-sub { color: rgba(255,255,255,0.85); font-size: 1rem; margin-bottom: 2rem; }
+#cta-banner .cta-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+.btn-white { background: #fff; color: var(--tertiary); }
+.btn-white:hover { background: #e3f2fd; }
+.btn-white-outline { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,0.6); border-radius: 20px; }
+.btn-white-outline:hover { background: rgba(255,255,255,0.1); border-color: #fff; }
+
+/* ── Enrollment form ── */
+#enrollment { background: var(--surface); }
+.form-wrap { max-width: 720px; margin: 0 auto; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+.form-group.full { grid-column: 1 / -1; }
+.form-label { font-size: 0.78rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
+.form-group input, .form-group select, .form-group textarea {
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 0.75rem 1rem;
+  color: var(--text-body);
+  font-size: 0.9rem; outline: none;
+  transition: border-color 0.25s;
+}
+.form-group input:focus { border-color: var(--accent); }
+.form-group select:focus { border-color: var(--secondary); }
+.form-group textarea:focus { border-color: var(--tertiary); }
+.form-group select option { background: var(--surface); }
+.form-group textarea { resize: vertical; min-height: 110px; font-family: 'Nunito', sans-serif; }
+.form-submit { grid-column: 1 / -1; display: flex; justify-content: flex-end; gap: 1rem; margin-top: 0.5rem; flex-wrap: wrap; }
+@media(max-width: 600px) { .form-grid { grid-template-columns: 1fr; } .form-group.full { grid-column: auto; } }
+
+/* ── Select custom arrow (no double arrow) ── */
+.select-wrap { position: relative; }
+.form-group select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 2.5rem !important;
+  min-height: 44px;
+}
+
+/* ── Field error ── */
+.field-error { font-size: 0.78rem; color: var(--accent); margin-top: 4px; display: none; }
+.field-error.visible { display: block; }
+
+/* ── Form disclaimer note ── */
+.form-disc-note { font-size: 0.72rem; opacity: 0.65; color: currentColor; text-align: center; max-width: 640px; margin-top: 0.75rem; grid-column: 1 / -1; }
+            /* ── Footer ── */
+    #footer{background:#0a0a0a;border-top:1px solid rgba(255,255,255,0.08);padding:24px 48px 20px;color:#f0f0f0;}
+    #footer>div{max-width:1200px;margin:0 auto;}
+    .ft-inner{display:flex;flex-direction:column;gap:16px;}
+    .ft-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:nowrap;gap:16px;}
+    .ft-left{display:flex;flex-direction:column;align-items:flex-start;gap:4px;flex:0 0 auto;min-width:0;}
+    .ft-center{display:flex;align-items:center;gap:10px;flex:1;justify-content:center;}
+    .ft-right{display:flex;align-items:center;justify-content:flex-end;flex:0 0 auto;}
+    .ft-logo{height:32px;filter:brightness(0) invert(1);display:block;}
+    .ft-tagline{font-size:0.68rem;opacity:0.5;line-height:1.3;white-space:nowrap;}
+    .ft-btn{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,0.22);border-radius:6px;background:transparent;color:#f0f0f0;text-decoration:none;cursor:pointer;transition:border-color .2s,color .2s;padding:0;box-sizing:border-box;flex-shrink:0;}
+    .ft-btn:hover{border-color:#FF7F00;color:#FF7F00;}
+    .ft-bottom{font-size:0.68rem;opacity:0.5;text-align:center;margin:0;padding:0;line-height:1.5;white-space:normal;}
+    @media(max-width:900px){
+      #footer{padding:20px 24px 16px;}
+      .ft-top{flex-wrap:wrap;justify-content:center;gap:12px;}
+      .ft-left{align-items:center;width:100%;justify-content:center;}
+      .ft-tagline{white-space:normal;text-align:center;}
+      .ft-center{justify-content:center;}
+      .ft-right{width:auto;}
+    }
+    @media(max-width:480px){
+      .ft-top{flex-direction:column;align-items:center;}
+      .ft-right{width:100%;justify-content:center;}
+    }
+    </style>
+</head>
+<body>
+
+<header id="navbar">
+  <div class="nav-inner">
+    <a href="../../index.html#portfolio" class="nav-back" id="back-nav-link">< Portafolio</a>
+    <div class="nav-logo-center">
+      <a href="../../index.html">
+        <img src="../../imgs/FullLogo.svg" alt="WebExpressCR" height="44" style="filter:brightness(0) invert(1);">
+      </a>
+    </div>
+    <div class="nav-controls">
+      <button class="nav-btn" id="langToggle"><i data-lucide="globe" width="14" height="14"></i><span id="langLabel">EN</span></button>
+      <button class="nav-btn" id="themeToggle"><i data-lucide="sun" width="14" height="14" id="themeIcon"></i></button>
+    </div>
+  </div>
+</header>
+
+<section id="hero" style="padding-top:76px;">
+  <img src="imgs/hero.jpg" alt="Academia de inglés" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;display:block;">
+  <div style="position:absolute;inset:0;background:linear-gradient(rgba(10,10,40,0.72),rgba(10,10,40,0.60));z-index:1;"></div>
+  <div style="position:relative;z-index:2;width:100%;">
+  <div class="container">
+    <div class="hero-grid">
+      <div>
+        <div class="hero-badge"><i data-lucide="globe" width="13" height="13"></i><span data-i18n="hero.badge">Academia Certificada · San José, Costa Rica</span></div>
+        <h1 class="hero-title" data-i18n="hero.title">Aprende <em>Inglés</em> de Verdad</h1>
+        <p class="hero-tagline" data-i18n="hero.tagline">Clases presenciales y virtuales para niños, jóvenes y adultos. Metodología comunicativa, maestros nativos y resultados garantizados.</p>
+        <div class="hero-ctas">
+          <a href="#enrollment-form" class="btn btn-accent"><i data-lucide="book-open" width="15" height="15"></i><span data-i18n="hero.cta1">Matricularse</span></a>
+          <a href="#levels" class="btn btn-outline" data-i18n="hero.cta2">Ver niveles</a>
+        </div>
+        <div class="hero-stats">
+          <div><div class="stat-num">1,200+</div><div class="stat-label" data-i18n="stat.students">Estudiantes</div></div>
+          <div><div class="stat-num">95%</div><div class="stat-label" data-i18n="stat.pass">Aprueban</div></div>
+          <div><div class="stat-num">8</div><div class="stat-label" data-i18n="stat.teachers">Maestros</div></div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <p style="font-family:'Fredoka One',cursive;font-size:1rem;color:var(--text-muted);margin-bottom:0.5rem;" data-i18n="hero.progress">Tu progreso actual</p>
+        <div class="level-progress">
+          <div><div class="lp-label"><span data-i18n="lp.conversation">Conversación</span><span>85%</span></div><div class="lp-bar"><div class="lp-fill lp-blue"></div></div></div>
+          <div><div class="lp-label"><span data-i18n="lp.grammar">Gramática</span><span>65%</span></div><div class="lp-bar"><div class="lp-fill lp-green"></div></div></div>
+          <div><div class="lp-label"><span data-i18n="lp.writing">Escritura</span><span>45%</span></div><div class="lp-bar"><div class="lp-fill lp-orange"></div></div></div>
+        </div>
+        <div style="margin-top:1rem;text-align:center;">
+          <span style="font-family:'Fredoka One',cursive;font-size:2.5rem;color:var(--secondary);">B1</span>
+          <p style="font-size:0.8rem;color:var(--text-muted);" data-i18n="hero.level">Nivel actual</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</section>
+
+<!-- Wavy divider -->
+<div class="wave-divider" style="background:var(--surface);">
+  <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="width:100%;height:60px;display:block;">
+    <path d="M0,30 C360,60 720,0 1080,30 C1260,45 1380,20 1440,30 L1440,0 L0,0 Z" fill="var(--accent)" fill-opacity="0.7"/>
+  </svg>
+</div>
+
+<section id="levels">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title" data-i18n="levels.title">Nuestros Niveles</h2>
+      <p class="section-sub" data-i18n="levels.sub">Del principiante al experto, tenemos el nivel perfecto para ti.</p>
+    </div>
+    <div class="levels-grid">
+      <div class="level-card lc-a1"><span class="level-badge lb-a1">A1</span><div class="level-name" data-i18n="l.a1.name">Principiante</div><div class="level-desc" data-i18n="l.a1.desc">Para quienes no tienen ninguna experiencia previa con el inglés. Aprende saludos, vocabulario básico y frases del día a día.</div><div class="level-detail"><i data-lucide="clock" width="14" height="14"></i><span data-i18n="l.dur">4 meses</span></div><div class="level-detail"><i data-lucide="users" width="14" height="14"></i><span data-i18n="l.group">Grupos de 8</span></div><div class="level-price">$85<span style="font-size:0.75rem;font-weight:600;" data-i18n="l.per"> / mes</span></div><a href="#enrollment-form" class="enroll-btn" data-i18n="l.enroll">Matricularse</a></div>
+      <div class="level-card lc-a2"><span class="level-badge lb-a2">A2</span><div class="level-name" data-i18n="l.a2.name">Básico</div><div class="level-desc" data-i18n="l.a2.desc">Vocabulario cotidiano ampliado. Puedes comunicarte en situaciones simples y rutinarias que requieren intercambio básico de información.</div><div class="level-detail"><i data-lucide="clock" width="14" height="14"></i><span data-i18n="l.dur">4 meses</span></div><div class="level-detail"><i data-lucide="users" width="14" height="14"></i><span data-i18n="l.group">Grupos de 8</span></div><div class="level-price">$90<span style="font-size:0.75rem;font-weight:600;" data-i18n="l.per"> / mes</span></div><a href="#enrollment-form" class="enroll-btn" data-i18n="l.enroll">Matricularse</a></div>
+      <div class="level-card lc-b1"><span class="level-badge lb-b1">B1</span><div class="level-name" data-i18n="l.b1.name">Intermedio</div><div class="level-desc" data-i18n="l.b1.desc">Puedes desenvolverte en la mayoría de situaciones de viaje y conversación. Produces texto simple sobre temas conocidos.</div><div class="level-detail"><i data-lucide="clock" width="14" height="14"></i><span data-i18n="l.dur">5 meses</span></div><div class="level-detail"><i data-lucide="users" width="14" height="14"></i><span data-i18n="l.group">Grupos de 6</span></div><div class="level-price">$95<span style="font-size:0.75rem;font-weight:600;" data-i18n="l.per"> / mes</span></div><a href="#enrollment-form" class="enroll-btn" data-i18n="l.enroll">Matricularse</a></div>
+      <div class="level-card lc-b2"><span class="level-badge lb-b2">B2</span><div class="level-name" data-i18n="l.b2.name">Intermedio Alto</div><div class="level-desc" data-i18n="l.b2.desc">Entiendes las ideas principales de textos complejos. Te relacionas con fluidez y espontaneidad con hablantes nativos.</div><div class="level-detail"><i data-lucide="clock" width="14" height="14"></i><span data-i18n="l.dur">5 meses</span></div><div class="level-detail"><i data-lucide="users" width="14" height="14"></i><span data-i18n="l.group">Grupos de 6</span></div><div class="level-price">$100<span style="font-size:0.75rem;font-weight:600;" data-i18n="l.per"> / mes</span></div><a href="#enrollment-form" class="enroll-btn" data-i18n="l.enroll">Matricularse</a></div>
+      <div class="level-card lc-c1"><span class="level-badge lb-c1">C1</span><div class="level-name" data-i18n="l.c1.name">Avanzado</div><div class="level-desc" data-i18n="l.c1.desc">Expresas ideas complejas de forma fluida y bien organizada. Usas el idioma de manera flexible para fines académicos y profesionales.</div><div class="level-detail"><i data-lucide="clock" width="14" height="14"></i><span data-i18n="l.dur">6 meses</span></div><div class="level-detail"><i data-lucide="users" width="14" height="14"></i><span data-i18n="l.group">Grupos de 5</span></div><div class="level-price">$110<span style="font-size:0.75rem;font-weight:600;" data-i18n="l.per"> / mes</span></div><a href="#enrollment-form" class="enroll-btn" data-i18n="l.enroll">Matricularse</a></div>
+      <div class="level-card lc-c2"><span class="level-badge lb-c2">C2</span><div class="level-name" data-i18n="l.c2.name">Maestría</div><div class="level-desc" data-i18n="l.c2.desc">El nivel más alto. Lees y escuchas sin esfuerzo cualquier tipo de inglés. Expresas matices de significado con precisión.</div><div class="level-detail"><i data-lucide="clock" width="14" height="14"></i><span data-i18n="l.dur">6 meses</span></div><div class="level-detail"><i data-lucide="users" width="14" height="14"></i><span data-i18n="l.group">Grupos de 4</span></div><div class="level-price">$120<span style="font-size:0.75rem;font-weight:600;" data-i18n="l.per"> / mes</span></div><a href="#enrollment-form" class="enroll-btn" data-i18n="l.enroll">Matricularse</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- Wavy divider -->
+<div class="wave-divider" style="background:var(--bg);">
+  <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="width:100%;height:60px;display:block;">
+    <path d="M0,30 C360,0 720,60 1080,30 C1260,15 1380,40 1440,30 L1440,60 L0,60 Z" fill="var(--secondary)" fill-opacity="0.7"/>
+  </svg>
+</div>
+
+<section id="method" style="background:var(--surface);">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title" data-i18n="method.title">Cómo Enseñamos</h2>
+      <p class="section-sub" data-i18n="method.sub">Nuestra metodología combina lo mejor de la enseñanza comunicativa con tecnología de aprendizaje adaptativo.</p>
+    </div>
+    <div class="method-grid">
+      <!-- Aprendizaje Comunicativo -->
+      <div class="method-card">
+        <div class="method-icon-container method-icon-comunicativo">
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <div>
+          <div class="method-num" data-i18n="m.01">Paso 01</div>
+          <div class="method-title" data-i18n="m.1.t">Aprendizaje Comunicativo</div>
+          <div class="method-desc" data-i18n="m.1.d">Desde el primer día hablás inglés. Ejercicios de conversación guiados en situaciones reales para perder el miedo rápidamente.</div>
+        </div>
+      </div>
+      <!-- Repetición Espaciada -->
+      <div class="method-card">
+        <div class="method-icon-container method-icon-espaciada">
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+        </div>
+        <div>
+          <div class="method-num" data-i18n="m.02">Paso 02</div>
+          <div class="method-title" data-i18n="m.2.t">Repetición Espaciada</div>
+          <div class="method-desc" data-i18n="m.2.d">Sistema de flashcards digitales adaptado a tu nivel. Aprendés vocabulario de forma eficiente y lo recordás a largo plazo.</div>
+        </div>
+      </div>
+      <div class="method-card"><div class="method-icon mi-3" style="background:rgba(30,136,229,0.12);color:var(--tertiary);"><i data-lucide="tv-2" width="24" height="24"></i></div><div><div class="method-num" data-i18n="m.03">Paso 03</div><div class="method-title" data-i18n="m.3.t">Inglés Auténtico</div><div class="method-desc" data-i18n="m.3.d">Series, podcasts y textos reales desde nivel A2. Aprendés el inglés que se usa de verdad, no solo el del libro de texto.</div></div></div>
+      <div class="method-card"><div class="method-icon mi-4" style="background:rgba(251,140,0,0.12);color:var(--highlight);"><i data-lucide="award" width="24" height="24"></i></div><div><div class="method-num" data-i18n="m.04">Paso 04</div><div class="method-title" data-i18n="m.4.t">Certificación Internacional</div><div class="method-desc" data-i18n="m.4.d">Preparación para Cambridge, TOEFL e IELTS. Simulacros de examen, asesoría personalizada y apoyo hasta aprobar.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Wavy divider -->
+<div class="wave-divider" style="background:var(--surface);">
+  <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="width:100%;height:60px;display:block;">
+    <path d="M0,30 C360,60 720,0 1080,30 C1260,45 1380,20 1440,30 L1440,60 L0,60 Z" fill="var(--tertiary)" fill-opacity="0.7"/>
+  </svg>
+</div>
+
+<section id="teachers">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title" data-i18n="teachers.title">Nuestros Maestros</h2>
+      <p class="section-sub" data-i18n="teachers.sub">Nativos y bilingües certificados con experiencia real en aula.</p>
+    </div>
+    <div class="teachers-grid">
+      <div class="teacher-card"><div class="teacher-avatar ta-1" style="overflow:hidden;"><img src="imgs/profesor-2.jpg" alt="Jessica Kim" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;"></div><div class="teacher-body"><div class="teacher-name">Jessica Kim</div><div class="teacher-role" data-i18n="t1.role">Coordinadora Académica · CELTA</div><div class="teacher-bio" data-i18n="t1.bio">Originaria de California. 12 años enseñando inglés en América Latina. Especialista en inglés de negocios y preparación para certificaciones.</div></div></div>
+      <div class="teacher-card"><div class="teacher-avatar ta-2" style="overflow:hidden;"><img src="imgs/profeomar.jpg" alt="Omar Massey" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;"></div><div class="teacher-body"><div class="teacher-name">Omar Massey</div><div class="teacher-role" data-i18n="t2.role">Maestro Senior · TESOL</div><div class="teacher-bio" data-i18n="t2.bio">De Melbourne, Australia. Experto en fonética y pronunciación. Sus clases de conversación son las más solicitadas de la academia.</div></div></div>
+      <div class="teacher-card"><div class="teacher-avatar ta-3" style="overflow:hidden;"><img src="imgs/profesor-1.jpg" alt="Laura Vargas" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;"></div><div class="teacher-body"><div class="teacher-name">Laura Vargas</div><div class="teacher-role" data-i18n="t3.role">Especialista Niños y Teens</div><div class="teacher-bio" data-i18n="t3.bio">Costarricense con maestría en lingüística aplicada de la UCR. Creadora del programa infantil de la academia, basado en aprendizaje lúdico.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title" data-i18n="faq.title">Preguntas Frecuentes</h2>
+      <p class="section-sub" data-i18n="faq.sub">Todo lo que necesitás saber antes de matricularte.</p>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)"><span data-i18n="faq.q1">¿Cómo sé cuál nivel me corresponde?</span><i data-lucide="chevron-down" width="20" height="20" class="faq-chevron"></i></button><div class="faq-answer" data-i18n="faq.a1">Hacemos una prueba de diagnóstico gratuita antes de la matrícula. Incluye comprensión auditiva, lectura y una breve entrevista oral. El resultado te ubica en el nivel correcto.</div></div>
+      <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)"><span data-i18n="faq.q2">¿Las clases son presenciales o virtuales?</span><i data-lucide="chevron-down" width="20" height="20" class="faq-chevron"></i></button><div class="faq-answer" data-i18n="faq.a2">Ofrecemos ambas modalidades. Las clases presenciales son en San José, Escazú y Heredia. Las virtuales son en vivo por Zoom, no grabadas — mantenemos la dinámica de grupo.</div></div>
+      <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)"><span data-i18n="faq.q3">¿Cuánto tiempo tarda en verse progreso?</span><i data-lucide="chevron-down" width="20" height="20" class="faq-chevron"></i></button><div class="faq-answer" data-i18n="faq.a3">Con clases de 3 veces por semana y estudio en casa, la mayoría de estudiantes nota progreso significativo en 6 a 8 semanas. Subir de nivel toma entre 4 y 6 meses según el nivel.</div></div>
+      <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)"><span data-i18n="faq.q4">¿Tienen programas para niños?</span><i data-lucide="chevron-down" width="20" height="20" class="faq-chevron"></i></button><div class="faq-answer" data-i18n="faq.a4">Sí. Tenemos grupos específicos para edades de 5 a 8 años, 9 a 12 años y 13 a 17 años. Metodología lúdica y adaptada a cada etapa de desarrollo cognitivo.</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="cta-banner">
+  <div class="container">
+    <div class="cta-inner" style="max-width:640px;margin:0 auto;">
+      <h2 class="cta-title" data-i18n="cta.title">¿Listo para empezar?</h2>
+      <p class="cta-sub" data-i18n="cta.sub">Primera clase gratis. Sin compromisos. Hacé el diagnóstico hoy.</p>
+      <div class="cta-btns">
+        <a href="#enrollment-form" class="btn btn-white" data-i18n="cta.btn1">Matricularse</a>
+        <a href="#faq" class="btn btn-white-outline" data-i18n="cta.btn2">Ver preguntas frecuentes</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="enrollment">
+  <div class="container" id="enrollment-form">
+    <div class="section-header">
+      <h2 class="section-title" data-i18n="enroll.title">Formulario de Matrícula</h2>
+      <p class="section-sub" data-i18n="enroll.sub">Completá el formulario y te contactamos en menos de 24 horas.</p>
+    </div>
+    <div class="form-wrap">
+      <form id="enroll-form" novalidate class="form-grid">
+        <div class="form-group">
+          <label class="form-label" for="gs-name" data-i18n="f.name">Nombre completo<span aria-hidden="true" style="color: var(--accent); margin-left: 2px;">*</span></label>
+          <input type="text" id="gs-name" required autocomplete="name">
+          <span class="field-error" id="gs-name-err"></span>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="gs-email" data-i18n="f.email">Correo<span aria-hidden="true" style="color: var(--accent); margin-left: 2px;">*</span></label>
+          <input type="email" id="gs-email" required autocomplete="email">
+          <span class="field-error" id="gs-email-err"></span>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="gs-phone" data-i18n="f.phone">Teléfono<span aria-hidden="true" style="color: var(--accent); margin-left: 2px;">*</span></label>
+          <input type="tel" id="gs-phone" required autocomplete="tel" inputmode="numeric" pattern="[0-9]*" maxlength="8" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,8)">
+          <span class="field-error" id="gs-phone-err"></span>
+        </div>
+        <div class="form-group"><label class="form-label" data-i18n="f.age">Edad</label><input type="number" min="5" max="80" placeholder="18" autocomplete="off"></div>
+        <div class="form-group">
+          <label class="form-label" for="gs-level" data-i18n="f.level">Nivel que te interesa<span aria-hidden="true" style="color: var(--accent); margin-left: 2px;">*</span></label>
+          <div class="select-wrap"><select id="gs-level" required autocomplete="off" style="appearance:none;-webkit-appearance:none;padding-right:2.75rem;"><option value="" data-i18n="f.sel">Seleccionar...</option><option>A1</option><option>A2</option><option>B1</option><option>B2</option><option>C1</option><option>C2</option><option data-i18n="f.diag">Diagnóstico primero</option>
+<option value="otro" data-i18n="form.other">Otro</option>
+</select><svg style="position:absolute;right:0.85rem;top:50%;transform:translateY(-50%);pointer-events:none;z-index:1;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+          <span class="field-error" id="gs-level-err"></span>
+        </div>
+        <div class="form-group"><label class="form-label" data-i18n="f.mode">Modalidad</label><div class="select-wrap"><select autocomplete="off" style="appearance:none;-webkit-appearance:none;padding-right:2.75rem;"><option data-i18n="f.sel">Seleccionar...</option><option data-i18n="f.presencial">Presencial</option><option data-i18n="f.virtual">Virtual</option>
+<option value="otro" data-i18n="form.other">Otro</option>
+</select><svg style="position:absolute;right:0.85rem;top:50%;transform:translateY(-50%);pointer-events:none;z-index:1;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div></div>
+        <div class="form-group full"><label class="form-label" data-i18n="f.notes">Notas adicionales</label><textarea placeholder="Horario preferido, objetivos, preguntas..." autocomplete="off"></textarea></div>
+        <div class="form-submit">
+          <button type="submit" id="enroll-submit" class="btn btn-secondary"><i data-lucide="send" width="15" height="15"></i><span data-i18n="f.submit">Enviar matrícula</span></button>
+        </div>
+        <p style="font-size:0.72rem;opacity:0.6;text-align:center;margin-top:8px;" id="acad-form-disc"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer id="footer">
+  <div class="ft-inner">
+
+    <div class="ft-top">
+      <div class="ft-left">
+        <img src="../../imgs/FullLogo.svg" alt="WebExpressCR" class="ft-logo">
+      </div>
+      <div class="ft-center">
+        <a href="https://www.instagram.com/webexpresscr/" class="ft-btn" aria-label="Instagram">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/company/webexpresscr" class="ft-btn" aria-label="LinkedIn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+        <a href="https://www.facebook.com/webexpresscr" class="ft-btn" aria-label="Facebook">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+        <a href="https://wa.me/50670553656" target="_blank" class="ft-btn" aria-label="WhatsApp">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M20.52 3.48A11.93 11.93 0 0 0 12 0C5.37 0 0 5.37 0 12c0 2.11.55 4.16 1.6 5.97L0 24l6.19-1.62A11.94 11.94 0 0 0 12 24c6.63 0 12-5.37 12-12 0-3.2-1.25-6.21-3.48-8.52zm-8.52 18.4a9.9 9.9 0 0 1-5.05-1.38l-.36-.21-3.73.98.99-3.63-.24-.38A9.9 9.9 0 0 1 2.1 12c0-5.46 4.44-9.9 9.9-9.9 2.65 0 5.13 1.03 7 2.9a9.87 9.87 0 0 1 2.9 7c0 5.46-4.44 9.9-9.9 9.9zm5.43-7.4c-.3-.15-1.77-.87-2.04-.97-.28-.1-.48-.15-.68.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.68-1.63-.93-2.23-.24-.59-.49-.51-.68-.52h-.58c-.2 0-.52.07-.79.37-.27.3-1.03 1.01-1.03 2.46s1.06 2.85 1.2 3.05c.15.2 2.08 3.18 5.04 4.46.7.3 1.25.48 1.68.62.71.22 1.35.19 1.86.12.57-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35z"/></svg>
+        </a>
+        <a href="mailto:webexpresscr@gmail.com" class="ft-btn" aria-label="Email">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </a>
+      </div>
+      <div class="ft-right">
+        <button class="ft-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Volver arriba">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <p class="ft-bottom" data-i18n="footer.disclaimer"></p>
+
+  </div>
+</footer>
+
+<script>
+'use strict';
+lucide.createIcons();
+const html = document.documentElement;
+
+function applyTheme(t) {
+  html.className = t;
+  document.getElementById('themeIcon').setAttribute('data-lucide', t === 'dark' ? 'sun' : 'moon');
+  lucide.createIcons();
+  localStorage.setItem('gs-theme', t);
+}
+const _st = localStorage.getItem('gs-theme');
+applyTheme(_st ? _st : 'dark');
+document.getElementById('themeToggle').addEventListener('click', () => applyTheme(html.classList.contains('dark') ? 'light' : 'dark'));
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => { if (!localStorage.getItem('gs-theme')) applyTheme(e.matches ? 'dark' : 'light'); });
+
+const T = {
+  es: { 'back':'< Portafolio','hero.badge':'Academia Certificada · San José, Costa Rica','hero.title':'Aprende Inglés de Verdad','hero.tagline':'Clases presenciales y virtuales para niños, jóvenes y adultos. Metodología comunicativa, maestros nativos y resultados garantizados.','hero.cta1':'Matricularse','hero.cta2':'Ver niveles','stat.students':'Estudiantes','stat.pass':'Aprueban','stat.teachers':'Maestros','hero.progress':'Tu progreso actual','lp.conversation':'Conversación','lp.grammar':'Gramática','lp.writing':'Escritura','hero.level':'Nivel actual','levels.title':'Nuestros Niveles','levels.sub':'Del principiante al experto, tenemos el nivel perfecto para ti.','l.a1.name':'Principiante','l.a1.desc':'Para quienes no tienen ninguna experiencia previa con el inglés.','l.a2.name':'Básico','l.a2.desc':'Vocabulario cotidiano ampliado. Comunicación en situaciones simples.','l.b1.name':'Intermedio','l.b1.desc':'Podés desenvolverte en viajes y conversación general.','l.b2.name':'Intermedio Alto','l.b2.desc':'Entendés ideas principales de textos complejos.','l.c1.name':'Avanzado','l.c1.desc':'Expresás ideas complejas con fluidez para contextos profesionales.','l.c2.name':'Maestría','l.c2.desc':'El nivel más alto. Precisión y matices de hablante nativo.','l.dur':'4 meses','l.group':'Grupos de 8','l.per':' / mes','l.enroll':'Matricularse','method.title':'Cómo Enseñamos','method.sub':'Metodología comunicativa combinada con tecnología de aprendizaje adaptativo.','m.01':'Paso 01','m.1.t':'Aprendizaje Comunicativo','m.1.d':'Desde el primer día hablás inglés en situaciones reales.','m.02':'Paso 02','m.2.t':'Repetición Espaciada','m.2.d':'Sistema de flashcards digitales adaptado a tu nivel.','m.03':'Paso 03','m.3.t':'Inglés Auténtico','m.3.d':'Series, podcasts y textos reales desde nivel A2.','m.04':'Paso 04','m.4.t':'Certificación Internacional','m.4.d':'Preparación para Cambridge, TOEFL e IELTS.','teachers.title':'Nuestros Maestros','teachers.sub':'Nativos y bilingües certificados con experiencia real en aula.','t1.role':'Coordinadora Académica · CELTA','t1.bio':'Originaria de California. 12 años enseñando inglés en América Latina.','t2.role':'Maestro Senior · TESOL','t2.bio':'De Melbourne, Australia. Experto en fonética y pronunciación.','t3.role':'Especialista Niños y Teens','t3.bio':'Costarricense con maestría en lingüística aplicada de la UCR.','faq.title':'Preguntas Frecuentes','faq.sub':'Todo lo que necesitás saber antes de matricularte.','faq.q1':'¿Cómo sé cuál nivel me corresponde?','faq.a1':'Hacemos una prueba de diagnóstico gratuita. Incluye comprensión auditiva, lectura y entrevista oral.','faq.q2':'¿Las clases son presenciales o virtuales?','faq.a2':'Ofrecemos ambas modalidades. Virtual por Zoom en vivo, no grabadas.','faq.q3':'¿Cuánto tiempo tarda en verse progreso?','faq.a3':'La mayoría nota progreso en 6 a 8 semanas con clases de 3 veces por semana.','faq.q4':'¿Tienen programas para niños?','faq.a4':'Sí. Grupos para 5–8, 9–12 y 13–17 años con metodología lúdica.','cta.title':'¿Listo para empezar?','cta.sub':'Primera clase gratis. Sin compromisos. Hacé el diagnóstico hoy.','cta.btn1':'Matricularse','cta.btn2':'Ver preguntas frecuentes','enroll.title':'Formulario de Matrícula','enroll.sub':'Completá el formulario y te contactamos en menos de 24 horas.','f.name':'Nombre completo','f.email':'Correo','f.phone':'Teléfono','f.age':'Edad','f.level':'Nivel que te interesa','f.sel':'Seleccionar...','f.diag':'Diagnóstico primero','f.mode':'Modalidad','f.presencial':'Presencial','f.virtual':'Virtual','f.notes':'Notas adicionales','f.submit':'Enviar matrícula','form.disc':'Sitio con fines demostrativos: Ninguna transacción será procesada ni ningún dato almacenado.','toast.success':'Tu matrícula ha sido enviada con éxito.','err.required':'Este campo es obligatorio.','err.email':'Ingrese un correo electrónico válido.','err.phone':'Ingrese al menos 8 dígitos.','err.select':'Por favor seleccione una opción.','form.other':'Otro','footer.tagline':'Creación de páginas web · Costa Rica','footer.disclaimer':'Sitio con fines demostrativos: Ninguna transacción será procesada ni ningún dato almacenado.  © 2026 WebExpressCR. Todos los derechos reservados.  Las imágenes utilizadas pertenecen a sus respectivos autores y se usan únicamente con fines ilustrativos.'},
+  en: { 'back':'< Portfolio','hero.badge':'Certified Academy · San José, Costa Rica','hero.title':'Learn Real English','hero.tagline':'In-person and virtual classes for children, teens, and adults. Communicative method, native teachers, guaranteed results.','hero.cta1':'Enroll Now','hero.cta2':'View levels','stat.students':'Students','stat.pass':'Pass Rate','stat.teachers':'Teachers','hero.progress':'Your current progress','lp.conversation':'Conversation','lp.grammar':'Grammar','lp.writing':'Writing','hero.level':'Current level','levels.title':'Our Levels','levels.sub':'From beginner to expert, we have the perfect level for you.','l.a1.name':'Beginner','l.a1.desc':'For those with no previous experience. Greetings, basic vocabulary, and everyday phrases.','l.a2.name':'Elementary','l.a2.desc':'Wider everyday vocabulary. Communicate in simple, routine situations.','l.b1.name':'Intermediate','l.b1.desc':'Handle most travel situations and general conversation.','l.b2.name':'Upper Intermediate','l.b2.desc':'Understand main ideas of complex texts. Interact spontaneously with natives.','l.c1.name':'Advanced','l.c1.desc':'Express complex ideas fluently for professional and academic contexts.','l.c2.name':'Mastery','l.c2.desc':'The highest level. Precision and nuance at a near-native level.','l.dur':'4 months','l.group':'Groups of 8','l.per':' / month','l.enroll':'Enroll Now','method.title':'How We Teach','method.sub':'Communicative methodology combined with adaptive learning technology.','m.01':'Step 01','m.1.t':'Communicative Learning','m.1.d':'From day one you speak English in real-life situations.','m.02':'Step 02','m.2.t':'Spaced Repetition','m.2.d':'Digital flashcard system adapted to your level.','m.03':'Step 03','m.3.t':'Authentic English','m.3.d':'Series, podcasts and real texts from A2 level.','m.04':'Step 04','m.4.t':'International Certification','m.4.d':'Preparation for Cambridge, TOEFL and IELTS.','teachers.title':'Our Teachers','teachers.sub':'Certified native and bilingual teachers with real classroom experience.','t1.role':'Academic Coordinator · CELTA','t1.bio':'Originally from California. 12 years teaching English in Latin America.','t2.role':'Senior Teacher · TESOL','t2.bio':'From Melbourne, Australia. Expert in phonetics and pronunciation.','t3.role':'Kids & Teens Specialist','t3.bio':'Costa Rican with a master\'s in applied linguistics from UCR.','faq.title':'Frequently Asked Questions','faq.sub':'Everything you need to know before enrolling.','faq.q1':'How do I know which level is right for me?','faq.a1':'We give a free diagnostic test including listening, reading, and a short interview.','faq.q2':'Are classes in-person or virtual?','faq.a2':'We offer both. Virtual classes are live on Zoom, not recorded.','faq.q3':'How long before I see progress?','faq.a3':'Most students notice significant progress in 6–8 weeks with classes 3 times a week.','faq.q4':'Do you have programs for children?','faq.a4':'Yes. Groups for ages 5–8, 9–12, and 13–17 with play-based methodology.','cta.title':'Ready to get started?','cta.sub':'First class free. No commitment. Take the diagnostic test today.','cta.btn1':'Enroll Now','cta.btn2':'View FAQ','enroll.title':'Enrollment Form','enroll.sub':'Fill out the form and we\'ll contact you within 24 hours.','f.name':'Full name','f.email':'Email','f.phone':'Phone','f.age':'Age','f.level':'Level you\'re interested in','f.sel':'Select...','f.diag':'Diagnostic test first','f.mode':'Modality','f.presencial':'In-person','f.virtual':'Virtual','f.notes':'Additional notes','f.submit':'Send enrollment','form.disc':'Demonstration site: No transactions will be processed or data stored.','toast.success':'Your enrollment has been submitted successfully.','err.required':'This field is required.','err.email':'Please enter a valid email address.','err.phone':'Please enter at least 8 digits.','err.select':'Please select an option.','form.other':'Other','footer.tagline':'Web development · Costa Rica','footer.disclaimer':'Demonstration site: No transactions will be processed or data stored.  © 2026 WebExpressCR. All rights reserved.  Images used belong to their respective authors and are used for illustrative purposes only.'}
+};
+
+let lang = localStorage.getItem('gs-lang') || 'es';
+function applyLang(l) {
+  lang = l; document.documentElement.lang = l;
+  document.getElementById('langLabel').textContent = l === 'es' ? 'EN' : 'ES';
+  document.querySelectorAll('[data-i18n]').forEach(el => { const k = el.getAttribute('data-i18n'); if (T[l] && T[l][k] !== undefined) el.textContent = T[l][k]; });
+  // Back button
+  const backLink = document.getElementById('back-nav-link');
+  if (backLink) backLink.textContent = T[l]['back'];
+  // Footer disclaimer
+  const fd1 = document.getElementById('academia-footer-disc1');
+  if(fd1) fd1.textContent = l==='es' ? 'Sitio con fines demostrativos: Ninguna transacción será procesada ni ningún dato almacenado.' : 'Demonstration site: No transactions will be processed or data stored.';
+  const fd2 = document.getElementById('academia-footer-disc2');
+  if(fd2) fd2.textContent = l==='es' ? 'Las imágenes utilizadas pertenecen a sus respectivos autores y se usan únicamente con fines ilustrativos.' : 'Images used belong to their respective authors and are used for illustrative purposes only.';
+  // Form disclaimer note
+  const formDiscEl = document.getElementById('acad-form-disc');
+  if (formDiscEl) formDiscEl.textContent = T[l]['form.disc'];
+  localStorage.setItem('gs-lang', l);
+}
+document.getElementById('langToggle').addEventListener('click', () => applyLang(lang === 'es' ? 'en' : 'es'));
+applyLang(lang);
+
+function showToast(msg, accent) {
+  var ac = accent || 'var(--acc, #FF7F00)';
+  var t = document.createElement('div');
+  t.style.cssText = 'position:fixed;bottom:24px;left:24px;z-index:9999;background:' + ac + ';color:#fff;border-radius:8px;padding:14px 20px;box-shadow:0 4px 16px rgba(0,0,0,.25);display:flex;align-items:center;gap:8px;opacity:0;transition:opacity .5s ease;pointer-events:none;font-size:.9rem;font-family:inherit;max-width:420px;';
+  t.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11"/></svg><span>' + msg + '</span>';
+  document.body.appendChild(t);
+  requestAnimationFrame(function(){ t.style.opacity = '1'; });
+  setTimeout(function(){ t.style.opacity = '0'; setTimeout(function(){ t.remove(); }, 500); }, 4000);
+}
+
+function toggleFaq(btn) {
+  const item = btn.parentElement;
+  const isOpen = item.classList.toggle('active');
+  btn.setAttribute('aria-expanded', isOpen);
+}
+
+// Form validation
+const enrollForm = document.getElementById('enroll-form');
+if (enrollForm) {
+  enrollForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const dict = T[lang];
+    let valid = true;
+
+    function showErr(id, msg) {
+      const el = document.getElementById(id);
+      if (el) { el.textContent = msg; el.classList.add('visible'); }
+      valid = false;
+    }
+    function clearErr(id) {
+      const el = document.getElementById(id);
+      if (el) { el.textContent = ''; el.classList.remove('visible'); }
+    }
+
+    // Name
+    const nameVal = document.getElementById('gs-name').value.trim();
+    clearErr('gs-name-err');
+    if (!nameVal) showErr('gs-name-err', dict['err.required']);
+
+    // Email
+    const emailVal = document.getElementById('gs-email').value.trim();
+    clearErr('gs-email-err');
+    if (!emailVal) showErr('gs-email-err', dict['err.required']);
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) showErr('gs-email-err', dict['err.email']);
+
+    // Phone
+    const phoneVal = document.getElementById('gs-phone').value.trim();
+    clearErr('gs-phone-err');
+    if (!phoneVal) showErr('gs-phone-err', dict['err.required']);
+    else if (phoneVal.replace(/[^0-9]/g, '').length < 8) showErr('gs-phone-err', dict['err.phone']);
+
+    // Level
+    const levelVal = document.getElementById('gs-level').value;
+    clearErr('gs-level-err');
+    if (!levelVal) showErr('gs-level-err', dict['err.select']);
+
+    if (valid) {
+      showToast(T[lang]['toast.success'], '#27b82d');
+      enrollForm.reset();
+    }
+  });
+}
+</script>
+</body>
+</html>

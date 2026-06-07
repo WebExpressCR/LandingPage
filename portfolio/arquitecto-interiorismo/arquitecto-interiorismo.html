@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Forma & Espacio — Arquitectura e Interiorismo</title>
+  <meta name="description" content="Estudio de arquitectura y diseño de interiores en San José, Costa Rica. Proyectos residenciales, comerciales y remodelaciones." />
+  <meta property="og:title" content="Forma & Espacio — Arquitectura e Interiorismo" />
+  <meta property="og:description" content="Espacios que inspiran. Arquitectura e interiorismo en Costa Rica." />
+  <meta property="og:image" content="../../imgs/SmallLogo.svg" />
+  <link rel="icon" type="image/svg+xml" href="../../imgs/SmallLogo.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    :root{--orange:#FF7F00;--navy:#193992;--font:'Montserrat',sans-serif;--radius:4px;--radius-sm:2px;--transition:0.3s ease;--shadow:0 4px 24px rgba(0,0,0,0.15);--section-py:5rem;}
+    html.dark{--bg:#090909;--surface:#111;--surface2:#161616;--border:#1e1e1e;--text:#f0f0f0;--text-muted:#606060;--glass-bg:rgba(9,9,9,0.85);--glass-border:rgba(255,255,255,0.05);}
+    html.light{--bg:#fafafa;--surface:#f2f2f2;--surface2:#ebebeb;--border:#dedede;--text:#0a0a0a;--text-muted:#606060;--glass-bg:rgba(250,250,250,0.85);--glass-border:rgba(0,0,0,0.06);}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    ::selection { background: rgba(255, 127, 0, 0.25); color: inherit; }
+    body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.6;transition:background var(--transition),color var(--transition);overflow-x:hidden;}
+    img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}ul{list-style:none;}button{cursor:pointer;border:none;background:none;font-family:var(--font);}
+    input,textarea,select{font-family:var(--font);font-size:1rem;}
+    section{padding:var(--section-py) 0;}
+    .container{width:100%;max-width:1280px;margin:0 auto;padding:0 2rem;}
+    .fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+    .fade-in.visible{opacity:1;transform:none;}
+    .delay-1{transition-delay:.1s}.delay-2{transition-delay:.2s}.delay-3{transition-delay:.3s}.delay-4{transition-delay:.4s}
+
+    #navbar{position:fixed;top:0;left:0;right:0;z-index:1000;background:var(--glass-bg);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--glass-border);}
+    .nav-inner{display:flex;align-items:center;justify-content:space-between;height:76px;padding:0 2rem;max-width:1280px;margin:0 auto;}
+    .nav-logo img.full{display:block;}.nav-logo img.small{display:none;}
+    .nav-controls{display:flex;align-items:center;gap:.5rem;}
+    .nav-btn{display:flex;align-items:center;gap:.35rem;padding:.35rem .7rem;border-radius:var(--radius-sm);font-size:.78rem;font-weight:600;color:var(--text);background:transparent;border:1px solid var(--border);transition:all var(--transition);cursor:pointer;}
+    .nav-btn:hover{border-color:var(--navy);color:var(--navy);}
+    @media(max-width:767px){.nav-logo img.full{display:none;}.nav-logo img.small{display:block;}}
+
+    .back-bar{padding:76px 0 0;}
+    .back-link{display:inline-flex;align-items:center;gap:.4rem;font-size:.8rem;font-weight:600;color:var(--text-muted);padding:.5rem 1rem;margin:.75rem 0;border:1px solid var(--border);transition:all var(--transition);}
+    .back-link:hover{color:var(--navy);border-color:var(--navy);}
+
+    /* Hero */
+    #hero{padding:3rem 0 6rem;border-bottom:1px solid var(--border);}
+    .hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
+    .hero-studio{font-size:.65rem;font-weight:700;letter-spacing:.25em;color:var(--text-muted);text-transform:uppercase;margin-bottom:1.5rem;}
+    .hero-title{font-size:clamp(2.5rem,6vw,4.5rem);font-weight:800;line-height:1;letter-spacing:-.04em;margin-bottom:1.5rem;}
+    .hero-title em{font-style:italic;font-weight:300;}
+    .hero-tagline{font-size:.95rem;color:var(--text-muted);max-width:380px;margin-bottom:2.5rem;font-weight:300;line-height:1.8;}
+    .btn{display:inline-flex;align-items:center;gap:.4rem;padding:.7rem 1.5rem;font-weight:700;font-size:.88rem;transition:all var(--transition);}
+    .btn-navy{background:var(--navy);color:#fff;}
+    .btn-navy:hover{background:#2b52c8;transform:translateY(-1px);box-shadow:0 6px 20px rgba(25,57,146,.4);}
+    .btn-line{background:transparent;border:1px solid var(--border);color:var(--text);}
+    .btn-line:hover{border-color:var(--navy);color:var(--navy);}
+    .btn-consult{background:rgba(25,57,146,0.20);border:1.5px solid rgba(25,57,146,0.70);color:#ffffff;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);}
+    .btn-consult:hover{background:rgba(25,57,146,0.45);}
+    .hero-ctas{display:flex;gap:.75rem;flex-wrap:wrap;}
+    .hero-visual-block{display:grid;grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr;gap:8px;}
+    .hero-vis-card{background:rgba(0,0,0,0.20);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;}
+    .hero-vis-caption{text-shadow:0 1px 6px rgba(0,0,0,0.8);}
+    .hero-vis-card.tall{grid-row:span 2;}
+    .hero-vis-card .vis-inner{display:flex;flex-direction:column;align-items:center;gap:.5rem;padding:1.5rem;}
+    .hero-vis-card i{color:var(--text-muted);opacity:.25;}
+    .hero-vis-caption{font-size:.62rem;font-weight:600;letter-spacing:.1em;color:var(--text-muted);text-transform:uppercase;}
+    @media(max-width:768px){.hero-grid{grid-template-columns:1fr;gap:2.5rem;}.hero-visual-block{display:none;}}
+
+    /* Section */
+    .section-header{margin-bottom:3rem;}
+    .section-header.center{text-align:center;}
+    .section-marker{font-size:.62rem;font-weight:700;letter-spacing:.2em;color:var(--text-muted);text-transform:uppercase;margin-bottom:.4rem;}
+    .section-title{font-size:clamp(1.6rem,3vw,2.2rem);font-weight:800;letter-spacing:-.03em;margin-bottom:.75rem;}
+    .section-sub{color:var(--text-muted);font-weight:300;max-width:560px;}
+    .section-header.center .section-sub{margin:0 auto;}
+
+    /* Projects */
+    #projects{background:var(--surface);}
+    .projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1px;background:var(--border);}
+    .project-card{background:var(--bg);padding:2rem;transition:all var(--transition);cursor:pointer;}
+    .project-card:hover{background:var(--surface2);}
+    .project-visual{aspect-ratio:16/9;background:var(--surface);display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem;border:1px solid var(--border);position:relative;overflow:hidden;}
+    .project-visual i{color:var(--text-muted);opacity:.2;}
+    .project-cat{font-size:.62rem;font-weight:700;letter-spacing:.15em;color:var(--text-muted);text-transform:uppercase;margin-bottom:.4rem;}
+    .project-name{font-size:1.05rem;font-weight:700;margin-bottom:.25rem;letter-spacing:-.01em;}
+    .project-meta{display:flex;gap:1rem;font-size:.78rem;color:var(--text-muted);font-weight:300;}
+    .project-meta span{display:flex;align-items:center;gap:.3rem;}
+
+    /* Services */
+    #services{background:var(--bg);}
+    .services-list{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);}
+    .service-item{background:var(--bg);padding:2rem;transition:background var(--transition);}
+    .service-item:hover{background:var(--surface);}
+    .service-num{font-size:.6rem;font-weight:800;letter-spacing:.15em;color:var(--text-muted);text-transform:uppercase;margin-bottom:.5rem;}
+    .service-name{font-size:1.05rem;font-weight:700;margin-bottom:.75rem;letter-spacing:-.01em;}
+    .service-desc{font-size:.83rem;color:var(--text-muted);font-weight:300;line-height:1.7;margin-bottom:1rem;}
+    .service-steps{display:flex;flex-direction:column;gap:.35rem;}
+    .step{display:flex;align-items:center;gap:.5rem;font-size:.75rem;color:var(--text-muted);}
+    .step i{color:var(--navy);flex-shrink:0;}
+    @media(max-width:768px){.services-list{grid-template-columns:1fr;}}
+
+    /* Process */
+    #process{background:var(--surface);}
+    .process-track{display:flex;gap:0;overflow-x:auto;padding-bottom:.5rem;}
+    .process-step{flex:1;min-width:160px;padding:2rem 1.5rem;border-right:1px solid var(--border);position:relative;}
+    .process-step:last-child{border-right:none;}
+    .process-num{font-size:2.5rem;font-weight:900;color:var(--border);letter-spacing:-.04em;line-height:1;margin-bottom:.75rem;}
+    .process-name{font-weight:700;font-size:.88rem;margin-bottom:.35rem;}
+    .process-desc{font-size:.75rem;color:var(--text-muted);font-weight:300;line-height:1.6;}
+    .process-dot{width:8px;height:8px;border-radius:50%;background:var(--navy);position:absolute;top:50%;right:-4px;transform:translateY(-50%);z-index:1;}
+    .process-step:last-child .process-dot{display:none;}
+
+    /* About */
+    #about{background:var(--bg);}
+    .about-cols{display:grid;grid-template-columns:1.3fr 1fr;gap:5rem;align-items:center;}
+    .about-text h2{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;line-height:1.05;letter-spacing:-.04em;margin-bottom:1.25rem;}
+    .about-text h2 span{color:var(--navy);}
+    .about-text p{color:var(--text-muted);font-weight:300;margin-bottom:1rem;line-height:1.8;}
+    .about-facts{display:flex;gap:2rem;margin-top:1.75rem;flex-wrap:wrap;}
+    .fact{border-top:2px solid var(--navy);padding-top:.75rem;}
+    .fact-num{font-size:2rem;font-weight:900;letter-spacing:-.04em;}
+    .fact-label{font-size:.7rem;color:var(--text-muted);font-weight:300;letter-spacing:.08em;text-transform:uppercase;}
+    .about-vis{aspect-ratio:1;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;}
+    @media(max-width:768px){.about-cols{grid-template-columns:1fr;}}
+
+    /* Contact */
+    #contact{background:var(--surface);}
+    .contact-layout{display:grid;grid-template-columns:1fr 1.5fr;gap:3rem;}
+    .contact-info h3{font-size:1.2rem;font-weight:800;letter-spacing:-.02em;margin-bottom:1.25rem;}
+    .contact-row{display:flex;align-items:flex-start;gap:.75rem;margin-bottom:1rem;font-size:.88rem;}
+    .contact-row i{color:var(--navy);flex-shrink:0;margin-top:.15rem;}
+    .contact-row span{color:var(--text-muted);line-height:1.5;font-weight:300;}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+    .form-group{display:flex;flex-direction:column;gap:.3rem;}
+    .form-group.full{grid-column:span 2;}
+    .form-group label{font-size:.7rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.1em;}
+    .form-group input,.form-group select,.form-group textarea{background:var(--bg);border:1px solid var(--border);padding:.7rem .9rem;color:var(--text);font-size:.9rem;width:100%;transition:border-color var(--transition);}
+    .select-wrap{width:100%;}
+    .form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--navy);}
+    .form-group select option{background:var(--surface);}
+    .form-group textarea{resize:vertical;min-height:100px;font-weight:300;}
+    @media(max-width:768px){.contact-layout{grid-template-columns:1fr;}.form-grid{grid-template-columns:1fr;}.form-group.full{grid-column:span 1;}}
+    @media(max-width:768px){}
+
+    html.dark .hero-tagline { color:#ffffff; }
+    html.light .hero-tagline { color:#1c1c1a; }
+    html.dark .hero-studio { color:#ffffff; }
+    html.light .hero-studio { color:#1c1c1a; }
+
+    .form-group select { appearance:none; -webkit-appearance:none; padding-right:2.75rem; }
+    .select-wrap { position: relative; }
+    .select-wrap svg { position:absolute; right:0.85rem; top:50%; transform:translateY(-50%); pointer-events:none; color:currentColor; opacity:0.6; }
+    .field-error { font-size: 0.78rem; color: var(--navy); margin-top: 4px; display: none; }
+    .field-error.visible { display: block; }
+    @media(max-width:600px){ }
+            /* ── Footer ── */
+    #footer{background:#0a0a0a;border-top:1px solid rgba(255,255,255,0.08);padding:24px 48px 20px;color:#f0f0f0;}
+    #footer>div{max-width:1200px;margin:0 auto;}
+    .ft-inner{display:flex;flex-direction:column;gap:16px;}
+    .ft-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:nowrap;gap:16px;}
+    .ft-left{display:flex;flex-direction:column;align-items:flex-start;gap:4px;flex:0 0 auto;min-width:0;}
+    .ft-center{display:flex;align-items:center;gap:10px;flex:1;justify-content:center;}
+    .ft-right{display:flex;align-items:center;justify-content:flex-end;flex:0 0 auto;}
+    .ft-logo{height:32px;filter:brightness(0) invert(1);display:block;}
+    .ft-tagline{font-size:0.68rem;opacity:0.5;line-height:1.3;white-space:nowrap;}
+    .ft-btn{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,0.22);border-radius:6px;background:transparent;color:#f0f0f0;text-decoration:none;cursor:pointer;transition:border-color .2s,color .2s;padding:0;box-sizing:border-box;flex-shrink:0;}
+    .ft-btn:hover{border-color:#FF7F00;color:#FF7F00;}
+    .ft-bottom{font-size:0.68rem;opacity:0.5;text-align:center;margin:0;padding:0;line-height:1.5;white-space:normal;}
+    @media(max-width:900px){
+      #footer{padding:20px 24px 16px;}
+      .ft-top{flex-wrap:wrap;justify-content:center;gap:12px;}
+      .ft-left{align-items:center;width:100%;justify-content:center;}
+      .ft-tagline{white-space:normal;text-align:center;}
+      .ft-center{justify-content:center;}
+      .ft-right{width:auto;}
+    }
+    @media(max-width:480px){
+      .ft-top{flex-direction:column;align-items:center;}
+      .ft-right{width:100%;justify-content:center;}
+    }
+    </style>
+</head>
+<body>
+  <header id="navbar" style="position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(10,10,10,0.85);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.08);padding:0 1.5rem;">
+    <div style="display:flex;align-items:center;justify-content:space-between;height:72px;max-width:1200px;margin:0 auto;">
+      <!-- Back link -->
+      <a href="../../index.html#portfolio" id="back-nav-link" style="display:flex;align-items:center;gap:0.4rem;color:#aaa;font-size:0.85rem;font-weight:600;text-decoration:none;transition:color 0.2s;" onmouseenter="this.style.color='#FF7F00'" onmouseleave="this.style.color='#aaa'">
+        < Portafolio
+      </a>
+      <!-- Logo centered -->
+      <a href="#" style="position:absolute;left:50%;transform:translateX(-50%);">
+        <img src="../../imgs/FullLogo.svg" alt="WebExpressCR" height="52" style="filter:brightness(0) invert(1);" />
+      </a>
+      <!-- Controls right -->
+      <div style="display:flex;gap:0.5rem;align-items:center;">
+        <button id="lang-btn" onclick="toggleLang()" style="padding:0.4rem 0.7rem;border-radius:6px;border:1px solid #333;background:transparent;color:#aaa;font-size:0.8rem;font-weight:600;cursor:pointer;transition:all 0.2s;" onmouseenter="this.style.borderColor='#FF7F00'" onmouseleave="this.style.borderColor='#333'">EN</button>
+        <button id="theme-btn" onclick="toggleTheme()" style="padding:0.4rem 0.7rem;border-radius:6px;border:1px solid #333;background:transparent;color:#aaa;font-size:0.8rem;font-weight:600;cursor:pointer;transition:all 0.2s;" onmouseenter="this.style.borderColor='#FF7F00'" onmouseleave="this.style.borderColor='#333'">☀</button>
+      </div>
+    </div>
+  </header>
+
+  <div style="padding-top:72px;"></div>
+
+  <section id="hero" style="position:relative;overflow:hidden;">
+    <img src="imgs/hero.jpg" alt="Forma & Espacio arquitectura" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;display:block;">
+    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.55),rgba(0,0,0,0.3));z-index:1;"></div>
+    <div style="position:relative;z-index:2;width:100%;">
+    <div class="container">
+      <div class="hero-grid">
+        <div class="fade-in">
+          <p class="hero-studio" data-i18n="hero.studio">Estudio de arquitectura e interiorismo · San José</p>
+          <h1 class="hero-title">Forma<br><em>&amp; Espacio</em></h1>
+          <p class="hero-tagline" data-i18n="hero.tagline">Diseñamos espacios que equilibran función, belleza y la vida de quienes los habitan.</p>
+          <div class="hero-ctas">
+            <a href="#projects" class="btn btn-navy"><i data-lucide="grid" width="16" height="16"></i><span data-i18n="hero.cta1">Ver proyectos</span></a>
+            <a href="#contact" class="btn btn-consult" data-i18n="hero.cta2">Consulta gratis</a>
+          </div>
+        </div>
+        <div class="hero-visual-block fade-in delay-2">
+          <div class="hero-vis-card tall"><div class="vis-inner"><i data-lucide="building-2" width="36" height="36"></i><span class="hero-vis-caption" data-i18n="vis.residential">Residencial</span></div></div>
+          <div class="hero-vis-card"><div class="vis-inner"><i data-lucide="layout-dashboard" width="28" height="28"></i><span class="hero-vis-caption" data-i18n="vis.interior">Interior</span></div></div>
+          <div class="hero-vis-card"><div class="vis-inner"><i data-lucide="refresh-cw" width="28" height="28"></i><span class="hero-vis-caption" data-i18n="vis.remo">Remodelación</span></div></div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="container">
+      <div class="section-header fade-in">
+        <p class="section-marker" data-i18n="proj.marker">Proyectos</p>
+        <h2 class="section-title" data-i18n="proj.title">Proyectos destacados</h2>
+        <p class="section-sub" data-i18n="proj.sub">Una selección de nuestro trabajo residencial, comercial y de remodelación.</p>
+      </div>
+      <div class="projects-grid">
+        <div class="project-card fade-in delay-1"><div class="project-visual"><img src="imgs/casamontana.jpg" alt="Casa Montaña Verde" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;"></div><p class="project-cat" data-i18n="cat.resi">Residencial</p><h3 class="project-name" data-i18n="p1.n">Casa Montaña Verde</h3><div class="project-meta"><span><i data-lucide="map-pin" width="12" height="12"></i>Escazú, SJ</span><span><i data-lucide="calendar" width="12" height="12"></i>2024</span><span><i data-lucide="ruler" width="12" height="12"></i>280 m²</span></div></div>
+        <div class="project-card fade-in delay-2"><div class="project-visual"><img src="imgs/proyecto-comercial.jpg" alt="Oficinas Nexus Hub" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;"></div><p class="project-cat" data-i18n="cat.comm">Comercial</p><h3 class="project-name" data-i18n="p2.n">Oficinas Nexus Hub</h3><div class="project-meta"><span><i data-lucide="map-pin" width="12" height="12"></i>San Pedro, SJ</span><span><i data-lucide="calendar" width="12" height="12"></i>2023</span><span><i data-lucide="ruler" width="12" height="12"></i>540 m²</span></div></div>
+        <div class="project-card fade-in delay-3"><div class="project-visual"><img src="imgs/proyecto-remodelacion.jpg" alt="Residencia Rohrmoser" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;"></div><p class="project-cat" data-i18n="cat.remo">Remodelación</p><h3 class="project-name" data-i18n="p3.n">Residencia Rohrmoser</h3><div class="project-meta"><span><i data-lucide="map-pin" width="12" height="12"></i>Rohrmoser</span><span><i data-lucide="calendar" width="12" height="12"></i>2024</span><span><i data-lucide="ruler" width="12" height="12"></i>180 m²</span></div></div>
+        <div class="project-card fade-in delay-1"><div class="project-visual"><img src="imgs/apto.jpg" alt="Apto Curridabat" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;"></div><p class="project-cat" data-i18n="cat.int">Interiorismo</p><h3 class="project-name" data-i18n="p4.n">Apartamento Curridabat</h3><div class="project-meta"><span><i data-lucide="map-pin" width="12" height="12"></i>Curridabat</span><span><i data-lucide="calendar" width="12" height="12"></i>2023</span><span><i data-lucide="ruler" width="12" height="12"></i>95 m²</span></div></div>
+        <div class="project-card fade-in delay-2"><div class="project-visual"><img src="imgs/cafeteria.jpg" alt="Cafetería Barva" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;"></div><p class="project-cat" data-i18n="cat.comm">Comercial</p><h3 class="project-name" data-i18n="p5.n">Cafetería Barva</h3><div class="project-meta"><span><i data-lucide="map-pin" width="12" height="12"></i>Barva, Heredia</span><span><i data-lucide="calendar" width="12" height="12"></i>2022</span><span><i data-lucide="ruler" width="12" height="12"></i>120 m²</span></div></div>
+        <div class="project-card fade-in delay-3"><div class="project-visual"><img src="imgs/casaplaya.jpg" alt="Casa Playa Herradura" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;"></div><p class="project-cat" data-i18n="cat.resi">Residencial</p><h3 class="project-name" data-i18n="p6.n">Casa Playa Herradura</h3><div class="project-meta"><span><i data-lucide="map-pin" width="12" height="12"></i>Herradura, Puntarenas</span><span><i data-lucide="calendar" width="12" height="12"></i>2024</span><span><i data-lucide="ruler" width="12" height="12"></i>320 m²</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="services">
+    <div class="container">
+      <div class="section-header fade-in">
+        <p class="section-marker" data-i18n="srv.marker">Servicios</p>
+        <h2 class="section-title" data-i18n="srv.title">Lo que hacemos</h2>
+      </div>
+      <div class="services-list">
+        <div class="service-item fade-in delay-1">
+          <p class="service-num">01</p>
+          <h3 class="service-name" data-i18n="s1.n">Diseño de interiores</h3>
+          <p class="service-desc" data-i18n="s1.d">Transformamos espacios existentes con mobiliario, materiales y paleta de colores que reflejan la personalidad del cliente.</p>
+          <div class="service-steps"><div class="step"><i data-lucide="check" width="12" height="12"></i><span data-i18n="s1.st1">Planos de distribución 2D y 3D</span></div><div class="step"><i data-lucide="check" width="12" height="12"></i><span data-i18n="s1.st2">Selección de materiales y acabados</span></div><div class="step"><i data-lucide="check" width="12" height="12"></i><span data-i18n="s1.st3">Coordinación con proveedores</span></div></div>
+        </div>
+        <div class="service-item fade-in delay-2">
+          <p class="service-num">02</p>
+          <h3 class="service-name" data-i18n="s2.n">Arquitectura residencial</h3>
+          <p class="service-desc" data-i18n="s2.d">Diseño completo de viviendas desde la concepción hasta los planos de construcción aprobados por el CFIA.</p>
+          <div class="service-steps"><div class="step"><i data-lucide="check" width="12" height="12"></i><span data-i18n="s2.st1">Anteproyecto y planos definitivos</span></div><div class="step"><i data-lucide="check" width="12" height="12"></i><span data-i18n="s2.st2">Trámites municipales</span></div><div class="step"><i data-lucide="check" width="12" height="12"></i><span data-i18n="s2.st3">Supervisión de obra</span></div></div>
+        </div>
+        <div class="service-item fade-in delay-3">
+          <p class="service-num">03</p>
+          <h3 class="service-name" data-i18n="s3.n">Remodelación</h3>
+          <p class="service-desc" data-i18n="s3.d">Renovamos espacios obsoletos con soluciones funcionales, respetando la estructura existente y optimizando el presupuesto.</p>
+          <div class="service-steps"><div class="step"><i data-lucide="check" width="12" height="12"></i><span data-i18n="s3.st1">Diagnóstico estructural</span></div><div class="step"><i data-lucide="check" width="12" height="12"></i><span data-i18n="s3.st2">Diseño de intervención</span></div><div class="step"><i data-lucide="check" width="12" height="12"></i><span data-i18n="s3.st3">Gestión de contratistas</span></div></div>
+        </div>
+        <div class="service-item fade-in delay-4">
+          <p class="service-num">04</p>
+          <h3 class="service-name" data-i18n="s4.n">Consultoría</h3>
+          <p class="service-desc" data-i18n="s4.d">Asesoría puntual para decisiones de diseño, revisión de planos o evaluación de propiedades antes de comprar o construir.</p>
+          <div class="service-steps"><div class="step"><i data-lucide="check" width="12" height="12"></i><span data-i18n="s4.st1">Sesión de 1–2 horas</span></div><div class="step"><i data-lucide="check" width="12" height="12"></i><span data-i18n="s4.st2">Informe escrito de recomendaciones</span></div><div class="step"><i data-lucide="check" width="12" height="12"></i><span data-i18n="s4.st3">Seguimiento opcional</span></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="process">
+    <div class="container">
+      <div class="section-header fade-in">
+        <p class="section-marker" data-i18n="proc.marker">Proceso</p>
+        <h2 class="section-title" data-i18n="proc.title">Cómo trabajamos</h2>
+      </div>
+      <div class="process-track fade-in">
+        <div class="process-step"><div class="process-num">01</div><div class="process-name" data-i18n="proc.1n">Consulta</div><div class="process-desc" data-i18n="proc.1d">Primera reunión gratuita para entender tu visión, necesidades y presupuesto.</div><div class="process-dot"></div></div>
+        <div class="process-step"><div class="process-num">02</div><div class="process-name" data-i18n="proc.2n">Diseño</div><div class="process-desc" data-i18n="proc.2d">Desarrollamos propuestas conceptuales con planos, renders y paleta de materiales.</div><div class="process-dot"></div></div>
+        <div class="process-step"><div class="process-num">03</div><div class="process-name" data-i18n="proc.3n">Aprobación</div><div class="process-desc" data-i18n="proc.3d">Refinamos el diseño hasta alcanzar tu aprobación total. Incluye hasta 3 rondas de cambios.</div><div class="process-dot"></div></div>
+        <div class="process-step"><div class="process-num">04</div><div class="process-name" data-i18n="proc.4n">Ejecución</div><div class="process-desc" data-i18n="proc.4d">Coordinamos con constructores y proveedores para que el proyecto se ejecute según el diseño.</div><div class="process-dot"></div></div>
+        <div class="process-step"><div class="process-num">05</div><div class="process-name" data-i18n="proc.5n">Entrega</div><div class="process-desc" data-i18n="proc.5d">Supervisión final, correcciones de acabados y entrega formal del espacio terminado.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="container">
+      <div class="about-cols">
+        <div class="about-text fade-in">
+          <h2 data-i18n="about.title">Diseñamos con <span>intención</span></h2>
+          <p data-i18n="about.p1">Forma & Espacio fue fundado en 2015 por los arquitectos Daniela Corrales y Rafael Montoya, egresados del Instituto Tecnológico de Costa Rica. El estudio nació con la convicción de que el buen diseño no es un lujo, sino una herramienta de calidad de vida.</p>
+          <p data-i18n="about.p2">Trabajamos en proyectos de toda escala, desde un apartamento de 60 m² hasta complejos comerciales, aplicando siempre los mismos principios: rigor técnico, materiales locales cuando es posible y una comunicación honesta con el cliente.</p>
+          <div class="about-facts">
+            <div class="fact"><div class="fact-num">9+</div><div class="fact-label" data-i18n="fact.years">Años</div></div>
+            <div class="fact"><div class="fact-num">68</div><div class="fact-label" data-i18n="fact.projects">Proyectos</div></div>
+            <div class="fact"><div class="fact-num">4</div><div class="fact-label" data-i18n="fact.team">Profesionales</div></div>
+          </div>
+        </div>
+        <div class="about-vis fade-in delay-2" style="overflow:hidden;">
+          <img src="imgs/about.jpg" alt="Forma & Espacio estudio de arquitectura" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="container">
+      <div class="section-header fade-in">
+        <p class="section-marker" data-i18n="cta.marker">Contacto</p>
+        <h2 class="section-title" data-i18n="cta.title">Hablemos de tu proyecto</h2>
+      </div>
+      <div class="contact-layout">
+        <div class="fade-in">
+          <div class="contact-info">
+            <h3 data-i18n="c.info.title">Información de contacto</h3>
+            <div class="contact-row"><i data-lucide="map-pin" width="16" height="16"></i><span data-i18n="c.addr">Edificio Tempo, Oficina 308, Santa Ana, San José.</span></div>
+            <div class="contact-row"><i data-lucide="phone" width="16" height="16"></i><span>+506 2200-3344</span></div>
+            <div class="contact-row"><i data-lucide="mail" width="16" height="16"></i><span>hola@formaespacio.cr</span></div>
+            <div class="contact-row"><i data-lucide="clock" width="16" height="16"></i><span data-i18n="c.hours">Lunes a viernes, 8:00 am – 6:00 pm</span></div>
+          </div>
+        </div>
+        <form id="arq-form" class="form-grid fade-in delay-2" novalidate>
+          <div class="form-group"><label data-i18n="f.name">Nombre<span aria-hidden="true" style="color: var(--navy); margin-left: 2px;">*</span></label><input type="text" id="arq-name" placeholder="Tu nombre" required autocomplete="name" /></div>
+          <div class="form-group"><label data-i18n="f.phone">Teléfono</label><input type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="+506 8888-0000" maxlength="8" autocomplete="tel" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,8)" /></div>
+          <div class="form-group"><label data-i18n="f.type">Tipo de proyecto</label><div class="select-wrap"><select autocomplete="off"><option data-i18n="f.sel">Seleccionar...</option><option data-i18n="cat.resi">Residencial</option><option data-i18n="cat.comm">Comercial</option><option data-i18n="cat.remo">Remodelación</option><option data-i18n="cat.int">Interiorismo</option><option data-i18n="f.consult">Consultoría</option>
+<option value="otro" data-i18n="form.other">Otro</option>
+</select><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div></div>
+          <div class="form-group"><label data-i18n="f.budget">Presupuesto aproximado</label><div class="select-wrap"><select autocomplete="off"><option data-i18n="f.sel">Seleccionar...</option><option>$5,000–$20,000</option><option>$20,000–$80,000</option><option>$80,000–$200,000</option><option data-i18n="f.budget.more">Más de $200,000</option>
+<option value="otro" data-i18n="form.other">Otro</option>
+</select><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div></div>
+          <div class="form-group full"><label data-i18n="f.msg">Contanos sobre tu proyecto</label><textarea placeholder="Ubicación, m² aproximados, timeline, etc." autocomplete="off"></textarea></div>
+          <div class="form-group full"><button type="submit" class="btn btn-navy"><i data-lucide="send" width="16" height="16"></i><span data-i18n="f.submit">Enviar consulta</span></button><p id="form-disc-arq" style="font-size:0.72rem;opacity:0.6;text-align:center;margin-top:8px;"></p></div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer id="footer">
+  <div class="ft-inner">
+
+    <div class="ft-top">
+      <div class="ft-left">
+        <img src="../../imgs/FullLogo.svg" alt="WebExpressCR" class="ft-logo">
+      </div>
+      <div class="ft-center">
+        <a href="https://www.instagram.com/webexpresscr/" class="ft-btn" aria-label="Instagram">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/company/webexpresscr" class="ft-btn" aria-label="LinkedIn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+        <a href="https://www.facebook.com/webexpresscr" class="ft-btn" aria-label="Facebook">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+        <a href="https://wa.me/50670553656" target="_blank" class="ft-btn" aria-label="WhatsApp">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M20.52 3.48A11.93 11.93 0 0 0 12 0C5.37 0 0 5.37 0 12c0 2.11.55 4.16 1.6 5.97L0 24l6.19-1.62A11.94 11.94 0 0 0 12 24c6.63 0 12-5.37 12-12 0-3.2-1.25-6.21-3.48-8.52zm-8.52 18.4a9.9 9.9 0 0 1-5.05-1.38l-.36-.21-3.73.98.99-3.63-.24-.38A9.9 9.9 0 0 1 2.1 12c0-5.46 4.44-9.9 9.9-9.9 2.65 0 5.13 1.03 7 2.9a9.87 9.87 0 0 1 2.9 7c0 5.46-4.44 9.9-9.9 9.9zm5.43-7.4c-.3-.15-1.77-.87-2.04-.97-.28-.1-.48-.15-.68.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.68-1.63-.93-2.23-.24-.59-.49-.51-.68-.52h-.58c-.2 0-.52.07-.79.37-.27.3-1.03 1.01-1.03 2.46s1.06 2.85 1.2 3.05c.15.2 2.08 3.18 5.04 4.46.7.3 1.25.48 1.68.62.71.22 1.35.19 1.86.12.57-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35z"/></svg>
+        </a>
+        <a href="mailto:webexpresscr@gmail.com" class="ft-btn" aria-label="Email">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </a>
+      </div>
+      <div class="ft-right">
+        <button class="ft-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Volver arriba">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <p class="ft-bottom" data-i18n="footer.disclaimer"></p>
+
+  </div>
+</footer>
+
+  <script>
+    lucide.createIcons();
+
+    let _lang = localStorage.getItem('wecr-lang')||'es';
+    let _theme = localStorage.getItem('wecr-theme')||'dark';
+    function toggleLang(){_lang=_lang==='es'?'en':'es';localStorage.setItem('wecr-lang',_lang);document.getElementById('lang-btn').textContent=_lang==='es'?'EN':'ES';const bl=document.getElementById('back-nav-link');if(bl)bl.textContent=_lang==='es'?'< Portafolio':'< Portfolio';applyLang(_lang);}
+    function toggleTheme(){_theme=_theme==='dark'?'light':'dark';localStorage.setItem('wecr-theme',_theme);document.documentElement.className=_theme;document.getElementById('theme-btn').textContent=_theme==='dark'?'☀':'🌙';}
+    document.documentElement.className=_theme;
+    document.getElementById('theme-btn').textContent=_theme==='dark'?'☀':'🌙';
+    document.getElementById('lang-btn').textContent=_lang==='es'?'EN':'ES';
+
+    const T={es:{'back':'< Portafolio','toast.success':'Tu consulta ha sido enviada con éxito.','hero.studio':'Estudio de arquitectura e interiorismo · San José','hero.tagline':'Diseñamos espacios que equilibran función, belleza y la vida de quienes los habitan.','hero.cta1':'Ver proyectos','hero.cta2':'Consulta gratis','vis.residential':'Residencial','vis.interior':'Interior','vis.remo':'Remodelación','proj.marker':'Proyectos','proj.title':'Proyectos destacados','proj.sub':'Una selección de nuestro trabajo residencial, comercial y de remodelación.','cat.resi':'Residencial','cat.comm':'Comercial','cat.remo':'Remodelación','cat.int':'Interiorismo','p1.n':'Casa Montaña Verde','p2.n':'Oficinas Nexus Hub','p3.n':'Residencia Rohrmoser','p4.n':'Apartamento Curridabat','p5.n':'Cafetería Barva','p6.n':'Casa Playa Herradura','srv.marker':'Servicios','srv.title':'Lo que hacemos','s1.n':'Diseño de interiores','s1.d':'Transformamos espacios existentes con mobiliario, materiales y paleta de colores que reflejan la personalidad del cliente.','s1.st1':'Planos de distribución 2D y 3D','s1.st2':'Selección de materiales y acabados','s1.st3':'Coordinación con proveedores','s2.n':'Arquitectura residencial','s2.d':'Diseño completo de viviendas desde la concepción hasta los planos de construcción aprobados por el CFIA.','s2.st1':'Anteproyecto y planos definitivos','s2.st2':'Trámites municipales','s2.st3':'Supervisión de obra','s3.n':'Remodelación','s3.d':'Renovamos espacios obsoletos con soluciones funcionales, respetando la estructura existente y optimizando el presupuesto.','s3.st1':'Diagnóstico estructural','s3.st2':'Diseño de intervención','s3.st3':'Gestión de contratistas','s4.n':'Consultoría','s4.d':'Asesoría puntual para decisiones de diseño, revisión de planos o evaluación de propiedades.','s4.st1':'Sesión de 1–2 horas','s4.st2':'Informe escrito de recomendaciones','s4.st3':'Seguimiento opcional','proc.marker':'Proceso','proc.title':'Cómo trabajamos','proc.1n':'Consulta','proc.1d':'Primera reunión gratuita para entender tu visión, necesidades y presupuesto.','proc.2n':'Diseño','proc.2d':'Desarrollamos propuestas conceptuales con planos, renders y paleta de materiales.','proc.3n':'Aprobación','proc.3d':'Refinamos el diseño hasta alcanzar tu aprobación total. Incluye hasta 3 rondas de cambios.','proc.4n':'Ejecución','proc.4d':'Coordinamos con constructores y proveedores para que el proyecto se ejecute según el diseño.','proc.5n':'Entrega','proc.5d':'Supervisión final, correcciones de acabados y entrega formal del espacio terminado.','about.title':'Diseñamos con intención','about.p1':'Forma & Espacio fue fundado en 2015 por los arquitectos Daniela Corrales y Rafael Montoya, egresados del Instituto Tecnológico de Costa Rica.','about.p2':'Trabajamos en proyectos de toda escala, aplicando siempre rigor técnico, materiales locales cuando es posible y comunicación honesta con el cliente.','fact.years':'Años','fact.projects':'Proyectos','fact.team':'Profesionales','cta.marker':'Contacto','cta.title':'Hablemos de tu proyecto','c.info.title':'Información de contacto','c.addr':'Edificio Tempo, Oficina 308, Santa Ana, San José.','c.hours':'Lunes a viernes, 8:00 am – 6:00 pm','f.name':'Nombre','f.phone':'Teléfono','f.type':'Tipo de proyecto','f.sel':'Seleccionar...','f.consult':'Consultoría','f.budget':'Presupuesto aproximado','f.budget.more':'Más de $200,000','f.msg':'Contanos sobre tu proyecto','f.submit':'Enviar consulta','form.disc':'Sitio con fines demostrativos: Ninguna transacción será procesada ni ningún dato almacenado.','form.other':'Otro','footer.tagline':'Creación de páginas web · Costa Rica','footer.disclaimer':'Sitio con fines demostrativos: Ninguna transacción será procesada ni ningún dato almacenado.  © 2026 WebExpressCR. Todos los derechos reservados.  Las imágenes utilizadas pertenecen a sus respectivos autores y se usan únicamente con fines ilustrativos.'},en:{'back':'< Portfolio','toast.success':'Your consultation request has been sent successfully.','hero.studio':'Architecture and interior design studio · San José','hero.tagline':'We design spaces that balance function, beauty and the lives of those who inhabit them.','hero.cta1':'View projects','hero.cta2':'Free consultation','vis.residential':'Residential','vis.interior':'Interior','vis.remo':'Renovation','proj.marker':'Projects','proj.title':'Featured projects','proj.sub':'A selection of our residential, commercial and renovation work.','cat.resi':'Residential','cat.comm':'Commercial','cat.remo':'Renovation','cat.int':'Interior Design','p1.n':'Casa Montaña Verde','p2.n':'Nexus Hub Offices','p3.n':'Rohrmoser Residence','p4.n':'Curridabat Apartment','p5.n':'Barva Café','p6.n':'Herradura Beach House','srv.marker':'Services','srv.title':'What we do','s1.n':'Interior design','s1.d':'We transform existing spaces with furniture, materials and a color palette that reflects the client\'s personality.','s1.st1':'2D and 3D floor plans','s1.st2':'Material and finish selection','s1.st3':'Supplier coordination','s2.n':'Residential architecture','s2.d':'Full home design from concept to CFIA-approved construction drawings.','s2.st1':'Preliminary and final plans','s2.st2':'Municipal permits','s2.st3':'Construction supervision','s3.n':'Renovation','s3.d':'We renovate outdated spaces with functional solutions, respecting the existing structure and optimizing budget.','s3.st1':'Structural assessment','s3.st2':'Intervention design','s3.st3':'Contractor management','s4.n':'Consulting','s4.d':'Expert advice for design decisions, plan reviews or property evaluation before buying or building.','s4.st1':'1–2 hour session','s4.st2':'Written recommendation report','s4.st3':'Optional follow-up','proc.marker':'Process','proc.title':'How we work','proc.1n':'Consultation','proc.1d':'Free first meeting to understand your vision, needs and budget.','proc.2n':'Design','proc.2d':'We develop conceptual proposals with plans, renders and material palette.','proc.3n':'Approval','proc.3d':'We refine the design until full approval. Includes up to 3 revision rounds.','proc.4n':'Execution','proc.4d':'We coordinate with builders and suppliers so the project follows the design.','proc.5n':'Delivery','proc.5d':'Final supervision, finish corrections and formal handover of the completed space.','about.title':'We design with intention','about.p1':'Forma & Espacio was founded in 2015 by architects Daniela Corrales and Rafael Montoya, graduates of the Costa Rica Institute of Technology.','about.p2':'We work on projects of all scales, always applying technical rigor, local materials when possible and honest client communication.','fact.years':'Years','fact.projects':'Projects','fact.team':'Professionals','cta.marker':'Contact','cta.title':'Let\'s talk about your project','c.info.title':'Contact information','c.addr':'Edificio Tempo, Office 308, Santa Ana, San José.','c.hours':'Monday to Friday, 8:00 am – 6:00 pm','f.name':'Name','f.phone':'Phone','f.type':'Project type','f.sel':'Select...','f.consult':'Consulting','f.budget':'Approximate budget','f.budget.more':'More than $200,000','f.msg':'Tell us about your project','f.submit':'Send inquiry','form.disc':'Demonstration site: No transactions will be processed or data stored.','form.other':'Other','footer.tagline':'Web development · Costa Rica','footer.disclaimer':'Demonstration site: No transactions will be processed or data stored.  © 2026 WebExpressCR. All rights reserved.  Images used belong to their respective authors and are used for illustrative purposes only.'}};
+    function applyLang(l){_lang=l;document.documentElement.lang=l;document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.getAttribute('data-i18n');if(T[l]&&T[l][k])el.textContent=T[l][k];});const fd1=document.getElementById('arq-footer-disc1');if(fd1)fd1.textContent=l==='es'?'Sitio con fines demostrativos: Ninguna transacción será procesada ni ningún dato almacenado.':'Demonstration site: No transactions will be processed or data stored.';const fd2=document.getElementById('arq-footer-disc2');if(fd2)fd2.textContent=l==='es'?'Las imágenes utilizadas pertenecen a sus respectivos autores y se usan únicamente con fines ilustrativos.':'Images used belong to their respective authors and are used for illustrative purposes only.';const fd=document.getElementById('form-disc-arq');if(fd)fd.textContent=T[l]['form.disc'];localStorage.setItem('wecr-lang',l);}
+    applyLang(_lang);
+    function showToast(msg,accent){var ac=accent||'var(--navy,#193992)';var t=document.createElement('div');t.style.cssText='position:fixed;bottom:24px;left:24px;z-index:9999;background:'+ac+';color:#fff;border-radius:8px;padding:14px 20px;box-shadow:0 4px 16px rgba(0,0,0,.25);display:flex;align-items:center;gap:8px;opacity:0;transition:opacity .5s ease;pointer-events:none;font-size:.9rem;font-family:inherit;max-width:420px;';t.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11"/></svg><span>'+msg+'</span>';document.body.appendChild(t);requestAnimationFrame(function(){t.style.opacity='1';});setTimeout(function(){t.style.opacity='0';setTimeout(function(){t.remove();},500);},4000);}
+    document.getElementById('arq-form').addEventListener('submit',function(e){e.preventDefault();showToast(T[_lang]['toast.success'],'#193992');e.target.reset();});
+    const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');obs.unobserve(x.target);}}),{threshold:0.08});
+    document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+  </script>
+</body>
+</html>

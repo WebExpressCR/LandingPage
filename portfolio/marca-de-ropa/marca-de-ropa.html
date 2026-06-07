@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Veta Studio — Demo · WebExpressCR</title>
+<link rel="icon" type="image/svg+xml" href="../../imgs/SmallLogo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<style>
+:root{--max:1400px;--tr:.2s ease;}
+html.dark{--bg:#000;--sur:#111;--sur2:#1a1a1a;--bor:#222;--txt:#fff;--mut:#555;--hl:#ff0000;}
+html.light{--bg:#fff;--sur:#f0f0f0;--sur2:#e8e8e8;--bor:#ccc;--txt:#000;--mut:#666;--hl:#ff0000;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+::selection{background:rgba(255,0,0,0.25);color:inherit;}
+body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:var(--bg);color:var(--txt);line-height:1.5;transition:background var(--tr),color var(--tr);overflow-x:hidden;}
+a{color:inherit;text-decoration:none;}
+button{cursor:pointer;font-family:inherit;}
+input,textarea,select{font-family:inherit;background:var(--sur2);border:1px solid var(--bor);color:var(--txt);padding:.65rem .9rem;width:100%;font-size:.85rem;transition:border-color var(--tr);}
+input:focus,textarea:focus{outline:none;border-color:var(--txt);}
+
+html:not(.dark) .lgb,html:not(.dark) .icb{color:#1a1a1a!important;}
+html.dark .lgb,html.dark .icb{color:#f0f0f0!important;}
+#si,#mi{stroke:currentColor;}
+
+/* Select wrapper */
+.sel-wrap{position:relative;display:block;}
+.sel-wrap svg{position:absolute;right:.85rem;top:50%;transform:translateY(-50%);pointer-events:none;color:currentColor;opacity:0.6;}
+.sel-wrap select{appearance:none;-webkit-appearance:none;padding-right:2.75rem;width:100%;}
+
+/* Navbar */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:.6rem 2rem;min-height:76px;background:rgba(0,0,0,.55);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--bor);}
+html.light .topbar{background:rgba(255,255,255,.6);}
+.topbar-center{position:absolute;left:50%;transform:translateX(-50%);pointer-events:none;}
+.back-link{display:inline-flex;align-items:center;gap:.4rem;font-size:.82rem;font-weight:500;color:var(--mut);letter-spacing:.04em;transition:color var(--tr);}
+.back-link:hover{color:var(--txt);}
+.tbr{display:flex;align-items:center;gap:.75rem;}
+.icb{width:32px;height:32px;border:1px solid var(--bor);background:transparent;color:var(--mut);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--tr);}
+.icb:hover{border-color:var(--txt);color:var(--txt);}
+.lgb{width:32px;height:32px;border:1px solid var(--bor);background:transparent;color:var(--txt);font-size:.72rem;font-weight:700;letter-spacing:.08em;cursor:pointer;transition:all var(--tr);display:flex;align-items:center;justify-content:center;}
+.lgb:hover{border-color:var(--txt);color:var(--txt);}
+
+/* Cart badge + panel */
+.cart-badge{position:absolute;top:-6px;right:-6px;background:#FF7F00;color:#fff;border-radius:50%;width:18px;height:18px;font-size:.65rem;font-weight:800;display:flex;align-items:center;justify-content:center;}
+.cart-btn-wrap{position:relative;display:inline-flex;}
+.cart-panel{position:fixed;top:0;right:-420px;width:380px;max-width:100vw;height:100vh;background:var(--bg);border-left:1px solid var(--bor);z-index:2000;display:flex;flex-direction:column;transition:right .35s ease;box-shadow:-8px 0 40px rgba(0,0,0,.5);}
+.cart-panel.open{right:0;}
+.cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1999;display:none;}
+.cart-overlay.open{display:block;}
+.cart-header{padding:1.25rem 1.5rem;border-bottom:1px solid var(--bor);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.cart-header h3{font-size:1rem;font-weight:800;}
+.cart-close{background:transparent;border:none;cursor:pointer;color:var(--txt);padding:.25rem;}
+.cart-items{flex:1;overflow-y:auto;padding:1rem 1.5rem;}
+.cart-empty{text-align:center;color:#888;padding:3rem 1rem;font-size:.9rem;}
+.cart-item{display:flex;gap:.75rem;padding:.75rem 0;border-bottom:1px solid var(--bor);}
+.cart-item-img{width:60px;height:80px;object-fit:cover;flex-shrink:0;border-radius:2px;}
+.cart-item-info{flex:1;}
+.cart-item-name{font-size:.85rem;font-weight:700;margin-bottom:.2rem;}
+.cart-item-size{font-size:.75rem;color:#888;margin-bottom:.4rem;}
+.cart-item-price{font-size:.8rem;font-weight:600;color:#FF7F00;line-height:1.4;}
+.cart-item-price .unit-price{font-size:.75rem;opacity:.8;}
+.cart-item-price .total-price{font-size:.88rem;font-weight:800;}
+.cart-item-qty{display:flex;align-items:center;gap:.5rem;margin-top:.4rem;}
+.qty-btn{width:24px;height:24px;border:1px solid var(--bor);background:transparent;color:var(--txt);cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center;border-radius:2px;}
+.qty-btn:hover{border-color:#FF7F00;color:#FF7F00;}
+.qty-val{font-size:.85rem;font-weight:700;min-width:20px;text-align:center;}
+.cart-remove{background:transparent;border:none;cursor:pointer;color:#888;padding:.25rem;flex-shrink:0;align-self:flex-start;}
+.cart-remove:hover{color:#e53e3e;}
+
+/* Cart footer — fixed bottom of panel */
+.cart-footer{flex-shrink:0;padding:1rem 1.5rem;border-top:1px solid var(--bor);}
+.cart-inline-disclaimer{display:flex;align-items:flex-start;gap:.5rem;padding:.55rem .7rem;border:1px solid #FF7F00;border-radius:4px;font-size:.7rem;color:var(--txt);background:rgba(255,127,0,.06);margin-bottom:.75rem;}
+.cart-inline-disclaimer svg{flex-shrink:0;margin-top:1px;color:#FF7F00;}
+.cart-total-row{display:flex;justify-content:space-between;align-items:center;font-size:.95rem;font-weight:800;margin-bottom:.75rem;padding:0;}
+.cart-checkout-btn{display:inline-flex;align-items:center;justify-content:center;background:#FF7F00;color:#fff;border:none;padding:.7rem 1.75rem;font-size:.82rem;font-weight:800;cursor:pointer;letter-spacing:.05em;border-radius:3px;transition:background .2s;align-self:flex-end;float:right;}
+.cart-checkout-btn:hover{background:#e67200;}
+
+/* Checkout modal */
+.checkout-modal{position:fixed;inset:0;z-index:3000;display:none;align-items:center;justify-content:center;padding:1rem;}
+.checkout-modal.open{display:flex;}
+.checkout-bg{position:absolute;inset:0;background:rgba(0,0,0,.75);}
+.checkout-box{position:relative;background:var(--bg);border:1px solid var(--bor);width:100%;max-width:560px;max-height:90vh;overflow-y:auto;border-radius:4px;padding:2rem;}
+.checkout-disclaimer{display:flex;align-items:flex-start;gap:.5rem;padding:.65rem .85rem;border:1px solid #FF7F00;border-radius:4px;font-size:.72rem;color:var(--txt);background:rgba(255,127,0,.06);margin-bottom:1.5rem;}
+.checkout-disclaimer svg{flex-shrink:0;margin-top:1px;color:#FF7F00;}
+.step-indicator{display:flex;gap:.5rem;margin-bottom:1.5rem;}
+.step-dot{flex:1;height:3px;border-radius:2px;background:var(--bor);}
+.step-dot.active{background:#FF7F00;}
+.step-dot.done{background:#48bb78;}
+.step-title{font-size:1.1rem;font-weight:800;margin-bottom:1.25rem;}
+.co-field{display:flex;flex-direction:column;gap:.35rem;margin-bottom:1rem;}
+.co-field label{font-size:.78rem;font-weight:700;color:#888;}
+.co-field input,.co-field select{background:var(--sur);border:1px solid var(--bor);color:var(--txt);padding:.65rem .85rem;font-size:.9rem;width:100%;border-radius:2px;}
+.co-field input:focus,.co-field select:focus{outline:none;border-color:#FF7F00;}
+.co-field select{appearance:none;-webkit-appearance:none;padding-right:2.75rem;}
+.co-row{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
+.pay-opt{border:2px solid var(--bor);padding:.85rem 1rem;cursor:pointer;display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem;border-radius:2px;transition:border-color .2s;}
+.pay-opt.selected{border-color:#FF7F00;}
+.pay-opt-label{font-size:.9rem;font-weight:700;}
+.pay-opt-desc{font-size:.75rem;color:#888;}
+.pay-details{background:var(--sur);border:1px solid var(--bor);padding:1rem;margin-top:.75rem;border-radius:2px;font-size:.85rem;}
+.co-nav{display:flex;justify-content:space-between;margin-top:1.5rem;gap:.75rem;}
+.co-btn-back{background:transparent;border:1px solid var(--bor);color:var(--txt);padding:.7rem 1.5rem;cursor:pointer;font-size:.85rem;font-weight:700;border-radius:2px;}
+.co-btn-next{background:#FF7F00;color:#fff;border:none;padding:.7rem 1.5rem;cursor:pointer;font-size:.85rem;font-weight:800;border-radius:2px;flex:1;}
+.co-btn-next:hover{background:#e67200;}
+.order-item-row{display:flex;justify-content:space-between;padding:.4rem 0;border-bottom:1px solid var(--bor);font-size:.85rem;}
+.order-total-row{display:flex;justify-content:space-between;padding:.75rem 0;font-weight:800;font-size:1rem;}
+.field-error{font-size:.72rem;color:#e53e3e;display:none;margin-top:.15rem;}
+
+/* Success screen */
+.success-screen{position:fixed;inset:0;background:var(--bg);z-index:4000;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;}
+.success-screen.open{display:flex;}
+.success-check{width:80px;height:80px;border-radius:50%;background:rgba(255,127,0,.12);border:2px solid #FF7F00;display:flex;align-items:center;justify-content:center;color:#FF7F00;font-size:2.5rem;margin-bottom:1.5rem;}
+.success-order{font-size:.85rem;color:#888;margin:.5rem 0;}
+.success-items{background:var(--sur);border:1px solid var(--bor);padding:1rem;border-radius:2px;margin:1rem 0;max-width:380px;width:100%;text-align:left;}
+.success-disclaimer{display:flex;align-items:flex-start;gap:.5rem;padding:.6rem .75rem;border:1px solid #FF7F00;border-radius:4px;font-size:.72rem;color:var(--txt);background:rgba(255,127,0,.06);margin-top:1rem;max-width:380px;width:100%;text-align:left;}
+.success-disclaimer svg{flex-shrink:0;margin-top:1px;color:#FF7F00;}
+.success-close-btn{background:#FF7F00;color:#fff;border:none;padding:.8rem 2rem;font-size:.9rem;font-weight:800;cursor:pointer;margin-top:1rem;border-radius:2px;}
+
+/* Filter bar */
+.filter-bar{position:sticky;top:76px;z-index:50;background:var(--bg);border-bottom:1px solid var(--bor);padding:.6rem 2rem;display:flex;gap:1rem;align-items:center;overflow-x:auto;}
+.fb{background:transparent;border:1px solid var(--bor);color:var(--mut);padding:.3rem .85rem;font-size:.72rem;font-weight:700;letter-spacing:.08em;cursor:pointer;transition:all var(--tr);white-space:nowrap;}
+.fb.on{background:var(--txt);border-color:var(--txt);color:var(--bg);}
+.fb:hover{border-color:var(--txt);color:var(--txt);}
+
+/* Hero */
+.hero{padding-top:76px;min-height:100vh;display:grid;grid-template-rows:auto 1fr;background-color:#1a1a1a;}
+.hero-top{padding:5rem 2rem 3rem;border-bottom:1px solid var(--bor);position:relative;}
+.hero-top::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 40%,rgba(0,0,0,0.7) 100%);pointer-events:none;}
+.hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(5rem,15vw,14rem);line-height:.9;letter-spacing:-.01em;position:relative;z-index:1;}
+.hero-sub{font-size:.75rem;color:var(--mut);letter-spacing:.18em;margin-top:1rem;position:relative;z-index:1;}
+.hero-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;padding:2px;min-height:320px;}
+.hg-item{background:var(--sur);display:flex;align-items:center;justify-content:center;aspect-ratio:3/4;position:relative;overflow:hidden;}
+.hg-item:hover .hg-overlay{opacity:1;}
+.hg-overlay{position:absolute;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s;}
+html.light .hg-overlay{background:rgba(255,255,255,.5);}
+.hg-label{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:.1em;}
+
+/* Products */
+.section{padding:4rem 2rem;}
+.wrap{max-width:var(--max);margin:0 auto;}
+.sec-head{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,5rem);margin-bottom:2rem;letter-spacing:.02em;}
+.prod-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;}
+@media(max-width:1024px){.prod-grid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:768px){.prod-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:480px){.prod-grid{grid-template-columns:1fr;}}
+
+/* ── Unified product card ─────────────────────────────── */
+.pcard,.product-card{border:1px solid var(--bor);border-radius:0;cursor:pointer;position:relative;overflow:hidden;background:var(--sur);}
+/* image wrapper */
+.pcard .pcard-img-wrap,.product-card .product-img-wrap{aspect-ratio:3/4;width:100%;overflow:hidden;display:block;position:relative;}
+.pcard .pcard-img-wrap img,.product-card .product-img-wrap img{aspect-ratio:3/4;width:100%;object-fit:cover;display:block;}
+/* body */
+.pcard .pcard-body,.product-card .product-info{padding:12px;}
+/* name */
+.pcard .pcard-name,.product-card .product-name{font-size:.8rem;font-weight:700;letter-spacing:.04em;margin-bottom:.35rem;}
+/* price */
+.pcard .pcard-price,.product-card .product-price{font-size:.8rem;font-weight:700;margin-bottom:.6rem;}
+/* ── Talla row: label on its own line, dropdown below ── */
+.pcard .pcard-size-row,.product-card .size-selector{display:block;margin-bottom:.6rem;}
+.pcard .pcard-size-row label,.product-card .size-selector label{display:block;font-size:.68rem;color:var(--mut);font-weight:600;margin-bottom:.3rem;}
+.pcard .pcard-size-row .sel-wrap,.product-card .size-selector .sel-wrap{display:block;width:100%;}
+.pcard .pcard-size-row select,.product-card .size-selector select{width:100%;padding:.25rem .5rem;font-size:.72rem;background:var(--sur2);border:1px solid var(--bor);color:var(--txt);appearance:none;-webkit-appearance:none;padding-right:2.5rem;}
+/* add-to-cart buttons */
+.pcard-add-btn,.add-to-cart-btn{width:100%;background:var(--txt);color:var(--bg);border:none;padding:.45rem;font-size:.72rem;font-weight:700;cursor:pointer;letter-spacing:.08em;transition:opacity .2s;display:flex;align-items:center;justify-content:center;gap:.4rem;}
+.pcard-add-btn:hover,.add-to-cart-btn:hover{opacity:.8;}
+
+.sale{color:#fff;font-size:.6rem;font-weight:900;background:var(--hl);padding:.1rem .3rem;margin-left:.25rem;}
+
+/* Lookbook */
+.lookbook-section{border-top:1px solid var(--bor);border-bottom:1px solid var(--bor);}
+.lb-row{display:grid;grid-template-columns:1fr 1fr;gap:0;}
+@media(max-width:768px){.lb-row{grid-template-columns:1fr;}}
+.lb-row.rev .lb-img{order:2;}
+.lb-img{min-height:500px;background:var(--sur);display:flex;align-items:center;justify-content:center;border-right:1px solid var(--bor);}
+.lb-row.rev .lb-img{border-right:none;border-left:1px solid var(--bor);}
+@media(max-width:768px){.lb-img,.lb-row.rev .lb-img{border:none;border-bottom:1px solid var(--bor);}}
+.lb-text{padding:4rem 3rem;display:flex;flex-direction:column;justify-content:center;}
+.lb-season{font-size:.65rem;font-weight:700;letter-spacing:.2em;color:var(--mut);margin-bottom:1.5rem;}
+.lb-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,5rem);line-height:.95;margin-bottom:1.5rem;}
+.lb-desc{font-size:.82rem;color:var(--mut);line-height:1.8;max-width:380px;}
+
+/* Size guide */
+.size-section{background:var(--sur);padding:5rem 2rem;}
+.sg-table{width:100%;border-collapse:collapse;font-size:.8rem;font-family:'Courier New',monospace;}
+.sg-table th{border-bottom:2px solid var(--txt);padding:.6rem .5rem;text-align:left;font-size:.7rem;letter-spacing:.12em;font-weight:700;}
+.sg-table td{padding:.6rem .5rem;border-bottom:1px solid var(--bor);}
+
+/* Toast */
+.cart-toast{position:fixed;bottom:1.5rem;left:1.5rem;background:#FF7F00;color:#fff;padding:.5rem 1rem;border-radius:100px;font-size:.85rem;font-weight:600;z-index:9999;opacity:0;transition:opacity .3s ease;pointer-events:none;}
+.cart-toast.show{opacity:1;}
+
+    /* ── Footer ── */
+    #footer{background:#0a0a0a;border-top:1px solid rgba(255,255,255,0.08);padding:24px 48px 20px;color:#f0f0f0;}
+    #footer>div{max-width:1200px;margin:0 auto;}
+    .ft-inner{display:flex;flex-direction:column;gap:16px;}
+    .ft-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:nowrap;gap:16px;}
+    .ft-left{display:flex;flex-direction:column;align-items:flex-start;gap:4px;flex:0 0 auto;min-width:0;}
+    .ft-center{display:flex;align-items:center;gap:10px;flex:1;justify-content:center;}
+    .ft-right{display:flex;align-items:center;justify-content:flex-end;flex:0 0 auto;}
+    .ft-logo{height:32px;filter:brightness(0) invert(1);display:block;}
+    .ft-tagline{font-size:0.68rem;opacity:0.5;line-height:1.3;white-space:nowrap;}
+    .ft-btn{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,0.22);border-radius:6px;background:transparent;color:#f0f0f0;text-decoration:none;cursor:pointer;transition:border-color .2s,color .2s;padding:0;box-sizing:border-box;flex-shrink:0;}
+    .ft-btn:hover{border-color:#FF7F00;color:#FF7F00;}
+    .ft-bottom{font-size:0.68rem;opacity:0.5;text-align:center;margin:0;padding:0;line-height:1.5;white-space:normal;}
+    @media(max-width:900px){
+      #footer{padding:20px 24px 16px;}
+      .ft-top{flex-wrap:wrap;justify-content:center;gap:12px;}
+      .ft-left{align-items:center;width:100%;justify-content:center;}
+      .ft-tagline{white-space:normal;text-align:center;}
+      .ft-center{justify-content:center;}
+      .ft-right{width:auto;}
+    }
+    @media(max-width:480px){
+      .ft-top{flex-direction:column;align-items:center;}
+      .ft-right{width:100%;justify-content:center;}
+    }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<div class="topbar">
+  <a href="../../index.html#portfolio" class="back-link">
+    <span class="lang-es">&lt; Portafolio</span>
+    <span class="lang-en" style="display:none;">&lt; Portfolio</span>
+  </a>
+  <div class="topbar-center">
+    <img src="../../imgs/FullLogo.svg" height="44" alt="WebExpressCR" style="filter:brightness(0) invert(1);">
+  </div>
+  <div class="tbr">
+    <button class="lgb" id="lng">EN</button>
+    <div class="icb" id="thm"><i data-lucide="sun" width="14" height="14" id="si"></i><i data-lucide="moon" width="14" height="14" id="mi" style="display:none"></i></div>
+    <div class="cart-btn-wrap">
+      <button onclick="openCart()" style="background:transparent;border:1px solid var(--bor);color:var(--txt);width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;" aria-label="Carrito">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+      </button>
+      <span class="cart-badge" id="cart-badge" style="display:none;">0</span>
+    </div>
+  </div>
+</div>
+
+<!-- Filter bar -->
+<div class="filter-bar">
+  <button class="fb on" data-i18n="fall" data-filter="todo" onclick="filterProducts('todo');document.getElementById('catalogo').scrollIntoView({behavior:'smooth'})">Todo</button>
+  <button class="fb" data-i18n="fcam" data-filter="camisetas" onclick="filterProducts('camisetas');document.getElementById('catalogo').scrollIntoView({behavior:'smooth'})">Camisetas</button>
+  <button class="fb" data-i18n="fpan" data-filter="pantalones" onclick="filterProducts('pantalones');document.getElementById('catalogo').scrollIntoView({behavior:'smooth'})">Pantalones</button>
+  <button class="fb" data-i18n="facc" data-filter="accesorios" onclick="filterProducts('accesorios');document.getElementById('catalogo').scrollIntoView({behavior:'smooth'})">Accesorios</button>
+</div>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-top">
+    <h1 class="hero-title">VETA<br>STUDIO</h1>
+    <p class="hero-sub" data-i18n="sub">HECHO EN COSTA RICA, DISEÑADO PARA DURAR</p>
+  </div>
+  <div class="hero-grid">
+    <div class="hg-item"><img src="imgs/lookbook-1.jpg" alt="Nueva Colección" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;z-index:0;"><div class="hg-overlay" style="z-index:1;"><span class="hg-label" data-i18n="hg1">Nueva Colección</span></div></div>
+    <div class="hg-item"><img src="imgs/lookbook-2.jpg" alt="SS 2025" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;z-index:0;"><div class="hg-overlay" style="z-index:1;"><span class="hg-label" data-i18n="hg2">SS 2025</span></div></div>
+    <div class="hg-item"><a href="#lookbook"><img src="imgs/lookbook-3.jpg" alt="Ver Lookbook" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;z-index:0;"><div class="hg-overlay" style="z-index:1;"><span class="hg-label" data-i18n="hg3">Ver Lookbook</span></div></a></div>
+  </div>
+</section>
+
+<!-- Products -->
+<section class="section" id="catalogo">
+  <div class="wrap">
+    <h2 class="sec-head" data-i18n="cath">CATÁLOGO</h2>
+    <div class="prod-grid" id="pgrid">
+
+      <!-- Card 1: Camiseta Básica -->
+      <div class="pcard" data-categories="camisetas">
+        <div class="pcard-img-wrap"><img src="imgs/producto-camiseta.jpg" alt="Camiseta Básica" loading="lazy"></div>
+        <div class="pcard-body">
+          <div class="pcard-name">Camiseta Básica</div>
+          <div class="pcard-price">₡24,000</div>
+          <div class="pcard-size-row">
+            <label>Talla:</label>
+            <div class="sel-wrap"><select id="size-camiseta"><option>XS</option><option>S</option><option selected>M</option><option>L</option><option>XL</option></select><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+          <button class="pcard-add-btn" onclick="addToCart('Camiseta Básica',24000,'imgs/producto-camiseta.jpg')">Agregar al Carrito</button>
+        </div>
+      </div>
+
+      <!-- Card 2: Pantalón Recto -->
+      <div class="pcard" data-categories="pantalones">
+        <div class="pcard-img-wrap"><img src="imgs/producto-pantalon.jpg" alt="Pantalón Recto" loading="lazy"></div>
+        <div class="pcard-body">
+          <div class="pcard-name">Pantalón Recto</div>
+          <div class="pcard-price">₡48,000</div>
+          <div class="pcard-size-row">
+            <label>Talla:</label>
+            <div class="sel-wrap"><select id="size-pantalon"><option>28</option><option>30</option><option selected>32</option><option>34</option><option>36</option></select><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+          <button class="pcard-add-btn" onclick="addToCart('Pantalón Recto',48000,'imgs/producto-pantalon.jpg')">Agregar al Carrito</button>
+        </div>
+      </div>
+
+      <!-- Card 3: Raíz Verde -->
+      <div class="pcard" data-categories="camisetas">
+        <div class="pcard-img-wrap"><img src="imgs/raizverde.jpg" alt="Raíz Verde" loading="lazy"></div>
+        <div class="pcard-body">
+          <div class="pcard-name">Raíz Verde</div>
+          <div class="pcard-price">₡36,000</div>
+          <div class="pcard-size-row">
+            <label>Talla:</label>
+            <div class="sel-wrap"><select id="size-raizverde"><option>XS</option><option>S</option><option selected>M</option><option>L</option><option>XL</option></select><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+          <button class="pcard-add-btn" onclick="addToCart('Raíz Verde',36000,'imgs/raizverde.jpg')">Agregar al Carrito</button>
+        </div>
+      </div>
+
+      <!-- Card 4: Negro Absoluto -->
+      <div class="pcard" data-categories="camisetas">
+        <div class="pcard-img-wrap"><img src="imgs/negroabsoluto.jpg" alt="Negro Absoluto" loading="lazy"></div>
+        <div class="pcard-body">
+          <div class="pcard-name">Negro Absoluto</div>
+          <div class="pcard-price">₡42,000</div>
+          <div class="pcard-size-row">
+            <label>Talla:</label>
+            <div class="sel-wrap"><select id="size-negroabsoluto"><option>XS</option><option>S</option><option selected>M</option><option>L</option><option>XL</option></select><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+          <button class="pcard-add-btn" onclick="addToCart('Negro Absoluto',42000,'imgs/negroabsoluto.jpg')">Agregar al Carrito</button>
+        </div>
+      </div>
+
+      <!-- Card 5: Gorra Dad Hat -->
+      <div class="pcard" data-categories="accesorios">
+        <div class="pcard-img-wrap"><img src="imgs/gorra.jpg" alt="Gorra Dad Hat" loading="lazy"></div>
+        <div class="pcard-body">
+          <div class="pcard-name">Gorra Dad Hat</div>
+          <div class="pcard-price">₡14,000</div>
+          <div class="pcard-size-row">
+            <label>Talla:</label>
+            <div class="sel-wrap"><select id="size-gorra"><option data-i18n="size.single">Talla Única</option></select><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+          <button class="pcard-add-btn" onclick="addToCart('Gorra Dad Hat',14000,'imgs/gorra.jpg')">Agregar al Carrito</button>
+        </div>
+      </div>
+
+      <!-- Card 6: Bolso Tote Canvas -->
+      <div class="pcard" data-categories="accesorios">
+        <div class="pcard-img-wrap"><img src="imgs/producto-accesorio.jpg" alt="Bolso Tote Canvas" loading="lazy"></div>
+        <div class="pcard-body">
+          <div class="pcard-name">Bolso Tote Canvas</div>
+          <div class="pcard-price">₡18,500</div>
+          <div class="pcard-size-row">
+            <label>Talla:</label>
+            <div class="sel-wrap"><select id="size-tote"><option data-i18n="size.single">Talla Única</option></select><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+          <button class="pcard-add-btn" onclick="addToCart('Bolso Tote Canvas',18500,'imgs/producto-accesorio.jpg')">Agregar al Carrito</button>
+        </div>
+      </div>
+
+      <!-- Card 7: Índigo Nocturno -->
+      <div class="product-card" data-categories="camisetas,pantalones">
+        <div class="product-img-wrap"><img src="imgs/azul.jpg" alt="Índigo Nocturno" loading="lazy"></div>
+        <div class="product-info">
+          <h3 class="product-name" data-i18n="prod.indigo.name">Índigo Nocturno</h3>
+          <p class="product-price">₡85,000</p>
+          <div class="size-selector">
+            <label>Talla:</label>
+            <div class="sel-wrap"><select id="size-indigo"><option>S</option><option selected>M</option><option>L</option><option>XL</option></select><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+          <button class="add-to-cart-btn" data-product-id="indigo" data-product-name="Índigo Nocturno" data-product-price="85000">
+            <i data-lucide="shopping-cart" width="15" height="15"></i>
+            <span data-i18n="add.to.cart">Añadir al carrito</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Card 8: Carmesí Salvaje -->
+      <div class="product-card" data-categories="camisetas,pantalones">
+        <div class="product-img-wrap"><img src="imgs/reddress.jpg" alt="Carmesí Salvaje" loading="lazy"></div>
+        <div class="product-info">
+          <h3 class="product-name" data-i18n="prod.carmesi.name">Carmesí Salvaje</h3>
+          <p class="product-price">₡42,000</p>
+          <div class="size-selector">
+            <label>Talla:</label>
+            <div class="sel-wrap"><select id="size-carmesi"><option>XS</option><option selected>S</option><option>M</option></select><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+          <button class="add-to-cart-btn" data-product-id="carmesi" data-product-name="Carmesí Salvaje" data-product-price="42000">
+            <i data-lucide="shopping-cart" width="15" height="15"></i>
+            <span data-i18n="add.to.cart">Añadir al carrito</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Lookbook -->
+<section class="lookbook-section" id="lookbook">
+  <div class="lb-row">
+    <div class="lb-img" style="position:relative;overflow:hidden;"><img src="imgs/raizverde.jpg" alt="Raíz Verde" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;"></div>
+    <div class="lb-text">
+      <p class="lb-season" data-i18n="lb1s">Colección Primavera / Verano 2025</p>
+      <h2 class="lb-title" data-i18n="lb1t">RAÍZ VERDE</h2>
+      <p class="lb-desc" data-i18n="lb1d">Inspirada en los cerros de la cordillera central. Telas naturales, cortes amplios. Diseñado para quien camina con propósito.</p>
+    </div>
+  </div>
+  <div class="lb-row rev" style="border-top:1px solid var(--bor)">
+    <div class="lb-text" style="padding:4rem 3rem">
+      <p class="lb-season" data-i18n="lb2s">Edición Limitada / 50 piezas</p>
+      <h2 class="lb-title" data-i18n="lb2t">NEGRO<br>ABSOLUTO</h2>
+      <p class="lb-desc" data-i18n="lb2d">Una colección monocromática sin concesiones. 100% algodón pima. Costuras reforzadas. Para durar décadas.</p>
+    </div>
+    <div class="lb-img" style="position:relative;overflow:hidden;"><img src="imgs/negroabsoluto.jpg" alt="Negro Absoluto" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;"></div>
+  </div>
+</section>
+
+<!-- Size Guide -->
+<section class="size-section" id="tallas">
+  <div class="wrap">
+    <h2 class="sec-head" data-i18n="sgh">GUÍA DE TALLAS</h2>
+    <table class="sg-table">
+      <thead><tr><th data-i18n="sgt">Talla</th><th data-i18n="sgp">Pecho (cm)</th><th data-i18n="sgc">Cintura (cm)</th><th data-i18n="sgh2">Cadera (cm)</th><th data-i18n="sgl">Largo (cm)</th></tr></thead>
+      <tbody>
+        <tr><td>XS</td><td>82–86</td><td>66–70</td><td>88–92</td><td>68</td></tr>
+        <tr><td>S</td><td>87–92</td><td>71–76</td><td>93–97</td><td>70</td></tr>
+        <tr><td>M</td><td>93–99</td><td>77–82</td><td>98–104</td><td>72</td></tr>
+        <tr><td>L</td><td>100–107</td><td>83–90</td><td>105–112</td><td>74</td></tr>
+        <tr><td>XL</td><td>108–117</td><td>91–100</td><td>113–122</td><td>76</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<footer id="footer">
+  <div class="ft-inner">
+    <div class="ft-top">
+      <div class="ft-left"><img src="../../imgs/FullLogo.svg" alt="WebExpressCR" class="ft-logo"></div>
+      <div class="ft-center">
+        <a href="https://www.instagram.com/webexpresscr/" class="ft-btn" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/></svg></a>
+        <a href="https://www.linkedin.com/company/webexpresscr" class="ft-btn" aria-label="LinkedIn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+        <a href="https://www.facebook.com/webexpresscr" class="ft-btn" aria-label="Facebook"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+        <a href="https://wa.me/50670553656" target="_blank" class="ft-btn" aria-label="WhatsApp">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M20.52 3.48A11.93 11.93 0 0 0 12 0C5.37 0 0 5.37 0 12c0 2.11.55 4.16 1.6 5.97L0 24l6.19-1.62A11.94 11.94 0 0 0 12 24c6.63 0 12-5.37 12-12 0-3.2-1.25-6.21-3.48-8.52zm-8.52 18.4a9.9 9.9 0 0 1-5.05-1.38l-.36-.21-3.73.98.99-3.63-.24-.38A9.9 9.9 0 0 1 2.1 12c0-5.46 4.44-9.9 9.9-9.9 2.65 0 5.13 1.03 7 2.9a9.87 9.87 0 0 1 2.9 7c0 5.46-4.44 9.9-9.9 9.9zm5.43-7.4c-.3-.15-1.77-.87-2.04-.97-.28-.1-.48-.15-.68.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.68-1.63-.93-2.23-.24-.59-.49-.51-.68-.52h-.58c-.2 0-.52.07-.79.37-.27.3-1.03 1.01-1.03 2.46s1.06 2.85 1.2 3.05c.15.2 2.08 3.18 5.04 4.46.7.3 1.25.48 1.68.62.71.22 1.35.19 1.86.12.57-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35z"/></svg>
+        </a>
+        <a href="mailto:webexpresscr@gmail.com" class="ft-btn" aria-label="Email">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </a>
+      </div>
+      <div class="ft-right"><button class="ft-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Volver arriba"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></button></div>
+    </div>
+    <p class="ft-bottom" data-i18n="footer.disclaimer"></p>
+  </div>
+</footer>
+
+<!-- Cart overlay -->
+<div class="cart-overlay" id="cart-overlay" onclick="closeCart()"></div>
+
+<!-- Cart panel -->
+<div class="cart-panel" id="cart-panel">
+  <div class="cart-header">
+    <h3 data-i18n="cartTitle">Tu Carrito</h3>
+    <button class="cart-close" onclick="closeCart()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="cart-items" id="cart-items">
+    <div class="cart-empty" id="cart-empty">Tu carrito está vacío.</div>
+  </div>
+  <div class="cart-footer">
+    <div class="cart-inline-disclaimer">
+      <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <span class="lang-es">Sitio con fines demostrativos: Ninguna transacción será procesada ni ningún dato almacenado.</span>
+      <span class="lang-en" style="display:none;">Demonstration site: No transactions will be processed or data stored.</span>
+    </div>
+    <div class="cart-total-row">
+      <span data-i18n="cartTotalLabel">Total</span>
+      <span id="cart-total-display">₡0</span>
+    </div>
+    <button class="cart-checkout-btn" onclick="openCheckout()" data-i18n="cartCheckout">Ir al Pago →</button>
+  </div>
+</div>
+
+<!-- Checkout modal -->
+<div class="checkout-modal" id="checkout-modal">
+  <div class="checkout-bg" onclick="closeCheckout()"></div>
+  <div class="checkout-box">
+    <div class="checkout-disclaimer">
+      <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <span class="lang-es">Sitio con fines demostrativos: Ninguna transacción será procesada ni ningún dato almacenado.</span>
+      <span class="lang-en" style="display:none;">Demonstration site: No transactions will be processed or data stored.</span>
+    </div>
+    <div class="step-indicator">
+      <div class="step-dot active" id="sd1"></div>
+      <div class="step-dot" id="sd2"></div>
+      <div class="step-dot" id="sd3"></div>
+      <div class="step-dot" id="sd4"></div>
+    </div>
+    <!-- Step 1 -->
+    <div id="co-step-1">
+      <div class="step-title">Paso 1 — Datos de Contacto</div>
+      <div class="co-field"><label>Nombre completo *</label><input id="co-name" type="text" placeholder="Juan Pérez" autocomplete="name"><span class="field-error" id="err-name"></span></div>
+      <div class="co-field"><label>Correo electrónico *</label><input id="co-email" type="email" placeholder="juan@correo.com" autocomplete="email"><span class="field-error" id="err-email"></span></div>
+      <div class="co-field"><label>Teléfono *</label><input id="co-phone" type="tel" inputmode="numeric" placeholder="88888888" maxlength="8" autocomplete="tel"><span class="field-error" id="err-phone"></span></div>
+      <div class="co-nav"><button class="co-btn-next" onclick="coNext(1)">Siguiente →</button></div>
+    </div>
+    <!-- Step 2 -->
+    <div id="co-step-2" style="display:none">
+      <div class="step-title">Paso 2 — Dirección de Envío</div>
+      <div class="co-field"><label>Dirección *</label><input id="co-addr" type="text" placeholder="Calle, número, barrio" autocomplete="street-address"><span class="field-error" id="err-addr"></span></div>
+      <div class="co-row">
+        <div class="co-field"><label>Ciudad *</label><input id="co-city" type="text" placeholder="San José" autocomplete="address-level2"><span class="field-error" id="err-city"></span></div>
+        <div class="co-field"><label>Provincia *</label><div class="sel-wrap"><select id="co-prov"><option value="">Seleccionar...</option><option>San José</option><option>Alajuela</option><option>Cartago</option><option>Heredia</option><option>Guanacaste</option><option>Puntarenas</option><option>Limón</option>
+<option value="otro" data-i18n="form.other">Otro</option>
+</select><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div><span class="field-error" id="err-prov"></span></div>
+      </div>
+      <div class="co-field"><label>Código postal</label><input id="co-zip" type="text" placeholder="10101" autocomplete="postal-code"></div>
+      <div class="co-nav"><button class="co-btn-back" onclick="coBack(2)">← Atrás</button><button class="co-btn-next" onclick="coNext(2)">Siguiente →</button></div>
+    </div>
+    <!-- Step 3 -->
+    <div id="co-step-3" style="display:none">
+      <div class="step-title">Paso 3 — Método de Pago</div>
+      <div class="pay-opt" id="po-sinpe" onclick="selectPay('sinpe')"><div><div class="pay-opt-label">SINPE Móvil</div><div class="pay-opt-desc">Transferencia instantánea</div></div></div>
+      <div class="pay-opt" id="po-card" onclick="selectPay('card')"><div><div class="pay-opt-label">Tarjeta Crédito / Débito</div><div class="pay-opt-desc">Visa, Mastercard, Amex</div></div></div>
+      <div class="pay-opt" id="po-paypal" onclick="selectPay('paypal')"><div><div class="pay-opt-label">PayPal</div><div class="pay-opt-desc" data-i18n="paypal.desc">Pago seguro en línea</div></div></div>
+      <div class="pay-details" id="pay-details" style="display:none"></div>
+      <span class="field-error" id="err-pay"></span>
+      <div class="co-nav"><button class="co-btn-back" onclick="coBack(3)">← Atrás</button><button id="step3-next" class="co-btn-next" onclick="coNext(3)">Siguiente →</button></div>
+    </div>
+    <!-- Step 4 -->
+    <div id="co-step-4" style="display:none">
+      <div class="step-title">Paso 4 — Confirmar Pedido</div>
+      <div id="order-summary-list"></div>
+      <div class="order-total-row"><span>Total</span><span id="order-total-final"></span></div>
+      <div class="co-nav"><button class="co-btn-back" onclick="coBack(4)">← Atrás</button><button class="co-btn-next" onclick="confirmOrder()">Confirmar Pedido ✓</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- Success screen -->
+<div class="success-screen" id="success-screen">
+  <div class="success-check">✓</div>
+  <h2 style="font-size:1.5rem;font-weight:800;margin-bottom:.5rem;">¡Pedido Confirmado!</h2>
+  <p class="success-order">Número de orden: <strong id="success-order-num"></strong></p>
+  <p style="font-size:.85rem;color:#888;margin-bottom:1rem;">Entrega estimada: 3–5 días hábiles</p>
+  <div class="success-items" id="success-items-list"></div>
+  <div class="success-disclaimer">
+    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <span class="lang-es">Sitio con fines demostrativos: Ninguna transacción será procesada ni ningún dato almacenado.</span>
+    <span class="lang-en" style="display:none;">Demonstration site: No transactions will be processed or data stored.</span>
+  </div>
+  <button class="success-close-btn" onclick="closeSuccess()">Continuar Comprando</button>
+</div>
+
+<!-- Toast -->
+<div class="cart-toast" id="cart-toast"></div>
+
+<script src="card-payment.js"></script>
+<script>
+const html = document.documentElement;
+let lg = localStorage.getItem('vt-lang') || 'es';
+let th = localStorage.getItem('vt-theme') || 'dark';
+html.className = th;
+
+function upTh() {
+  const d = html.classList.contains('dark');
+  document.getElementById('si').style.display = d ? 'block' : 'none';
+  document.getElementById('mi').style.display = d ? 'none' : 'block';
+}
+upTh();
+document.getElementById('thm').addEventListener('click', () => {
+  th = th === 'dark' ? 'light' : 'dark';
+  html.className = th;
+  localStorage.setItem('vt-theme', th);
+  upTh();
+});
+
+function applyLangClasses(l) {
+  document.querySelectorAll('.lang-es').forEach(el => el.style.display = l === 'es' ? '' : 'none');
+  document.querySelectorAll('.lang-en').forEach(el => el.style.display = l === 'en' ? '' : 'none');
+}
+
+const T = {
+  es: {
+    back:'< Portafolio', sub:'HECHO EN COSTA RICA, DISEÑADO PARA DURAR',
+    fall:'Todo', fcam:'Camisetas', fpan:'Pantalones', facc:'Accesorios',
+    hg1:'Nueva Colección', hg2:'SS 2025', hg3:'Ver Lookbook', cath:'CATÁLOGO',
+    lb1s:'Colección Primavera / Verano 2025', lb1t:'RAÍZ VERDE',
+    lb1d:'Inspirada en los cerros de la cordillera central. Telas naturales, cortes amplios.',
+    lb2s:'Edición Limitada / 50 piezas', lb2t:'NEGRO\nABSOLUTO',
+    lb2d:'Una colección monocromática sin concesiones. 100% algodón pima.',
+    sgh:'GUÍA DE TALLAS', sgt:'Talla', sgp:'Pecho (cm)', sgc:'Cintura (cm)', sgh2:'Cadera (cm)', sgl:'Largo (cm)',
+    cartTitle:'Tu Carrito', cartTotalLabel:'Total', cartCheckout:'Ir al Pago →',
+    'prod.indigo.name':'Índigo Nocturno', 'prod.carmesi.name':'Carmesí Salvaje',
+    'add.to.cart':'Añadir al carrito', 'size.single':'Talla Única',
+    'paypal.desc':'Serás redirigido a PayPal para completar el pago de forma segura.',
+    'form.other':'Otro','footer.tagline':'Creación de páginas web · Costa Rica',
+    'footer.disclaimer':'Sitio con fines demostrativos: Ninguna transacción será procesada ni ningún dato almacenado.<br>© 2026 WebExpressCR. Todos los derechos reservados. Las imágenes utilizadas pertenecen a sus respectivos autores y se usan únicamente con fines ilustrativos.'
+  },
+  en: {
+    back:'< Portfolio', sub:'MADE IN COSTA RICA, DESIGNED TO LAST',
+    fall:'All', fcam:'T-Shirts', fpan:'Pants', facc:'Accessories',
+    hg1:'New Collection', hg2:'SS 2025', hg3:'View Lookbook', cath:'CATALOG',
+    lb1s:'Spring / Summer 2025 Collection', lb1t:'GREEN ROOT',
+    lb1d:'Inspired by the Central Mountain Range. Natural fabrics, relaxed cuts.',
+    lb2s:'Limited Edition / 50 pieces', lb2t:'ABSOLUTE\nBLACK',
+    lb2d:'An uncompromising monochrome collection. 100% pima cotton.',
+    sgh:'SIZE GUIDE', sgt:'Size', sgp:'Chest (cm)', sgc:'Waist (cm)', sgh2:'Hip (cm)', sgl:'Length (cm)',
+    cartTitle:'Your Cart', cartTotalLabel:'Total', cartCheckout:'Proceed to Checkout →',
+    'prod.indigo.name':'Nocturnal Indigo', 'prod.carmesi.name':'Savage Crimson',
+    'add.to.cart':'Add to cart', 'size.single':'One Size',
+    'paypal.desc':'You will be redirected to PayPal to complete payment securely.',
+    'form.other':'Other','footer.tagline':'Web development · Costa Rica',
+    'footer.disclaimer':'Demonstration site: No transactions will be processed or data stored.<br>© 2026 WebExpressCR. All rights reserved. Images used belong to their respective authors and are used for illustrative purposes only.'
+  }
+};
+
+function applyL(l) {
+  document.getElementById('lng').textContent = l === 'es' ? 'EN' : 'ES';
+  document.querySelectorAll('[data-i18n]').forEach(e => {
+    const k = e.getAttribute('data-i18n');
+    if (T[l] && T[l][k] !== undefined) e.innerHTML = T[l][k].replace('\n', '<br>');
+  });
+  applyLangClasses(l);
+  lucide.createIcons();
+}
+document.getElementById('lng').addEventListener('click', () => {
+  lg = lg === 'es' ? 'en' : 'es';
+  localStorage.setItem('vt-lang', lg);
+  applyL(lg);
+});
+
+// Category filter
+function filterProducts(cat) {
+  document.querySelectorAll('.pcard, .product-card').forEach(card => {
+    if (cat === 'todo' || cat === 'all') {
+      card.style.display = '';
+    } else {
+      const cats = (card.getAttribute('data-categories') || '').split(',');
+      card.style.display = cats.includes(cat) ? '' : 'none';
+    }
+  });
+  document.querySelectorAll('.fb[data-filter]').forEach(btn => {
+    const btnCat = btn.getAttribute('data-filter') || '';
+    const isActive = btnCat === cat || (cat === 'todo' && btnCat === 'todo');
+    btn.style.borderColor = isActive ? '#FF7F00' : '';
+    btn.style.color = isActive ? '#FF7F00' : '';
+    btn.style.background = isActive ? 'rgba(255,127,0,0.08)' : '';
+    btn.classList.toggle('on', isActive);
+  });
+}
+
+applyL(lg);
+lucide.createIcons();
+filterProducts('todo');
+
+// New product cards (Índigo, Carmesí) — click handler
+document.querySelectorAll('.product-card').forEach(card => {
+  const addBtn = card.querySelector('.add-to-cart-btn');
+  if (addBtn) {
+    addBtn.addEventListener('click', function () {
+      const name = this.getAttribute('data-product-name');
+      const price = parseInt(this.getAttribute('data-product-price'), 10);
+      const imgSrc = card.querySelector('img').src;
+      const sizeSelect = card.querySelector('select');
+      const size = sizeSelect ? sizeSelect.value : 'Única';
+      addToCartDirect(name, price, imgSrc, size);
+    });
+  }
+});
+
+// Phone — digits only, max 8
+document.addEventListener('input', function (e) {
+  if (e.target.matches('input[type="tel"]') || e.target.matches('input[inputmode="numeric"]')) {
+    e.target.value = e.target.value.replace(/[^0-9]/g, '').slice(0, 8);
+  }
+});
+
+
+// ── Cart state ─────────────────────────────────────────────
+let cart = [];
+let selectedPay = '';
+
+function formatColones(amount) {
+  return '₡' + amount.toLocaleString('es-CR');
+}
+
+function showToast(name) {
+  const t = document.getElementById('cart-toast');
+  if (!t) return;
+  t.textContent = lg === 'es' ? (name + ' añadido al carrito') : (name + ' added to cart');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function addToCart(name, price, imgSrc) {
+  const idKey = name.toLowerCase().replace(/\s+/g, '-').replace(/[áéíóúñ]/g, c => ({ á:'a',é:'e',í:'i',ó:'o',ú:'u',ñ:'n' })[c] || c);
+  const sizeMap = {
+    'camiseta-basica': 'size-camiseta',
+    'pantalon-recto': 'size-pantalon',
+    'raiz-verde': 'size-raizverde',
+    'negro-absoluto': 'size-negroabsoluto',
+    'gorra-dad-hat': 'size-gorra',
+    'bolso-tote-canvas': 'size-tote'
+  };
+  const sizeElId = sizeMap[idKey];
+  const sizeEl = sizeElId ? document.getElementById(sizeElId) : null;
+  const size = sizeEl ? sizeEl.value : 'Única';
+  const existing = cart.find(i => i.name === name && i.size === size);
+  if (existing) { existing.qty++; }
+  else { cart.push({ name, price, size, imgSrc, qty: 1 }); }
+  updateCart();
+  showToast(name);
+}
+
+function addToCartDirect(name, price, imgSrc, size) {
+  const existing = cart.find(i => i.name === name && i.size === size);
+  if (existing) { existing.qty++; }
+  else { cart.push({ name, price, size, imgSrc, qty: 1 }); }
+  updateCart();
+  showToast(name);
+}
+
+function updateCart() {
+  const badge = document.getElementById('cart-badge');
+  const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  const count = cart.reduce((s, i) => s + i.qty, 0);
+  badge.textContent = count;
+  badge.style.display = count > 0 ? 'flex' : 'none';
+  document.getElementById('cart-total-display').textContent = formatColones(total);
+  const itemsEl = document.getElementById('cart-items');
+  const emptyEl = document.getElementById('cart-empty');
+  itemsEl.querySelectorAll('.cart-item').forEach(e => e.remove());
+  if (cart.length === 0) { emptyEl.style.display = 'block'; return; }
+  emptyEl.style.display = 'none';
+  cart.forEach((item, idx) => {
+    const div = document.createElement('div');
+    div.className = 'cart-item';
+    div.innerHTML = `
+      <img src="${item.imgSrc}" class="cart-item-img" alt="${item.name}">
+      <div class="cart-item-info">
+        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-size">Talla: ${item.size}</div>
+        <div class="cart-item-price">
+          <div class="unit-price">${formatColones(item.price)} c/u</div>
+          <div class="total-price">${formatColones(item.price * item.qty)}</div>
+        </div>
+        <div class="cart-item-qty">
+          <button class="qty-btn" onclick="changeQty(${idx},-1)">−</button>
+          <span class="qty-val">${item.qty}</span>
+          <button class="qty-btn" onclick="changeQty(${idx},1)">+</button>
+        </div>
+      </div>
+      <button class="cart-remove" onclick="removeItem(${idx})" title="Eliminar">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+      </button>`;
+    itemsEl.appendChild(div);
+  });
+}
+
+function changeQty(idx, delta) {
+  cart[idx].qty += delta;
+  if (cart[idx].qty <= 0) cart.splice(idx, 1);
+  updateCart();
+}
+function removeItem(idx) { cart.splice(idx, 1); updateCart(); }
+function openCart() {
+  document.getElementById('cart-panel').classList.add('open');
+  document.getElementById('cart-overlay').classList.add('open');
+}
+function closeCart() {
+  document.getElementById('cart-panel').classList.remove('open');
+  document.getElementById('cart-overlay').classList.remove('open');
+}
+
+function openCheckout() {
+  if (cart.length === 0) return;
+  closeCart();
+  document.getElementById('checkout-modal').classList.add('open');
+  showCoStep(1);
+}
+function closeCheckout() { document.getElementById('checkout-modal').classList.remove('open'); }
+
+function showCoStep(n) {
+  [1, 2, 3, 4].forEach(i => {
+    document.getElementById('co-step-' + i).style.display = i === n ? 'block' : 'none';
+    const dot = document.getElementById('sd' + i);
+    dot.classList.remove('active', 'done');
+    if (i < n) dot.classList.add('done');
+    else if (i === n) dot.classList.add('active');
+  });
+  if (n === 3) {
+    // Block Next until a valid payment method+card data is entered
+    const btn = document.getElementById('step3-next');
+    if (btn) { btn.disabled = true; btn.style.opacity = '0.5'; btn.style.cursor = 'not-allowed'; }
+    // If SINPE or PayPal was already selected, re-enable immediately
+    if (selectedPay && selectedPay !== 'card') {
+      if (btn) { btn.disabled = false; btn.style.opacity = ''; btn.style.cursor = ''; }
+    }
+  }
+}
+
+function showFieldError(id, msg) { const el = document.getElementById(id); if (el) { el.textContent = msg; el.style.display = 'block'; } }
+function clearFieldError(id) { const el = document.getElementById(id); if (el) { el.textContent = ''; el.style.display = 'none'; } }
+
+function coNext(step) {
+  if (step === 1) {
+    let ok = true;
+    if (!document.getElementById('co-name').value.trim()) { showFieldError('err-name', lg==='es'?'Campo requerido':'Required field'); ok=false; } else clearFieldError('err-name');
+    if (!document.getElementById('co-email').value.trim()) { showFieldError('err-email', lg==='es'?'Campo requerido':'Required field'); ok=false; } else clearFieldError('err-email');
+    if (!document.getElementById('co-phone').value.trim()) { showFieldError('err-phone', lg==='es'?'Campo requerido':'Required field'); ok=false; } else clearFieldError('err-phone');
+    if (!ok) return;
+  }
+  if (step === 2) {
+    let ok = true;
+    if (!document.getElementById('co-addr').value.trim()) { showFieldError('err-addr', lg==='es'?'Campo requerido':'Required field'); ok=false; } else clearFieldError('err-addr');
+    if (!document.getElementById('co-city').value.trim()) { showFieldError('err-city', lg==='es'?'Campo requerido':'Required field'); ok=false; } else clearFieldError('err-city');
+    if (!document.getElementById('co-prov').value) { showFieldError('err-prov', lg==='es'?'Selecciona una provincia':'Select a province'); ok=false; } else clearFieldError('err-prov');
+    if (!ok) return;
+  }
+  if (step === 3) {
+    if (!selectedPay) { showFieldError('err-pay', lg==='es'?'Por favor selecciona un método de pago.':'Please select a payment method.'); return; }
+    if (selectedPay === 'card') {
+      const num = (document.getElementById('cc-number')||{}).value||'';
+      const exp = (document.getElementById('cc-expiry')||{}).value||'';
+      const cvv = (document.getElementById('cc-cvv')||{}).value||'';
+      const name = (document.getElementById('cc-name')||{}).value||'';
+      if (num.replace(/\s/g,'').length < 15) { showFieldError('err-pay', lg==='es'?'Número de tarjeta incompleto.':'Incomplete card number.'); return; }
+      if (exp.length !== 5) { showFieldError('err-pay', lg==='es'?'Fecha de vencimiento inválida.':'Invalid expiry date.'); return; }
+      if (cvv.length < 3) { showFieldError('err-pay', lg==='es'?'CVV inválido.':'Invalid CVV.'); return; }
+      if (name.trim().length < 2) { showFieldError('err-pay', lg==='es'?'Ingresa el nombre del titular.':'Enter cardholder name.'); return; }
+    }
+    clearFieldError('err-pay');
+    const list = document.getElementById('order-summary-list');
+    list.innerHTML = cart.map(i => `<div class="order-item-row"><span>${i.name} (${i.size}) x${i.qty}</span><span>${formatColones(i.price*i.qty)}</span></div>`).join('');
+    document.getElementById('order-total-final').textContent = formatColones(cart.reduce((s,i)=>s+i.price*i.qty,0));
+  }
+  if (step === 4) { confirmOrder(); return; }
+  showCoStep(step + 1);
+}
+function coBack(step) { showCoStep(step - 1); }
+
+function selectPay(method) {
+  selectedPay = method;
+  ['sinpe','card','paypal'].forEach(m => document.getElementById('po-' + m).classList.remove('selected'));
+  document.getElementById('po-' + method).classList.add('selected');
+  const det = document.getElementById('pay-details');
+
+  if (method === 'sinpe') {
+    det.innerHTML = '<strong>SINPE Móvil:</strong> 8888-8888<br><br>Referencia: <input type="text" inputmode="numeric" pattern="[0-9]*" placeholder="Número de referencia SINPE" style="margin-top:.5rem;background:var(--sur);border:1px solid var(--bor);color:var(--txt);padding:.5rem;width:100%;">';
+    det.style.display = 'block';
+    var btn3 = document.getElementById('step3-next'); if (btn3) { btn3.disabled = false; btn3.style.opacity = ''; btn3.style.cursor = ''; }
+  } else if (method === 'card') {
+    det.innerHTML = `
+      <div style="display:grid;gap:.6rem;">
+        <div style="position:relative;">
+          <input id="cc-number" type="text" placeholder="•••• •••• •••• ••••" maxlength="19" autocomplete="cc-number"
+            oninput="ccFmtNum(this)"
+            style="background:var(--sur);border:1px solid var(--bor);color:var(--txt);padding:.5rem .5rem .5rem 2.5rem;width:100%;font-family:'Courier New',monospace;letter-spacing:.05em;">
+          <span id="cc-brand" style="position:absolute;left:.5rem;top:50%;transform:translateY(-50%);font-size:.68rem;font-weight:800;color:#888;pointer-events:none;"></span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;">
+          <div style="position:relative;">
+            <input id="cc-expiry" type="text" placeholder="MM/AA" maxlength="5" autocomplete="cc-exp"
+              oninput="ccFmtExp(this)" onblur="ccValidExp(this)"
+              style="background:var(--sur);border:1px solid var(--bor);color:var(--txt);padding:.5rem;width:100%;">
+            <span id="err-expiry" style="position:absolute;bottom:-1.2rem;left:0;font-size:.68rem;white-space:nowrap;color:#e53e3e;display:none;"></span>
+          </div>
+          <input id="cc-cvv" type="text" placeholder="CVV" maxlength="4" autocomplete="cc-csc"
+            oninput="ccFmtCvv(this)"
+            style="background:var(--sur);border:1px solid var(--bor);color:var(--txt);padding:.5rem;">
+        </div>
+        <input id="cc-name" type="text" placeholder="${lg==='es'?'Nombre en la tarjeta':'Cardholder name'}" autocomplete="cc-name"
+          style="background:var(--sur);border:1px solid var(--bor);color:var(--txt);padding:.5rem;width:100%;">
+      </div>`;
+    det.style.display = 'block';
+    // Wire card field validation to step3 next button
+    (function() {
+      var btn = document.getElementById('step3-next');
+      function validateCard() {
+        var num = (document.getElementById('cc-number')||{}).value||'';
+        var exp = (document.getElementById('cc-expiry')||{}).value||'';
+        var cvv = (document.getElementById('cc-cvv')||{}).value||'';
+        var name = (document.getElementById('cc-name')||{}).value||'';
+        var ok = num.replace(/\s/g,'').length >= 15 && exp.length === 5 && cvv.length >= 3 && name.trim().length >= 2;
+        if (btn) { btn.disabled = !ok; btn.style.opacity = ok ? '' : '0.5'; btn.style.cursor = ok ? '' : 'not-allowed'; }
+      }
+      ['cc-number','cc-expiry','cc-cvv','cc-name'].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) el.addEventListener('input', validateCard);
+      });
+      validateCard();
+    })();
+
+  } else {
+    // PayPal
+    const desc = lg === 'es'
+      ? 'Serás redirigido a PayPal para completar el pago de forma segura.'
+      : 'You will be redirected to PayPal to complete payment securely.';
+    det.innerHTML = `<p style="color:#888;">${desc}</p>`;
+    det.style.display = 'block';
+    var btn3p = document.getElementById('step3-next'); if (btn3p) { btn3p.disabled = false; btn3p.style.opacity = ''; btn3p.style.cursor = ''; }
+  }
+}
+
+function confirmOrder() {
+  const orderNum = Math.floor(100000 + Math.random() * 900000);
+  const items = [...cart];
+  // Clear cart immediately
+  cart = [];
+  updateCart();
+  closeCheckout();
+  // Populate success screen
+  document.getElementById('success-order-num').textContent = '#' + orderNum;
+  document.getElementById('success-items-list').innerHTML = items
+    .map(i => `<div style="display:flex;justify-content:space-between;padding:.3rem 0;font-size:.85rem;border-bottom:1px solid var(--bor)"><span>${i.name} (${i.size}) x${i.qty}</span><span>${formatColones(i.price*i.qty)}</span></div>`)
+    .join('');
+  // Apply current lang to success screen disclaimers
+  applyLangClasses(lg);
+  document.getElementById('success-screen').classList.add('open');
+}
+
+function closeSuccess() {
+  document.getElementById('success-screen').classList.remove('open');
+  // Belt-and-suspenders reset
+  cart = [];
+  updateCart();
+}
+</script>
+</body>
+</html>

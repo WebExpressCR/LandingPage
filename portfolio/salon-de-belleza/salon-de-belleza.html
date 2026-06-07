@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Studio Camille — Demo · WebExpressCR</title>
+<link rel="icon" type="image/svg+xml" href="../../imgs/SmallLogo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<style>
+:root{--max:1200px;--tr:.4s ease;}
+html.dark{--bg:#0d0d0d;--sur:#1a1a1a;--sur2:#222;--bor:#2a2a2a;--txt:#f0ece4;--mut:#7a7065;--acc:#c9a84c;--acc2:#a07830;}
+html.light{--bg:#fafafa;--sur:#ffffff;--sur2:#f5f5f5;--bor:#e0ddd8;--txt:#1a1a1a;--mut:#888070;--acc:#b8860b;--acc2:#8b6505;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+::selection { background: rgba(201, 168, 76, 0.25); color: inherit; }
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--txt);line-height:1.6;transition:background var(--tr),color var(--tr);overflow-x:hidden;}
+a{color:inherit;text-decoration:none;}
+button{cursor:pointer;font-family:inherit;}
+input,textarea,select{font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--txt);}
+
+/* Top utility bar */
+.util{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:.6rem 3rem;min-height:76px;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);background:rgba(13,13,13,0.72);border-bottom:1px solid var(--bor);}
+html.light .util{background:rgba(250,250,250,0.75);}
+.util-center{position:absolute;left:50%;transform:translateX(-50%);display:flex;align-items:center;}
+.back-link{display:inline-flex;align-items:center;gap:.4rem;font-size:.8rem;font-weight:500;color:var(--mut);transition:color var(--tr);}
+.back-link:hover{color:var(--acc);}
+.util-r{display:flex;align-items:center;gap:.75rem;}
+.icb{width:34px;height:34px;display:flex;align-items:center;justify-content:center;background:transparent;border:1px solid var(--bor);border-radius:6px;color:var(--mut);cursor:pointer;transition:all var(--tr);}
+.icb:hover{border-color:var(--acc);color:var(--acc);}
+.lgb{background:transparent;border:1px solid var(--bor);border-radius:6px;color:var(--mut);padding:0 .65rem;height:34px;font-size:.72rem;font-weight:700;letter-spacing:.08em;cursor:pointer;transition:all var(--tr);}
+.lgb:hover{border-color:var(--acc);color:var(--acc);}
+
+/* Hero split */
+.hero{padding-top:76px;min-height:100vh;display:grid;grid-template-columns:1fr 1fr;}
+@media(max-width:768px){.hero{grid-template-columns:1fr;min-height:auto;}}
+.hero-img{
+  background:linear-gradient(160deg,var(--acc2) 0%,#1a1408 100%);
+  min-height:560px;
+  position:relative;
+  overflow:hidden;
+}
+html.light .hero-img{background:linear-gradient(160deg,#e8d5a0 0%,#c8a060 100%);}
+.hero-img::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 60px,rgba(255,255,255,.03) 60px,rgba(255,255,255,.03) 61px);}
+.est-badge{position:absolute;bottom:2rem;left:2rem;font-family:'Cormorant Garamond',serif;font-size:.85rem;letter-spacing:.2em;color:rgba(255,255,255,.5);}
+.hero-text{display:flex;flex-direction:column;justify-content:center;padding:4rem 4rem 4rem 3rem;}
+@media(max-width:768px){.hero-text{padding:3rem 2rem;}}
+.hero-label{font-size:.7rem;font-weight:700;letter-spacing:.2em;color:var(--acc);margin-bottom:2rem;}
+.hero-name{font-family:'Cormorant Garamond',serif;font-size:clamp(3rem,6vw,5.5rem);font-weight:300;line-height:1.05;margin-bottom:1.5rem;letter-spacing:-.01em;}
+.hero-name em{font-style:italic;color:var(--acc);}
+.hero-tagline{font-size:.95rem;color:var(--mut);max-width:320px;margin-bottom:2.5rem;line-height:1.7;}
+.hero-ctas{display:flex;gap:1rem;flex-wrap:wrap;}
+.btn-gold{display:inline-flex;align-items:center;gap:.5rem;background:var(--acc);color:var(--bg);font-weight:700;font-size:.8rem;letter-spacing:.06em;padding:.8rem 2rem;border:none;cursor:pointer;transition:all var(--tr);}
+.btn-gold:hover{background:var(--acc2);}
+.btn-ghost{display:inline-flex;align-items:center;gap:.5rem;background:transparent;color:var(--txt);font-weight:500;font-size:.8rem;letter-spacing:.06em;padding:.8rem 2rem;border:1px solid var(--bor);cursor:pointer;transition:all var(--tr);}
+.btn-ghost:hover{border-color:var(--acc);color:var(--acc);}
+
+/* Services */
+.section{padding:6rem 3rem;}
+@media(max-width:768px){.section{padding:4rem 1.5rem;}}
+.wrap{max-width:var(--max);margin:0 auto;}
+.s-label{font-size:.65rem;font-weight:700;letter-spacing:.2em;color:var(--acc);margin-bottom:1rem;}
+.s-head{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,4rem);font-weight:300;margin-bottom:3rem;line-height:1.1;}
+.s-head em{font-style:italic;}
+.svc-list{border-top:1px solid var(--bor);}
+.svc-row{display:grid;grid-template-columns:3fr 1fr 1fr;align-items:center;padding:1.25rem 0;border-bottom:1px solid var(--bor);transition:background var(--tr);}
+@media(max-width:600px){.svc-row{grid-template-columns:1fr;gap:.3rem;}}
+.svc-row:hover{padding-left:.5rem;}
+.svc-name{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:600;}
+.svc-dur{font-size:.78rem;color:var(--mut);letter-spacing:.04em;}
+.svc-price{font-size:.9rem;font-weight:700;color:var(--acc);text-align:right;}
+@media(max-width:600px){.svc-price{text-align:left;}}
+
+/* Gallery */
+.gal-section{background:var(--sur);}
+.ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;}
+@media(max-width:768px){.ba-grid{grid-template-columns:1fr;}}
+.ba-card{position:relative;}
+.ba-pair{display:grid;grid-template-columns:1fr 1px 1fr;gap:0;height:280px;}
+.ba-half{display:flex;align-items:center;justify-content:center;}
+.ba-half.before{background:linear-gradient(135deg,var(--sur2) 0%,var(--bor) 100%);}
+.ba-half.after{background:linear-gradient(135deg,var(--acc2) 0%,var(--acc) 100%);opacity:.7;}
+html.light .ba-half.before{background:linear-gradient(135deg,#e8e8e8 0%,#d0d0d0 100%);}
+html.light .ba-half.after{background:linear-gradient(135deg,#f0d070 0%,#c8a040 100%);}
+.ba-div{background:var(--bor);width:1px;}
+.ba-lbl{font-size:.65rem;font-weight:700;letter-spacing:.15em;color:rgba(255,255,255,.6);}
+.ba-title{font-family:'Cormorant Garamond',serif;font-size:.95rem;color:var(--mut);margin-top:.5rem;}
+
+/* Team */
+.team-section{}
+.team-row{display:flex;gap:2.5rem;flex-wrap:wrap;}
+.stylist{display:flex;flex-direction:column;align-items:center;gap:.6rem;flex:1;min-width:140px;}
+.avatar{width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,var(--acc2),var(--bor));border:2px solid var(--bor);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;color:var(--acc);overflow:hidden;}
+.av1{background:linear-gradient(135deg,#8b6505 0%,#c9a84c 100%);}
+.av2{background:linear-gradient(135deg,#555 0%,#888 100%);}
+.av3{background:linear-gradient(135deg,#3a1a40 0%,#7a4a90 100%);}
+.av4{background:linear-gradient(135deg,#1a3a1a 0%,#4a8a4a 100%);}
+.stylist-name{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;}
+.stylist-spec{font-size:.72rem;letter-spacing:.12em;color:var(--mut);}
+
+/* Booking */
+.book-section{background:var(--sur);}
+.book-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;}
+@media(max-width:768px){.book-grid{grid-template-columns:1fr;}}
+.book-info p{font-size:.9rem;color:var(--mut);line-height:1.8;margin-bottom:1rem;}
+.wapp-row{display:flex;align-items:center;gap:.75rem;margin-top:1.5rem;padding:1rem;border:1px solid var(--bor);}
+.wapp-row svg{color:var(--acc);}
+.wapp-row span{font-size:.9rem;font-weight:700;}
+
+/* Floating label form */
+.fl-group{position:relative;margin-bottom:1.25rem;}
+.fl-input{width:100%;background:transparent;border:none;border-bottom:1px solid var(--bor);color:var(--txt);padding:.75rem 0 .4rem;font-size:.9rem;transition:border-color var(--tr);outline:none;}
+.fl-input:focus{border-bottom-color:var(--acc);}
+.fl-label{position:absolute;top:.75rem;left:0;font-size:.85rem;color:var(--mut);pointer-events:none;transition:all var(--tr);}
+.fl-input:focus~.fl-label,.fl-input:not(:placeholder-shown)~.fl-label{top:-.5rem;font-size:.68rem;letter-spacing:.08em;color:var(--acc);}
+.fl-select-wrap{position:relative;}
+.fl-select{width:100%;background:transparent;border:none;border-bottom:1px solid var(--bor);color:var(--txt);padding:.75rem 2.5rem .4rem 0;font-size:.9rem;cursor:pointer;outline:none;appearance:none;-webkit-appearance:none;padding-right:2.5rem;transition:border-color var(--tr);}
+.fl-select:focus{border-bottom-color:var(--acc);}
+option{background:var(--sur);}
+.f-brand{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--mut);}
+.f-cr{font-size:.75rem;color:var(--mut);}
+.f-cr a{color:var(--acc);}
+.f-cr a:hover{text-decoration:underline;}
+.f-social{display:flex;gap:.5rem;align-items:center;}
+.f-social a{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border:1px solid var(--bor);color:var(--mut);transition:color 0.3s ease,border-color 0.3s ease;}@media(max-width:768px){}
+
+/* Before/after pair */
+.before-after-pair{display:grid;grid-template-columns:1fr 1fr;gap:1rem;} .ba-panel{position:relative;} .ba-label{display:block;text-align:center;font-weight:700;margin-top:0.5rem;font-size:0.9rem;}
+
+/* Date input */
+.date-wrapper { position: relative; display: flex; align-items: center; }
+.date-wrapper input[type="date"] { padding-right: 2.5rem; width: 100%; color-scheme: light; }
+html.dark .date-wrapper input[type="date"] { color-scheme: dark; }
+.date-wrapper input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0; position: absolute; right: 0; width: 2.5rem; height: 100%; cursor: pointer; }
+.cal-icon { position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; cursor: pointer; pointer-events: all; }
+.field-error { font-size: 0.78rem; color: var(--acc); margin-top: 4px; display: none; }
+.field-error.visible { display: block; }
+    @media(max-width:600px){ }
+            /* ── Footer ── */
+    #footer{background:#0a0a0a;border-top:1px solid rgba(255,255,255,0.08);padding:24px 48px 20px;color:#f0f0f0;}
+    #footer>div{max-width:1200px;margin:0 auto;}
+    .ft-inner{display:flex;flex-direction:column;gap:16px;}
+    .ft-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:nowrap;gap:16px;}
+    .ft-left{display:flex;flex-direction:column;align-items:flex-start;gap:4px;flex:0 0 auto;min-width:0;}
+    .ft-center{display:flex;align-items:center;gap:10px;flex:1;justify-content:center;}
+    .ft-right{display:flex;align-items:center;justify-content:flex-end;flex:0 0 auto;}
+    .ft-logo{height:32px;filter:brightness(0) invert(1);display:block;}
+    .ft-tagline{font-size:0.68rem;opacity:0.5;line-height:1.3;white-space:nowrap;}
+    .ft-btn{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,0.22);border-radius:6px;background:transparent;color:#f0f0f0;text-decoration:none;cursor:pointer;transition:border-color .2s,color .2s;padding:0;box-sizing:border-box;flex-shrink:0;}
+    .ft-btn:hover{border-color:#FF7F00;color:#FF7F00;}
+    .ft-bottom{font-size:0.68rem;opacity:0.5;text-align:center;margin:0;padding:0;line-height:1.5;white-space:normal;}
+    @media(max-width:900px){
+      #footer{padding:20px 24px 16px;}
+      .ft-top{flex-wrap:wrap;justify-content:center;gap:12px;}
+      .ft-left{align-items:center;width:100%;justify-content:center;}
+      .ft-tagline{white-space:normal;text-align:center;}
+      .ft-center{justify-content:center;}
+      .ft-right{width:auto;}
+    }
+    @media(max-width:480px){
+      .ft-top{flex-direction:column;align-items:center;}
+      .ft-right{width:100%;justify-content:center;}
+    }
+    </style>
+</head>
+<body>
+<div class="util">
+  <div style="display:flex;align-items:center;gap:1.25rem;">
+    <a href="../../index.html#portfolio" class="back-link"><span data-i18n="back">< Portafolio</span></a>
+  </div>
+  <div class="util-center">
+    <a href="../../index.html"><img src="../../imgs/FullLogo.svg" alt="WebExpressCR" height="44" style="filter:brightness(0) invert(1);"></a>
+  </div>
+  <div class="util-r">
+    <button class="lgb" id="lng">EN</button>
+    <div class="icb" id="thm"><i data-lucide="sun" width="15" height="15" id="si"></i><i data-lucide="moon" width="15" height="15" id="mi" style="display:none"></i></div>
+  </div>
+</div>
+
+<!-- Hero split -->
+<section class="hero">
+  <div class="hero-img">
+    <img src="imgs/hero.jpg" alt="Studio Camille" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;display:block;">
+    <span class="est-badge" style="position:relative;z-index:2;">Est. 2019</span>
+  </div>
+  <div class="hero-text">
+    <p class="hero-label" data-i18n="label">Salón de belleza · Escazú, San José</p>
+    <h1 class="hero-name">Studio<br><em>Camille</em></h1>
+    <p class="hero-tagline" data-i18n="tagline">Donde el estilo es tuyo. Un espacio pensado para revelar tu mejor versión.</p>
+    <div class="hero-ctas">
+      <a href="#reservar" class="btn-gold"><i data-lucide="calendar" width="14" height="14"></i><span data-i18n="c1">Reservar cita</span></a>
+      <a href="#servicios" class="btn-ghost"><span data-i18n="c2">Ver servicios</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- Services -->
+<section class="section" id="servicios">
+  <div class="wrap">
+    <p class="s-label" data-i18n="sl">Servicios</p>
+    <h2 class="s-head" data-i18n="sh">Lo que <em>ofrecemos</em></h2>
+    <div class="svc-list">
+      <div class="svc-row"><div class="svc-name" data-i18n="sv1">Corte de cabello</div><div class="svc-dur" data-i18n="sv1d">45 min</div><div class="svc-price">₡18,000</div></div>
+      <div class="svc-row"><div class="svc-name" data-i18n="sv2">Tinte y coloración</div><div class="svc-dur" data-i18n="sv2d">120 min</div><div class="svc-price">₡45,000+</div></div>
+      <div class="svc-row"><div class="svc-name" data-i18n="sv3">Tratamiento capilar</div><div class="svc-dur" data-i18n="sv3d">60 min</div><div class="svc-price">₡22,000</div></div>
+      <div class="svc-row"><div class="svc-name" data-i18n="sv4">Alisado keratin</div><div class="svc-dur" data-i18n="sv4d">150 min</div><div class="svc-price">₡85,000</div></div>
+      <div class="svc-row"><div class="svc-name" data-i18n="sv5">Maquillaje profesional</div><div class="svc-dur" data-i18n="sv5d">75 min</div><div class="svc-price">₡30,000</div></div>
+      <div class="svc-row"><div class="svc-name" data-i18n="sv6">Manicure y pedicure</div><div class="svc-dur" data-i18n="sv6d">90 min</div><div class="svc-price">₡25,000</div></div>
+      <div class="svc-row"><div class="svc-name" data-i18n="sv7">Extensiones de cabello</div><div class="svc-dur" data-i18n="sv7d">180 min</div><div class="svc-price">₡120,000+</div></div>
+      <div class="svc-row"><div class="svc-name" data-i18n="sv8">Depilación cera</div><div class="svc-dur" data-i18n="sv8d">30 min</div><div class="svc-price">₡12,000</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Gallery / Before-After -->
+<section class="section gal-section" id="galeria">
+  <div class="wrap">
+    <p class="s-label" data-i18n="gl">Galería</p>
+    <h2 class="s-head" data-i18n="gh">Antes y <em>después</em></h2>
+    <div class="before-after-pair">
+      <div class="ba-panel">
+        <img src="imgs/antes.jpg" alt="Antes" style="width:100%;height:280px;object-fit:cover;object-position:left center;border-radius:8px;">
+        <span class="ba-label" data-i18n="before">Antes</span>
+      </div>
+      <div class="ba-panel">
+        <img src="imgs/despues.jpg" alt="Después" style="width:100%;height:280px;object-fit:cover;object-position:right center;border-radius:8px;">
+        <span class="ba-label" data-i18n="after">Después</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Team -->
+<section class="section" id="equipo">
+  <div class="wrap">
+    <p class="s-label" data-i18n="tl">Equipo</p>
+    <h2 class="s-head" data-i18n="th">Nuestros <em>estilistas</em></h2>
+    <div class="team-row">
+      <div class="stylist">
+        <div class="avatar av1">
+          <img src="imgs/equipo-1.jpg" style="width:90px;height:90px;border-radius:50%;object-fit:cover;" alt="Estilista 1">
+        </div>
+        <div class="stylist-name">Camille Mora</div>
+        <div class="stylist-spec" data-i18n="sp1">directora · coloración</div>
+      </div>
+      <div class="stylist">
+        <div class="avatar av2">
+          <img src="imgs/equipo-2.jpg" style="width:90px;height:90px;border-radius:50%;object-fit:cover;" alt="Estilista 2">
+        </div>
+        <div class="stylist-name">Raquel Arias</div>
+        <div class="stylist-spec" data-i18n="sp2">cortes · alisados</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Booking -->
+<section class="section book-section" id="reservar">
+  <div class="wrap">
+    <p class="s-label" data-i18n="rl">Reservaciones</p>
+    <h2 class="s-head" data-i18n="rh">Agenda tu <em>cita</em></h2>
+    <div class="book-grid">
+      <div class="book-info">
+        <p data-i18n="ri1">Atendemos con cita previa de lunes a sábado. Selecciona el servicio de tu interés y uno de nuestros estilistas te confirmará disponibilidad en menos de 2 horas.</p>
+        <p data-i18n="ri2">Para grupos o servicios de novia, contáctanos directamente.</p>
+        <div class="wapp-row">
+          <i data-lucide="message-circle" width="20" height="20"></i>
+          <div>
+            <div style="font-size:.7rem;color:var(--mut);letter-spacing:.1em" data-i18n="wlbl">WhatsApp</div>
+            <span style="font-weight:700">+506 2288-4455</span>
+          </div>
+        </div>
+      </div>
+      <form onsubmit="onF(event)" novalidate>
+        <div class="fl-group">
+          <input class="fl-input" type="text" placeholder=" " required id="sc-name" autocomplete="name">
+          <label class="fl-label" data-i18n="fn">Nombre completo<span aria-hidden="true" style="color: var(--acc); margin-left: 2px;">*</span></label>
+          <span class="field-error" id="sc-err-name"></span>
+        </div>
+        <div class="fl-group">
+          <input class="fl-input" type="tel" placeholder=" " id="phoneInput" inputmode="numeric" pattern="[0-9]*" maxlength="8" autocomplete="tel">
+          <label class="fl-label" data-i18n="fph">Teléfono</label>
+        </div>
+        <div class="fl-group">
+          <div class="fl-select-wrap">
+            <select class="fl-select" id="sc-service" autocomplete="off">
+              <option value="" data-i18n="fsv0">Servicio de interés</option>
+              <option data-i18n="fsv1">Corte de cabello</option>
+              <option data-i18n="fsv2">Tinte y coloración</option>
+              <option data-i18n="fsv3">Tratamiento capilar</option>
+              <option data-i18n="fsv4">Alisado keratin</option>
+              <option data-i18n="fsv5">Maquillaje profesional</option>
+              <option data-i18n="fsv6">Manicure y pedicure</option>
+            
+<option value="otro" data-i18n="form.other">Otro</option>
+</select>
+            <svg style="position:absolute;right:0.85rem;top:50%;transform:translateY(-50%);pointer-events:none;z-index:1;color:currentColor;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+        </div>
+        <div class="fl-group">
+          <label style="font-size:.68rem;font-weight:700;letter-spacing:.08em;color:var(--acc);display:block;margin-bottom:.35rem;" data-i18n="fdt">Fecha preferida<span aria-hidden="true" style="color:var(--acc);margin-left:2px;">*</span></label>
+          <div class="date-wrapper">
+            <input class="fl-input" type="date" placeholder=" " id="sc-date" required autocomplete="off" style="padding-top:.4rem;padding-bottom:.4rem;">
+            <svg class="cal-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" onclick="this.previousElementSibling.showPicker?this.previousElementSibling.showPicker():this.previousElementSibling.focus()"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </div>
+          <span class="field-error" id="sc-err-date"></span>
+        </div>
+        <button type="submit" class="btn-gold" style="width:100%;justify-content:center;margin-top:.5rem">
+          <i data-lucide="calendar-check" width="15" height="15"></i>
+          <span data-i18n="fsub">Solicitar cita</span>
+        </button>
+        <p class="form-disc-note" id="form-disc-sc" style="font-size:0.72rem;opacity:0.6;text-align:center;margin-top:8px;"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer id="footer">
+  <div class="ft-inner">
+
+    <div class="ft-top">
+      <div class="ft-left">
+        <img src="../../imgs/FullLogo.svg" alt="WebExpressCR" class="ft-logo">
+      </div>
+      <div class="ft-center">
+        <a href="https://www.instagram.com/webexpresscr/" class="ft-btn" aria-label="Instagram">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/company/webexpresscr" class="ft-btn" aria-label="LinkedIn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+        <a href="https://www.facebook.com/webexpresscr" class="ft-btn" aria-label="Facebook">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+        <a href="https://wa.me/50670553656" target="_blank" class="ft-btn" aria-label="WhatsApp">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M20.52 3.48A11.93 11.93 0 0 0 12 0C5.37 0 0 5.37 0 12c0 2.11.55 4.16 1.6 5.97L0 24l6.19-1.62A11.94 11.94 0 0 0 12 24c6.63 0 12-5.37 12-12 0-3.2-1.25-6.21-3.48-8.52zm-8.52 18.4a9.9 9.9 0 0 1-5.05-1.38l-.36-.21-3.73.98.99-3.63-.24-.38A9.9 9.9 0 0 1 2.1 12c0-5.46 4.44-9.9 9.9-9.9 2.65 0 5.13 1.03 7 2.9a9.87 9.87 0 0 1 2.9 7c0 5.46-4.44 9.9-9.9 9.9zm5.43-7.4c-.3-.15-1.77-.87-2.04-.97-.28-.1-.48-.15-.68.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.68-1.63-.93-2.23-.24-.59-.49-.51-.68-.52h-.58c-.2 0-.52.07-.79.37-.27.3-1.03 1.01-1.03 2.46s1.06 2.85 1.2 3.05c.15.2 2.08 3.18 5.04 4.46.7.3 1.25.48 1.68.62.71.22 1.35.19 1.86.12.57-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35z"/></svg>
+        </a>
+        <a href="mailto:webexpresscr@gmail.com" class="ft-btn" aria-label="Email">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </a>
+      </div>
+      <div class="ft-right">
+        <button class="ft-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Volver arriba">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <p class="ft-bottom" data-i18n="footer.disclaimer"></p>
+
+  </div>
+</footer>
+
+<script>
+const html=document.documentElement;
+const T={
+es:{back:'< Portafolio',label:'Salón de belleza · Escazú, San José',tagline:'Donde el estilo es tuyo. Un espacio pensado para revelar tu mejor versión.',c1:'Reservar cita',c2:'Ver servicios',sl:'Servicios',sh:'Lo que <em>ofrecemos</em>',sv1:'Corte de cabello',sv1d:'45 min',sv2:'Tinte y coloración',sv2d:'120 min',sv3:'Tratamiento capilar',sv3d:'60 min',sv4:'Alisado keratin',sv4d:'150 min',sv5:'Maquillaje profesional',sv5d:'75 min',sv6:'Manicure y pedicure',sv6d:'90 min',sv7:'Extensiones de cabello',sv7d:'180 min',sv8:'Depilación cera',sv8d:'30 min',gl:'Galería',gh:'Antes y <em>después</em>',before:'Antes',after:'Después',ba1:'Tinte — balayage caramelo',ba2:'Corte + alisado keratin',ba3:'Maquillaje novia',ba4:'Coloración — rubio platino',tl:'Equipo',th:'Nuestros <em>estilistas</em>',sp1:'directora · coloración',sp2:'cortes · alisados',sp3:'maquillaje · novias',sp4:'extensiones · keratin',rl:'Reservaciones',rh:'Agenda tu <em>cita</em>',ri1:'Atendemos con cita previa de lunes a sábado. Selecciona el servicio de tu interés y uno de nuestros estilistas te confirmará disponibilidad en menos de 2 horas.',ri2:'Para grupos o servicios de novia, contáctanos directamente.',wlbl:'WhatsApp',fn:'Nombre completo',fph:'Teléfono',fsv0:'Servicio de interés',fsv1:'Corte de cabello',fsv2:'Tinte y coloración',fsv3:'Tratamiento capilar',fsv4:'Alisado keratin',fsv5:'Maquillaje profesional',fsv6:'Manicure y pedicure',fdt:'Fecha preferida',fsub:'Solicitar cita',fc:'Sitio creado por',fcopy:'© 2026 WebExpressCR. Todos los derechos reservados.',fdisclaim1:'Sitio con fines demostrativos: Ninguna transacción será procesada ni ningún dato almacenado.',fdisclaim2:'Las imágenes utilizadas pertenecen a sus respectivos autores y se usan únicamente con fines ilustrativos.',formdisc:'Sitio con fines demostrativos: Ninguna transacción será procesada ni ningún dato almacenado.',errReq:'Este campo es obligatorio.',errDate:'Seleccioná una fecha válida.',errSel:'Seleccioná una opción.','form.other':'Otro','footer.tagline':'Creación de páginas web · Costa Rica','footer.disclaimer':'Sitio con fines demostrativos: Ninguna transacción será procesada ni ningún dato almacenado.  © 2026 WebExpressCR. Todos los derechos reservados.  Las imágenes utilizadas pertenecen a sus respectivos autores y se usan únicamente con fines ilustrativos.'},
+en:{back:'< Portfolio',label:'Beauty salon · Escazú, San José',tagline:'Where style is yours. A space designed to bring out your best self.',c1:'Book appointment',c2:'View services',sl:'Services',sh:'What we <em>offer</em>',sv1:'Haircut',sv1d:'45 min',sv2:'Color & tinting',sv2d:'120 min',sv3:'Hair treatment',sv3d:'60 min',sv4:'Keratin straightening',sv4d:'150 min',sv5:'Professional makeup',sv5d:'75 min',sv6:'Manicure & pedicure',sv6d:'90 min',sv7:'Hair extensions',sv7d:'180 min',sv8:'Wax hair removal',sv8d:'30 min',gl:'Gallery',gh:'Before & <em>after</em>',before:'Before',after:'After',ba1:'Color — caramel balayage',ba2:'Haircut + keratin',ba3:'Bridal makeup',ba4:'Color — platinum blonde',tl:'Team',th:'Our <em>stylists</em>',sp1:'director · color',sp2:'cuts · straightening',sp3:'makeup · bridal',sp4:'extensions · keratin',rl:'Booking',rh:'Schedule your <em>appointment</em>',ri1:'We see clients by appointment, Monday through Saturday. Choose your service and one of our stylists will confirm availability within 2 hours.',ri2:'For groups or bridal services, contact us directly.',wlbl:'WhatsApp',fn:'Full name',fph:'Phone',fsv0:'Service of interest',fsv1:'Haircut',fsv2:'Color & tinting',fsv3:'Hair treatment',fsv4:'Keratin straightening',fsv5:'Professional makeup',fsv6:'Manicure & pedicure',fdt:'Preferred date',fsub:'Request appointment',fc:'Site built by',fcopy:'© 2026 WebExpressCR. All rights reserved.',fdisclaim1:'Demonstration site: No transactions will be processed or data stored.',fdisclaim2:'Images used belong to their respective authors and are used for illustrative purposes only.',formdisc:'Demonstration site: No transactions will be processed or data stored.',errReq:'This field is required.',errDate:'Please select a valid date.',errSel:'Please select an option.','form.other':'Other','footer.tagline':'Web development · Costa Rica','footer.disclaimer':'Demonstration site: No transactions will be processed or data stored.  © 2026 WebExpressCR. All rights reserved.  Images used belong to their respective authors and are used for illustrative purposes only.'}
+};
+let lg=localStorage.getItem('sc-lang')||'es',th=localStorage.getItem('sc-theme')||'dark';
+html.className=th;
+function upTh(){const d=html.classList.contains('dark');document.getElementById('si').style.display=d?'block':'none';document.getElementById('mi').style.display=d?'none':'block';}
+upTh();
+document.getElementById('thm').addEventListener('click',()=>{th=th==='dark'?'light':'dark';html.className=th;localStorage.setItem('sc-theme',th);upTh();});
+function applyL(l){document.getElementById('lng').textContent=l==='es'?'EN':'ES';document.querySelectorAll('[data-i18n]').forEach(e=>{const k=e.getAttribute('data-i18n');if(T[l][k]!==undefined)e.innerHTML=T[l][k];});const fd=document.getElementById('form-disc-sc');if(fd)fd.textContent=T[l].formdisc;lucide.createIcons();}
+applyL(lg);
+document.getElementById('lng').addEventListener('click',()=>{lg=lg==='es'?'en':'es';localStorage.setItem('sc-lang',lg);applyL(lg);});
+function showErr(id,msg){const el=document.getElementById(id);if(el){el.textContent=msg;el.classList.add('visible');}}
+function clearErr(id){const el=document.getElementById(id);if(el){el.textContent='';el.classList.remove('visible');}}
+function onF(e){e.preventDefault();let ok=true;const nm=document.getElementById('sc-name');const dt=document.getElementById('sc-date');if(nm){nm.addEventListener('input',()=>clearErr('sc-err-name'),{once:true});if(!nm.value.trim()){showErr('sc-err-name',T[lg].errReq);ok=false;}}if(dt){dt.addEventListener('change',()=>clearErr('sc-err-date'),{once:true});if(!dt.value){showErr('sc-err-date',T[lg].errDate);ok=false;}}if(!ok)return;const msg=lg==='es'?'Tu cita ha sido agendada con éxito.':'Your appointment has been booked successfully.';showToast(msg,'var(--acc)');e.target.reset();}
+(function(){const el=document.getElementById('phoneInput');if(el){el.addEventListener('input',()=>{el.value=el.value.replace(/[^0-9]/g,'').slice(0,8);});}})();
+function showToast(msg, accent) {
+  var ac = accent || 'var(--acc, #FF7F00)';
+  var t = document.createElement('div');
+  t.style.cssText = 'position:fixed;bottom:24px;left:24px;z-index:9999;background:' + ac + ';color:#fff;border-radius:8px;padding:14px 20px;box-shadow:0 4px 16px rgba(0,0,0,.25);display:flex;align-items:center;gap:8px;opacity:0;transition:opacity .5s ease;pointer-events:none;font-size:.9rem;font-family:inherit;max-width:420px;';
+  t.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11"/></svg><span>' + msg + '</span>';
+  document.body.appendChild(t);
+  requestAnimationFrame(function(){ t.style.opacity = '1'; });
+  setTimeout(function(){ t.style.opacity = '0'; setTimeout(function(){ t.remove(); }, 500); }, 4000);
+}
+lucide.createIcons();
+
+// ── Date range enforcement ──
+document.addEventListener('DOMContentLoaded', function() {
+  var dateIds = [{id:"sc-date",errId:"sc-err-date"}];
+  function getToday() {
+    return new Date().toISOString().split('T')[0];
+  }
+  function getMaxDate() {
+    var d = new Date();
+    d.setFullYear(d.getFullYear() + 1);
+    return d.toISOString().split('T')[0];
+  }
+  dateIds.forEach(function(cfg) {
+    var el = document.getElementById(cfg.id);
+    if (!el) return;
+    var errEl = cfg.errId ? document.getElementById(cfg.errId) : null;
+    el.min = getToday();
+    el.max = getMaxDate();
+    function validate() {
+      var today = getToday();
+      var max = getMaxDate();
+      var lang = (document.documentElement.lang || 'es');
+      if (!el.value) return;
+      if (el.value < today) {
+        var msg = lang === 'en' ? 'Past dates cannot be selected.' : 'No se pueden seleccionar fechas pasadas.';
+        if (errEl) { errEl.textContent = msg; errEl.classList.add('visible'); errEl.style.display = 'block'; }
+        el.setCustomValidity(msg);
+      } else if (el.value > max) {
+        var msg2 = lang === 'en' ? 'The date cannot be more than one year from today.' : 'La fecha no puede ser mayor a un año desde hoy.';
+        if (errEl) { errEl.textContent = msg2; errEl.classList.add('visible'); errEl.style.display = 'block'; }
+        el.setCustomValidity(msg2);
+      } else {
+        if (errEl) { errEl.textContent = ''; errEl.classList.remove('visible'); errEl.style.display = ''; }
+        el.setCustomValidity('');
+      }
+    }
+    el.addEventListener('change', validate);
+    el.addEventListener('input', validate);
+  });
+});
+</script>
+</body>
+</html>

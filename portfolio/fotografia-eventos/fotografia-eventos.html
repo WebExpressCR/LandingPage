@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Luz & Frame — Fotografía de Eventos</title>
+  <meta name="description" content="Fotógrafo de eventos en Costa Rica. Bodas, quinceaños, corporativos y conciertos. Cotizá tu evento." />
+  <link rel="icon" type="image/svg+xml" href="../../imgs/SmallLogo.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,300;0,6..96,400;0,6..96,700;1,6..96,300;1,6..96,400&family=Lato:ital,wght@0,300;0,400;0,700;1,300;1,400&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    /* ── Variables ── */
+    html.light {
+      --bg: #fdfaf7;
+      --surface: #ffffff;
+      --text: #2c2218;
+      --text-muted: #7a6a58;
+      --accent: #c07a4a;
+      --accent-hover: #a86035;
+      --secondary: #8faa8b;
+      --border: #e8ddd0;
+      --divider: rgba(192,122,74,0.2);
+      --glass-bg: rgba(253,250,247,0.92);
+    }
+    html.dark {
+      --bg: #1e1710;
+      --surface: #2e2318;
+      --text: #f5ede0;
+      --text-muted: #a09070;
+      --accent: #d4956e;
+      --accent-hover: #e0aa88;
+      --secondary: #a8c3a4;
+      --border: #3e3020;
+      --divider: rgba(212,149,110,0.2);
+      --glass-bg: rgba(30,23,16,0.92);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    ::selection { background: rgba(212, 149, 110, 0.25); color: inherit; }
+    body {
+      font-family: 'Lato', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      overflow-x: hidden;
+      transition: background 0.3s, color 0.3s;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    button { cursor: pointer; font-family: inherit; }
+    input, textarea, select { font-family: 'Lato', sans-serif; }
+
+    .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+    section { padding: 6rem 0; }
+
+    /* ── Navbar ── */
+    #navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--divider);
+      transition: background 0.3s;
+    }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 76px; padding: 0 2rem; max-width: 1200px; margin: 0 auto;
+    }
+    .nav-logo img.full { display: block; }
+    .nav-logo img.small { display: none; }
+    .nav-controls { display: flex; align-items: center; gap: 0.5rem; }
+    .nav-btn {
+      display: flex; align-items: center; gap: 0.3rem;
+      padding: 0.4rem 0.8rem;
+      font-size: 0.78rem; font-weight: 400; letter-spacing: 0.08em;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      border-radius: 2px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .nav-btn:hover { border-color: var(--accent); color: var(--accent); }
+    @media(max-width: 767px) {
+      .nav-logo img.full { display: none; }
+      .nav-logo img.small { display: block; }
+    }
+
+    /* ── Back bar ── */
+    .back-bar { padding: 5rem 0 0; }
+    .back-link {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.78rem; letter-spacing: 0.06em;
+      color: var(--text-muted);
+      padding: 0.5rem 0.8rem;
+      margin: 0.75rem 0;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+    .back-link:hover { color: var(--accent); border-color: var(--accent); }
+
+    /* ── Section header ── */
+    .section-header { text-align: center; margin-bottom: 4rem; }
+    .section-mark {
+      display: block;
+      font-size: 0.72rem; font-weight: 400; letter-spacing: 0.2em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .section-title {
+      font-family: 'Bodoni Moda', Georgia, serif;
+      font-size: clamp(2rem, 4.5vw, 3.2rem);
+      font-weight: 300;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      margin-bottom: 1rem;
+      line-height: 1.15;
+    }
+    .section-sub {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      max-width: 480px;
+      margin: 0 auto;
+      font-weight: 300;
+    }
+
+    /* ── Hero ── */
+    #hero {
+      min-height: 92vh;
+      display: flex;
+      align-items: center;
+      padding: 6rem 0;
+      border-bottom: 1px solid var(--divider);
+      position: relative;
+    }
+    .hero-label {
+      font-size: 0.72rem; letter-spacing: 0.2em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+      font-weight: 400;
+    }
+    .hero-title {
+      font-family: 'Bodoni Moda', Georgia, serif;
+      font-size: clamp(3.5rem, 9vw, 7rem);
+      font-weight: 300;
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+      margin-bottom: 2rem;
+    }
+    .hero-title .amp {
+      color: var(--accent);
+      font-style: italic;
+      font-weight: 300;
+    }
+    .hero-tagline {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 440px;
+      margin-bottom: 3rem;
+      font-weight: 300;
+      line-height: 1.8;
+    }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.75rem 2rem;
+      font-size: 0.85rem; font-weight: 400; letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-radius: 2px;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+    .btn-outline-accent {
+      background: transparent;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+    }
+    .btn-outline-accent:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+    .btn-ghost:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .hero-scroll {
+      position: absolute; bottom: 2.5rem; right: 2rem;
+      display: flex; align-items: center; gap: 0.75rem;
+      font-size: 0.68rem; letter-spacing: 0.15em;
+      color: var(--text-muted); text-transform: uppercase;
+    }
+    .hero-scroll-line { width: 50px; height: 1px; background: var(--border); }
+
+    /* ── Gallery ── */
+    #gallery { background: var(--surface); border-bottom: 1px solid var(--divider); }
+    .gallery-tabs {
+      display: flex; gap: 0.5rem; flex-wrap: wrap;
+      justify-content: center; margin-bottom: 3rem;
+    }
+    .gtab {
+      min-height: 44px;
+      padding: 0 24px;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em;
+      color: var(--text-muted); background: none;
+      cursor: pointer; transition: all 0.3s;
+      display: inline-flex; align-items: center; justify-content: center;
+      white-space: nowrap;
+    }
+    .gtab.active, .gtab:hover { border-color: var(--accent); color: var(--accent); }
+    [data-filter].active { border-color: var(--accent); background: rgba(192,122,74,0.1); color: var(--accent); }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+    .gallery-card {
+      border: 1px solid var(--border);
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+      transition: border-color 0.3s;
+    }
+    .gallery-card:hover { border-color: var(--accent); }
+    .gallery-card:hover .gallery-overlay { opacity: 1; }
+    .gallery-card:nth-child(3n+1) { grid-row: span 2; }
+    .gallery-placeholder {
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      width: 100%; height: 100%;
+      min-height: 200px;
+    }
+    .gallery-placeholder i { opacity: 0.25; }
+    .gallery-overlay {
+      position: absolute; inset: 0;
+      background: rgba(44,34,24,0.55);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 0.4rem; opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .gallery-cat { font-size: 0.65rem; letter-spacing: 0.15em; color: var(--accent); text-transform: uppercase; }
+    .gallery-name { font-family: 'Bodoni Moda', serif; font-size: 1rem; font-weight: 300; color: #fff; font-style: italic; }
+    @media(max-width: 768px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); } .gallery-card:nth-child(3n+1) { grid-row: auto; } }
+    @media(max-width: 480px) { .gallery-grid { grid-template-columns: 1fr; } }
+
+    /* ── Packages ── */
+    #packages { border-bottom: 1px solid var(--divider); }
+    .pkg-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; align-items: start; }
+    .pkg-card {
+      border: 1px solid var(--border);
+      padding: 2.5rem 2rem;
+      transition: border-color 0.3s;
+      background: var(--surface);
+    }
+    .pkg-card:hover { border-color: var(--accent); }
+    .pkg-card.featured { border-color: var(--accent); }
+    .pkg-card.featured .pkg-price { color: var(--accent); }
+    .pkg-badge { font-size: 0.68rem; letter-spacing: 0.15em; color: var(--accent); text-transform: uppercase; margin-bottom: 1rem; }
+    .pkg-name {
+      font-family: 'Bodoni Moda', serif;
+      font-size: 1.6rem; font-weight: 300;
+      margin-bottom: 1rem;
+    }
+    .pkg-price {
+      font-family: 'Bodoni Moda', serif;
+      font-size: 2rem; font-weight: 300;
+      color: var(--text); margin-bottom: 0.25rem;
+      letter-spacing: -0.02em;
+    }
+    .pkg-price span { font-size: 0.85rem; font-family: 'Lato', sans-serif; color: var(--text-muted); font-weight: 300; }
+    .pkg-divider { height: 1px; background: var(--divider); margin: 1.5rem 0; }
+    .pkg-features { list-style: none; }
+    .pkg-feature {
+      display: flex; align-items: flex-start; gap: 0.75rem;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--divider);
+      font-size: 0.88rem;
+      color: var(--text-muted); font-weight: 300;
+    }
+    .pkg-feature:last-child { border-bottom: none; }
+    .pkg-feature i { color: var(--secondary); flex-shrink: 0; margin-top: 0.1rem; }
+    @media(max-width: 768px) { .pkg-grid { grid-template-columns: 1fr; } }
+
+    /* ── About ── */
+    #about { background: var(--surface); border-bottom: 1px solid var(--divider); }
+    .about-layout { display: grid; grid-template-columns: 1fr 1.4fr; gap: 5rem; align-items: center; }
+    .about-visual {
+      aspect-ratio: 3/4;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+    }
+    .about-visual i { opacity: 0.18; color: var(--accent); }
+    .about-text h2 {
+      font-family: 'Bodoni Moda', serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 300; line-height: 1.2;
+      margin-bottom: 1.5rem;
+    }
+    .about-text h2 em { font-style: italic; color: var(--accent); }
+    .about-text p { color: var(--text-muted); font-weight: 300; margin-bottom: 1rem; line-height: 1.9; }
+    .about-divider { height: 1px; background: var(--divider); margin: 2rem 0; }
+    .about-stats { display: flex; gap: 3rem; flex-wrap: wrap; }
+    .stat { }
+    .stat-num { font-family: 'Bodoni Moda', serif; font-size: 2.4rem; font-weight: 300; color: var(--accent); line-height: 1; }
+    .stat-label { font-size: 0.7rem; letter-spacing: 0.1em; color: var(--text-muted); text-transform: uppercase; margin-top: 0.25rem; }
+    @media(max-width: 768px) { .about-layout { grid-template-columns: 1fr; } .about-visual { display: none; } }
+
+    /* ── Quote ── */
+    #quote { border-bottom: 1px solid var(--divider); }
+    .quote-form {
+      max-width: 760px; margin: 0 auto;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 3rem;
+    }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+    .form-group.full { grid-column: span 2; }
+    .form-group label { font-size: 0.72rem; letter-spacing: 0.1em; color: var(--text-muted); text-transform: uppercase; }
+    .form-group input, .form-group select, .form-group textarea {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 0.75rem 1rem;
+      color: var(--text);
+      font-size: 0.9rem;
+      font-weight: 300;
+      border-radius: 2px;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+    .form-group select {
+      appearance: none;
+      -webkit-appearance: none;
+      padding-right: 2.5rem;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.85rem center;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--accent); }
+    .form-group select option { background: var(--surface); }
+    .form-group textarea { resize: vertical; min-height: 110px; font-family: 'Lato', sans-serif; }
+    .form-submit { margin-top: 0.5rem; }
+    @media(max-width: 600px) { .form-grid { grid-template-columns: 1fr; } .form-group.full { grid-column: auto; } .quote-form { padding: 1.5rem; } }
+    .date-wrapper { position: relative; display: flex; align-items: center; }
+    .date-wrapper input[type="date"] { padding-right: 2.5rem; width: 100%; color-scheme: light; }
+    html.dark .date-wrapper input[type="date"] { color-scheme: dark; }
+    .date-wrapper input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0; position: absolute; right: 0; width: 2.5rem; height: 100%; cursor: pointer; }
+    .cal-icon { position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; cursor: pointer; pointer-events: all; }
+            /* ── Footer ── */
+    #footer{background:#0a0a0a;border-top:1px solid rgba(255,255,255,0.08);padding:24px 48px 20px;color:#f0f0f0;}
+    #footer>div{max-width:1200px;margin:0 auto;}
+    .ft-inner{display:flex;flex-direction:column;gap:16px;}
+    .ft-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:nowrap;gap:16px;}
+    .ft-left{display:flex;flex-direction:column;align-items:flex-start;gap:4px;flex:0 0 auto;min-width:0;}
+    .ft-center{display:flex;align-items:center;gap:10px;flex:1;justify-content:center;}
+    .ft-right{display:flex;align-items:center;justify-content:flex-end;flex:0 0 auto;}
+    .ft-logo{height:32px;filter:brightness(0) invert(1);display:block;}
+    .ft-tagline{font-size:0.68rem;opacity:0.5;line-height:1.3;white-space:nowrap;}
+    .ft-btn{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,0.22);border-radius:6px;background:transparent;color:#f0f0f0;text-decoration:none;cursor:pointer;transition:border-color .2s,color .2s;padding:0;box-sizing:border-box;flex-shrink:0;}
+    .ft-btn:hover{border-color:#FF7F00;color:#FF7F00;}
+    .ft-bottom{font-size:0.68rem;opacity:0.5;text-align:center;margin:0;padding:0;line-height:1.5;white-space:normal;}
+    @media(max-width:900px){
+      #footer{padding:20px 24px 16px;}
+      .ft-top{flex-wrap:wrap;justify-content:center;gap:12px;}
+      .ft-left{align-items:center;width:100%;justify-content:center;}
+      .ft-tagline{white-space:normal;text-align:center;}
+      .ft-center{justify-content:center;}
+      .ft-right{width:auto;}
+    }
+    @media(max-width:480px){
+      .ft-top{flex-direction:column;align-items:center;}
+      .ft-right{width:100%;justify-content:center;}
+    }
+    </style>
+</head>
+<body>
+
+<header id="navbar" style="backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);">
+  <div class="nav-inner" style="position:relative;">
+    <a href="../../index.html#portfolio" id="back-nav-link" style="font-size:.8rem;color:var(--text-muted);text-decoration:none;white-space:nowrap;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text-muted)'">< Portafolio</a>
+    <a href="../../index.html" style="position:absolute;left:50%;transform:translateX(-50%);">
+      <img src="../../imgs/FullLogo.svg" alt="WebExpressCR" height="44" style="filter:brightness(0) invert(1);" />
+    </a>
+    <div class="nav-controls">
+      <button class="nav-btn" id="langToggle"><i data-lucide="globe" width="14" height="14"></i><span id="langLabel">EN</span></button>
+      <button class="nav-btn" id="themeToggle"><i data-lucide="sun" width="14" height="14" id="themeIcon"></i></button>
+    </div>
+  </div>
+</header>
+
+<section id="hero" style="overflow:hidden;">
+  <img src="imgs/hero.jpg" alt="Luz y Frame fotografía de eventos" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;display:block;">
+  <div style="position:absolute;inset:0;background:rgba(0,0,0,0.65);z-index:1;"></div>
+  <div style="position:relative;z-index:2;width:100%;">
+  <div class="container">
+    <p class="hero-label" data-i18n="hero.label">Fotografía de eventos · San José, Costa Rica</p>
+    <h1 class="hero-title">Luz <span class="amp">&</span><br>Frame</h1>
+    <p class="hero-tagline" data-i18n="hero.tagline">Capturamos los momentos que importan. Bodas, quinceaños, corporativos y conciertos.</p>
+    <div class="hero-actions">
+      <a href="#quote" class="btn btn-outline-accent"><i data-lucide="file-text" width="15" height="15"></i><span data-i18n="hero.cta1">Solicitar cotización</span></a>
+      <a href="#gallery" class="btn btn-ghost" data-i18n="hero.cta2">Ver galería</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="hero-scroll-line"></div>
+  </div>
+  </div>
+</section>
+
+<section id="gallery">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-mark" data-i18n="gal.mark">Portafolio</span>
+      <h2 class="section-title" data-i18n="gal.title">Trabajos recientes</h2>
+      <p class="section-sub" data-i18n="gal.sub">Cada evento, una historia única.</p>
+    </div>
+    <div class="gallery-tabs">
+      <button class="gtab" data-filter="all" data-i18n="gal.all">Todo</button>
+      <button class="gtab" data-filter="bodas" data-i18n="gal.bodas">Bodas</button>
+      <button class="gtab" data-filter="quinces" data-i18n="gal.quince">Quinceaños</button>
+      <button class="gtab" data-filter="corporativos" data-i18n="gal.corp">Corporativos</button>
+      <button class="gtab" data-filter="conciertos" data-i18n="gal.concerts">Conciertos</button>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-card" data-category="bodas"><div class="gallery-placeholder" style="min-height:420px;overflow:hidden;padding:0;"><img src="imgs/galeria-boda-1.jpg" alt="Boda Sofía y Andrés" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;min-height:420px;"></div><div class="gallery-overlay"><span class="gallery-cat" data-i18n="gal.bodas">Bodas</span><span class="gallery-name" data-i18n="gal.e1">Sofía & Andrés</span></div></div>
+      <div class="gallery-card" data-category="quinces"><div class="gallery-placeholder" style="min-height:200px;overflow:hidden;padding:0;"><img src="imgs/galeria-quinces-1.jpg" alt="Quinceaños Valentina" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;min-height:200px;"></div><div class="gallery-overlay"><span class="gallery-cat" data-i18n="gal.quince">Quinceaños</span><span class="gallery-name" data-i18n="gal.e2">Valentina, 15 años</span></div></div>
+      <div class="gallery-card" data-category="corporativos"><div class="gallery-placeholder" style="min-height:200px;overflow:hidden;padding:0;"><img src="imgs/galeria-corporativo-1.jpg" alt="Lanzamiento de producto" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;min-height:200px;"></div><div class="gallery-overlay"><span class="gallery-cat" data-i18n="gal.corp">Corporativos</span><span class="gallery-name" data-i18n="gal.e3">Lanzamiento de producto</span></div></div>
+      <div class="gallery-card" data-category="conciertos"><div class="gallery-placeholder" style="min-height:200px;overflow:hidden;padding:0;"><img src="imgs/galeria-concierto-1.jpg" alt="Festival de música" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;min-height:200px;"></div><div class="gallery-overlay"><span class="gallery-cat" data-i18n="gal.concerts">Conciertos</span><span class="gallery-name" data-i18n="gal.e4">Festival Intentional</span></div></div>
+      <div class="gallery-card" data-category="bodas"><div class="gallery-placeholder" style="min-height:420px;overflow:hidden;padding:0;"><img src="imgs/galeria-boda-2.jpg" alt="Boda Andrea y Mauricio" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;min-height:420px;"></div><div class="gallery-overlay"><span class="gallery-cat" data-i18n="gal.bodas">Bodas</span><span class="gallery-name" data-i18n="gal.e5">Andrea & Mauricio</span></div></div>
+      <div class="gallery-card" data-category="corporativos"><div class="gallery-placeholder" style="min-height:200px;overflow:hidden;padding:0;"><img src="imgs/galeria-corporativo-2.jpg" alt="Conferencia Tech CR" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;min-height:200px;"></div><div class="gallery-overlay"><span class="gallery-cat" data-i18n="gal.corp">Corporativos</span><span class="gallery-name" data-i18n="gal.e6">Conferencia Tech CR</span></div></div>
+      <div class="gallery-card" data-category="quinces"><div class="gallery-placeholder" style="min-height:200px;overflow:hidden;padding:0;"><img src="imgs/galeria-quinces-3.jpg" alt="Isabella, salón real" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;min-height:200px;"></div><div class="gallery-overlay"><span class="gallery-cat" data-i18n="gal.quince">Quinceaños</span><span class="gallery-name" data-i18n="gal.e7">Isabella, salón real</span></div></div>
+      <div class="gallery-card" data-category="conciertos"><div class="gallery-placeholder" style="min-height:420px;overflow:hidden;padding:0;"><img src="imgs/galeria-concierto-3.jpg" alt="Noches de Jazz" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;min-height:420px;"></div><div class="gallery-overlay"><span class="gallery-cat" data-i18n="gal.concerts">Conciertos</span><span class="gallery-name" data-i18n="gal.e8">Noches de Jazz</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="packages">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-mark" data-i18n="pkg.mark">Paquetes</span>
+      <h2 class="section-title" data-i18n="pkg.title">Planes y precios</h2>
+      <p class="section-sub" data-i18n="pkg.sub">Adaptados a cada tipo de evento y presupuesto.</p>
+    </div>
+    <div class="pkg-grid">
+      <div class="pkg-card">
+        <p class="pkg-badge" data-i18n="pkg1.badge">Básico</p>
+        <h3 class="pkg-name" data-i18n="pkg1.name">Esencial</h3>
+        <p class="pkg-price">$300<span data-i18n="pkg.per"> / evento</span></p>
+        <div class="pkg-divider"></div>
+        <ul class="pkg-features">
+          <li class="pkg-feature"><i data-lucide="check" width="14" height="14"></i><span data-i18n="pkg1.f1">4 horas de cobertura</span></li>
+          <li class="pkg-feature"><i data-lucide="check" width="14" height="14"></i><span data-i18n="pkg1.f2">150 fotos editadas</span></li>
+          <li class="pkg-feature"><i data-lucide="check" width="14" height="14"></i><span data-i18n="pkg1.f3">Galería digital</span></li>
+          <li class="pkg-feature"><i data-lucide="check" width="14" height="14"></i><span data-i18n="pkg1.f4">Entrega en 7 días</span></li>
+        </ul>
+      </div>
+      <div class="pkg-card featured">
+        <p class="pkg-badge" data-i18n="pkg2.badge">Más popular</p>
+        <h3 class="pkg-name" data-i18n="pkg2.name">Completo</h3>
+        <p class="pkg-price">$600<span data-i18n="pkg.per"> / evento</span></p>
+        <div class="pkg-divider"></div>
+        <ul class="pkg-features">
+          <li class="pkg-feature"><i data-lucide="check" width="14" height="14"></i><span data-i18n="pkg2.f1">8 horas de cobertura</span></li>
+          <li class="pkg-feature"><i data-lucide="check" width="14" height="14"></i><span data-i18n="pkg2.f2">350 fotos editadas</span></li>
+          <li class="pkg-feature"><i data-lucide="check" width="14" height="14"></i><span data-i18n="pkg2.f3">1 segundo fotógrafo</span></li>
+          <li class="pkg-feature"><i data-lucide="check" width="14" height="14"></i><span data-i18n="pkg2.f4">Galería + USB premium</span></li>
+          <li class="pkg-feature"><i data-lucide="check" width="14" height="14"></i><span data-i18n="pkg2.f5">Entrega en 5 días</span></li>
+        </ul>
+      </div>
+      <div class="pkg-card">
+        <p class="pkg-badge" data-i18n="pkg3.badge">Premium</p>
+        <h3 class="pkg-name" data-i18n="pkg3.name">Exclusivo</h3>
+        <p class="pkg-price">$1,100<span data-i18n="pkg.per"> / evento</span></p>
+        <div class="pkg-divider"></div>
+        <ul class="pkg-features">
+          <li class="pkg-feature"><i data-lucide="check" width="14" height="14"></i><span data-i18n="pkg3.f1">Cobertura total del día</span></li>
+          <li class="pkg-feature"><i data-lucide="check" width="14" height="14"></i><span data-i18n="pkg3.f2">Ilimitado, edición premium</span></li>
+          <li class="pkg-feature"><i data-lucide="check" width="14" height="14"></i><span data-i18n="pkg3.f3">2 fotógrafos + drone</span></li>
+          <li class="pkg-feature"><i data-lucide="check" width="14" height="14"></i><span data-i18n="pkg3.f4">Álbum impreso 30x30</span></li>
+          <li class="pkg-feature"><i data-lucide="check" width="14" height="14"></i><span data-i18n="pkg3.f5">Sesión pre-evento</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="container">
+    <div class="about-layout">
+      <div class="about-visual" style="overflow:hidden;padding:0;">
+        <img src="imgs/about.jpg" alt="Diego Ramírez, fotógrafo" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;">
+      </div>
+      <div class="about-text">
+        <h2 data-i18n="about.title">La luz correcta,<br><em>el instante exacto</em></h2>
+        <p data-i18n="about.p1">Soy Diego Ramírez, fotógrafo de eventos con 9 años de trayectoria en Costa Rica. Comencé fotografiando matrimonios en el Valle Central y hoy cubro desde bodas íntimas hasta festivales multitudinarios.</p>
+        <p data-i18n="about.p2">Mi filosofía es simple: cada evento tiene su propia luz. Mi trabajo es encontrarla y preservarla sin que nadie lo note. Nada de poses artificiales, solo momentos reales capturados con precisión técnica.</p>
+        <div class="about-divider"></div>
+        <div class="about-stats">
+          <div class="stat"><div class="stat-num">9+</div><div class="stat-label" data-i18n="stat.years">Años</div></div>
+          <div class="stat"><div class="stat-num">340+</div><div class="stat-label" data-i18n="stat.events">Eventos</div></div>
+          <div class="stat"><div class="stat-num">Sony A</div><div class="stat-label" data-i18n="stat.equip">Equipo</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="quote">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-mark" data-i18n="q.mark">Cotización</span>
+      <h2 class="section-title" data-i18n="q.title">Solicitar cotización</h2>
+      <p class="section-sub" data-i18n="q.sub">Contame sobre tu evento y te envío una propuesta personalizada en 24 horas.</p>
+    </div>
+    <div class="quote-form">
+      <form id="quote-form" novalidate class="form-grid">
+        <div class="form-group">
+          <label for="fot-type" data-i18n="f.type">Tipo de evento<span aria-hidden="true" style="color: var(--accent); margin-left: 2px;">*</span></label>
+          <div class="select-wrap"><select id="fot-type" required autocomplete="off" style="padding-right:2.75rem;appearance:none;-webkit-appearance:none;width:100%;"><option value="" data-i18n="f.sel">Seleccionar...</option><option data-i18n="f.boda">Boda</option><option data-i18n="f.quince">Quinceaños</option><option data-i18n="f.corp">Corporativo</option><option data-i18n="f.concert">Concierto</option><option data-i18n="f.other">Otro</option></select><svg style="position:absolute;right:0.85rem;top:50%;transform:translateY(-50%);pointer-events:none;z-index:1;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+          <span class="field-error" id="fot-type-err"></span>
+        </div>
+        <div class="form-group">
+          <label for="fot-date" data-i18n="f.date">Fecha del evento<span aria-hidden="true" style="color: var(--accent); margin-left: 2px;">*</span></label>
+          <div class="date-wrapper">
+            <input type="date" id="fot-date" required autocomplete="off" />
+            <svg class="cal-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" onclick="document.getElementById('fot-date').showPicker&&document.getElementById('fot-date').showPicker()"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </div>
+          <span class="field-error" id="fot-date-err"></span>
+        </div>
+        <div class="form-group"><label data-i18n="f.location">Lugar</label><input type="text" placeholder="Ej: Hotel Marriott, San José" autocomplete="off" /></div>
+        <div class="form-group"><label data-i18n="f.budget">Rango de presupuesto</label><div class="select-wrap"><select autocomplete="off" style="padding-right:2.75rem;appearance:none;-webkit-appearance:none;width:100%;"><option data-i18n="f.sel">Seleccionar...</option><option>$200 – $400</option><option>$400 – $700</option><option>$700 – $1,200</option><option data-i18n="f.budget.more">Más de $1,200</option>
+<option value="otro" data-i18n="form.other">Otro</option>
+</select><svg style="position:absolute;right:0.85rem;top:50%;transform:translateY(-50%);pointer-events:none;z-index:1;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div></div>
+        <div class="form-group">
+          <label for="fot-phone" data-i18n="f.phone">Teléfono<span aria-hidden="true" style="color: var(--accent); margin-left: 2px;">*</span></label>
+          <input type="tel" id="fot-phone" required placeholder="88880000" inputmode="numeric" pattern="[0-9]*" maxlength="8" autocomplete="tel" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,8)" />
+          <span class="field-error" id="fot-phone-err"></span>
+        </div>
+        <div class="form-group"><label data-i18n="f.guests">Cantidad de invitados</label><div class="select-wrap"><select autocomplete="off" style="padding-right:2.75rem;appearance:none;-webkit-appearance:none;width:100%;"><option>1 – 50</option><option>51 – 150</option><option>151 – 300</option><option data-i18n="f.guests.more">Más de 300</option>
+<option value="otro" data-i18n="form.other">Otro</option>
+</select><svg style="position:absolute;right:0.85rem;top:50%;transform:translateY(-50%);pointer-events:none;z-index:1;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div></div>
+        <div class="form-group full">
+          <label for="fot-msg" data-i18n="f.msg">Cuéntame sobre tu evento<span aria-hidden="true" style="color: var(--accent); margin-left: 2px;">*</span></label>
+          <textarea id="fot-msg" required placeholder="Tema, estilo, expectativas, momentos clave..." autocomplete="off"></textarea>
+          <span class="field-error" id="fot-msg-err"></span>
+        </div>
+        <div class="form-group full form-submit">
+          <button type="submit" id="quote-btn" class="btn btn-outline-accent">
+            <i data-lucide="send" width="15" height="15"></i>
+            <span data-i18n="f.submit">Enviar solicitud</span>
+          </button>
+          <p class="form-disc-note" id="form-disc-fot"></p>
+          <div id="quote-confirm" style="display:none;margin-top:1rem;padding:1rem 1.25rem;background:#d4edda;border:1px solid #c3e6cb;border-radius:.5rem;color:#155724;font-size:.9rem;"></div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer id="footer">
+  <div class="ft-inner">
+
+    <div class="ft-top">
+      <div class="ft-left">
+        <img src="../../imgs/FullLogo.svg" alt="WebExpressCR" class="ft-logo">
+      </div>
+      <div class="ft-center">
+        <a href="https://www.instagram.com/webexpresscr/" class="ft-btn" aria-label="Instagram">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/company/webexpresscr" class="ft-btn" aria-label="LinkedIn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+        <a href="https://www.facebook.com/webexpresscr" class="ft-btn" aria-label="Facebook">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+        <a href="https://wa.me/50670553656" target="_blank" class="ft-btn" aria-label="WhatsApp">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M20.52 3.48A11.93 11.93 0 0 0 12 0C5.37 0 0 5.37 0 12c0 2.11.55 4.16 1.6 5.97L0 24l6.19-1.62A11.94 11.94 0 0 0 12 24c6.63 0 12-5.37 12-12 0-3.2-1.25-6.21-3.48-8.52zm-8.52 18.4a9.9 9.9 0 0 1-5.05-1.38l-.36-.21-3.73.98.99-3.63-.24-.38A9.9 9.9 0 0 1 2.1 12c0-5.46 4.44-9.9 9.9-9.9 2.65 0 5.13 1.03 7 2.9a9.87 9.87 0 0 1 2.9 7c0 5.46-4.44 9.9-9.9 9.9zm5.43-7.4c-.3-.15-1.77-.87-2.04-.97-.28-.1-.48-.15-.68.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.68-1.63-.93-2.23-.24-.59-.49-.51-.68-.52h-.58c-.2 0-.52.07-.79.37-.27.3-1.03 1.01-1.03 2.46s1.06 2.85 1.2 3.05c.15.2 2.08 3.18 5.04 4.46.7.3 1.25.48 1.68.62.71.22 1.35.19 1.86.12.57-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35z"/></svg>
+        </a>
+        <a href="mailto:webexpresscr@gmail.com" class="ft-btn" aria-label="Email">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </a>
+      </div>
+      <div class="ft-right">
+        <button class="ft-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Volver arriba">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <p class="ft-bottom" data-i18n="footer.disclaimer"></p>
+
+  </div>
+</footer>
+
+<script>
+'use strict';
+lucide.createIcons();
+const html = document.documentElement;
+
+function applyTheme(t) {
+  html.className = t;
+  document.getElementById('themeIcon').setAttribute('data-lucide', t === 'dark' ? 'sun' : 'moon');
+  lucide.createIcons();
+  localStorage.setItem('lf-theme', t);
+}
+const _st = localStorage.getItem('lf-theme');
+applyTheme(_st ? _st : 'dark');
+document.getElementById('themeToggle').addEventListener('click', () => applyTheme(html.classList.contains('dark') ? 'light' : 'dark'));
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => { if (!localStorage.getItem('lf-theme')) applyTheme(e.matches ? 'dark' : 'light'); });
+
+const T = {
+  es: { 'back':'< Portafolio','hero.label':'Fotografía de eventos · San José, Costa Rica','hero.tagline':'Capturamos los momentos que importan. Bodas, quinceaños, corporativos y conciertos.','hero.cta1':'Solicitar cotización','hero.cta2':'Ver galería','hero.scroll':'Scroll','gal.mark':'Portafolio','gal.title':'Trabajos recientes','gal.sub':'Cada evento, una historia única.','gal.all':'Todo','gal.bodas':'Bodas','gal.quince':'Quinceaños','gal.corp':'Corporativos','gal.concerts':'Conciertos','gal.e1':'Sofía & Andrés','gal.e2':'Valentina, 15 años','gal.e3':'Lanzamiento de producto','gal.e4':'Festival Intentional','gal.e5':'Andrea & Mauricio','gal.e6':'Conferencia Tech CR','gal.e7':'Isabella, salón real','gal.e8':'Noches de Jazz','pkg.mark':'Paquetes','pkg.title':'Planes y precios','pkg.sub':'Adaptados a cada tipo de evento y presupuesto.','pkg.per':' / evento','pkg1.badge':'Básico','pkg1.name':'Esencial','pkg1.f1':'4 horas de cobertura','pkg1.f2':'150 fotos editadas','pkg1.f3':'Galería digital','pkg1.f4':'Entrega en 7 días','pkg2.badge':'Más popular','pkg2.name':'Completo','pkg2.f1':'8 horas de cobertura','pkg2.f2':'350 fotos editadas','pkg2.f3':'1 segundo fotógrafo','pkg2.f4':'Galería + USB premium','pkg2.f5':'Entrega en 5 días','pkg3.badge':'Premium','pkg3.name':'Exclusivo','pkg3.f1':'Cobertura total del día','pkg3.f2':'Ilimitado, edición premium','pkg3.f3':'2 fotógrafos + drone','pkg3.f4':'Álbum impreso 30x30','pkg3.f5':'Sesión pre-evento','about.title':'La luz correcta, el instante exacto','about.p1':'Soy Diego Ramírez, fotógrafo de eventos con 9 años de trayectoria en Costa Rica. Comencé fotografiando matrimonios en el Valle Central y hoy cubro desde bodas íntimas hasta festivales multitudinarios.','about.p2':'Mi filosofía es simple: cada evento tiene su propia luz. Mi trabajo es encontrarla y preservarla sin que nadie lo note. Nada de poses artificiales, solo momentos reales.','stat.years':'Años','stat.events':'Eventos','stat.equip':'Equipo','q.mark':'Cotización','q.title':'Solicitar cotización','q.sub':'Contame sobre tu evento y te envío una propuesta personalizada en 24 horas.','f.type':'Tipo de evento','f.sel':'Seleccionar...','f.boda':'Boda','f.quince':'Quinceaños','f.corp':'Corporativo','f.concert':'Concierto','f.other':'Otro','f.date':'Fecha del evento','f.location':'Lugar','f.guests':'Cantidad de invitados','f.guests.more':'Más de 300','f.budget':'Rango de presupuesto','f.budget.more':'Más de $1,200','f.phone':'Teléfono','f.msg':'Cuéntame sobre tu evento','f.submit':'Enviar solicitud','form.disc':'Sitio con fines demostrativos: Ninguna transacción será procesada ni ningún dato almacenado.','gal.soon':'Próximamente','demo.note':'Sitio Demo. Ninguna transacción será procesada ni ningún dato almacenado.','err.required':'Este campo es obligatorio.','err.phone':'Ingrese al menos 8 dígitos.','err.select':'Por favor seleccione una opción.','err.date':'Por favor seleccione una fecha.','err.textarea':'Por favor ingrese al menos 10 caracteres.','form.other':'Otro','footer.tagline':'Creación de páginas web · Costa Rica','footer.disclaimer':'Sitio con fines demostrativos: Ninguna transacción será procesada ni ningún dato almacenado.  © 2026 WebExpressCR. Todos los derechos reservados.  Las imágenes utilizadas pertenecen a sus respectivos autores y se usan únicamente con fines ilustrativos.'},
+  en: { 'back':'< Portfolio','hero.label':'Event photography · San José, Costa Rica','hero.tagline':'We capture the moments that matter. Weddings, quinceañeras, corporate events and concerts.','hero.cta1':'Request a quote','hero.cta2':'View gallery','hero.scroll':'Scroll','gal.mark':'Portfolio','gal.title':'Recent work','gal.sub':'Every event, a unique story.','gal.all':'All','gal.bodas':'Weddings','gal.quince':'Quinceañeras','gal.corp':'Corporate','gal.concerts':'Concerts','gal.e1':'Sofía & Andrés','gal.e2':'Valentina, Sweet 15','gal.e3':'Product launch','gal.e4':'Festival Intentional','gal.e5':'Andrea & Mauricio','gal.e6':'Tech CR Conference','gal.e7':'Isabella, royal ballroom','gal.e8':'Jazz Nights','pkg.mark':'Packages','pkg.title':'Plans and pricing','pkg.sub':'Tailored to every event type and budget.','pkg.per':' / event','pkg1.badge':'Basic','pkg1.name':'Essential','pkg1.f1':'4 hours of coverage','pkg1.f2':'150 edited photos','pkg1.f3':'Digital gallery','pkg1.f4':'Delivery in 7 days','pkg2.badge':'Most popular','pkg2.name':'Complete','pkg2.f1':'8 hours of coverage','pkg2.f2':'350 edited photos','pkg2.f3':'1 second photographer','pkg2.f4':'Gallery + premium USB','pkg2.f5':'Delivery in 5 days','pkg3.badge':'Premium','pkg3.name':'Exclusive','pkg3.f1':'Full day coverage','pkg3.f2':'Unlimited, premium editing','pkg3.f3':'2 photographers + drone','pkg3.f4':'Printed album 30x30','pkg3.f5':'Pre-event session','about.title':'The right light, the exact moment','about.p1':'I\'m Diego Ramírez, an event photographer with 9 years of experience in Costa Rica. I started with weddings in the Central Valley and now cover everything from intimate ceremonies to large festivals.','about.p2':'My philosophy is simple: every event has its own light. My job is to find it and preserve it without anyone noticing. No artificial poses, only real moments.','stat.years':'Years','stat.events':'Events','stat.equip':'Equipment','q.mark':'Quote','q.title':'Request a quote','q.sub':'Tell me about your event and I\'ll send a custom proposal within 24 hours.','f.type':'Event type','f.sel':'Select...','f.boda':'Wedding','f.quince':'Quinceañera','f.corp':'Corporate','f.concert':'Concert','f.other':'Other','f.date':'Event date','f.location':'Location','f.guests':'Number of guests','f.guests.more':'More than 300','f.budget':'Budget range','f.budget.more':'More than $1,200','f.phone':'Phone','f.msg':'Tell me about your event','f.submit':'Send request','form.disc':'Demonstration site: No transactions will be processed or data stored.','gal.soon':'Coming soon','demo.note':'Demo Site. No transactions will be processed or data stored.','err.required':'This field is required.','err.phone':'Please enter at least 8 digits.','err.select':'Please select an option.','err.date':'Please select a date.','err.textarea':'Please enter at least 10 characters.','form.other':'Other','footer.tagline':'Web development · Costa Rica','footer.disclaimer':'Demonstration site: No transactions will be processed or data stored.  © 2026 WebExpressCR. All rights reserved.  Images used belong to their respective authors and are used for illustrative purposes only.'}
+};
+
+let lang = localStorage.getItem('lf-lang') || 'es';
+function applyLang(l) {
+  lang = l; document.documentElement.lang = l;
+  document.getElementById('langLabel').textContent = l === 'es' ? 'EN' : 'ES';
+  document.querySelectorAll('[data-i18n]').forEach(el => { const k = el.getAttribute('data-i18n'); if (T[l] && T[l][k] !== undefined) el.textContent = T[l][k]; });
+  // Back button
+  const backLink = document.getElementById('back-nav-link');
+  if (backLink) backLink.textContent = T[l]['back'];
+  // Footer disclaimer
+  const fd1 = document.getElementById('fot-footer-disclaimer1');
+  if(fd1) fd1.textContent = l==='es' ? 'Sitio con fines demostrativos: Ninguna transacción será procesada ni ningún dato almacenado.' : 'Demonstration site: No transactions will be processed or data stored.';
+  const fd2 = document.getElementById('fot-footer-disclaimer2');
+  if(fd2) fd2.textContent = l==='es' ? 'Las imágenes utilizadas pertenecen a sus respectivos autores y se usan únicamente con fines ilustrativos.' : 'Images used belong to their respective authors and are used for illustrative purposes only.';
+  // Form disclaimer
+  const formDiscEl = document.getElementById('form-disc-fot');
+  if (formDiscEl) formDiscEl.textContent = T[l]['form.disc'];
+  localStorage.setItem('lf-lang', l);
+}
+document.getElementById('langToggle').addEventListener('click', () => applyLang(lang === 'es' ? 'en' : 'es'));
+applyLang(lang);
+
+// Gallery filter
+document.querySelectorAll('[data-filter]').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const filter = this.getAttribute('data-filter');
+    document.querySelectorAll('[data-filter]').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    document.querySelectorAll('[data-category]').forEach(item => {
+      if (filter === 'all' || item.getAttribute('data-category') === filter) {
+        item.style.display = '';
+      } else {
+        item.style.display = 'none';
+      }
+    });
+  });
+});
+// Set "all" as default active
+const allBtn = document.querySelector('[data-filter="all"]');
+if (allBtn) allBtn.classList.add('active');
+
+document.getElementById('quote-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const dict = T[lang];
+  let valid = true;
+
+  function showErr(id, msg) { const el = document.getElementById(id); if (el) { el.textContent = msg; el.classList.add('visible'); } valid = false; }
+  function clearErr(id) { const el = document.getElementById(id); if (el) { el.textContent = ''; el.classList.remove('visible'); } }
+
+  // Event type
+  const typeVal = document.getElementById('fot-type').value;
+  clearErr('fot-type-err');
+  if (!typeVal) showErr('fot-type-err', dict['err.select']);
+
+  // Date
+  const dateVal = document.getElementById('fot-date').value;
+  clearErr('fot-date-err');
+  if (!dateVal) showErr('fot-date-err', dict['err.date']);
+
+  // Phone
+  const phoneVal = document.getElementById('fot-phone').value.trim();
+  clearErr('fot-phone-err');
+  if (!phoneVal) showErr('fot-phone-err', dict['err.required']);
+  else if (phoneVal.replace(/[^0-9]/g, '').length < 8) showErr('fot-phone-err', dict['err.phone']);
+
+  // Message
+  const msgVal = document.getElementById('fot-msg').value.trim();
+  clearErr('fot-msg-err');
+  if (!msgVal) showErr('fot-msg-err', dict['err.required']);
+  else if (msgVal.length < 10) showErr('fot-msg-err', dict['err.textarea']);
+
+  if (valid) {
+    const msg = lang === 'es' ? 'Tu solicitud de cotización ha sido enviada con éxito.' : 'Your quote request has been sent successfully.';
+    showToast(msg);
+    e.target.reset();
+    e.target.querySelectorAll('.field-error').forEach(function(el){ el.textContent=''; el.classList.remove('visible'); });
+  }
+});
+
+function showToast(msg) {
+  var ac = 'var(--accent, #FF7F00)';
+  var t = document.createElement('div');
+  t.style.cssText = 'position:fixed;bottom:24px;left:24px;z-index:9999;background:'+ac+';color:#fff;border-radius:8px;padding:14px 20px;box-shadow:0 4px 16px rgba(0,0,0,.25);display:flex;align-items:center;gap:8px;opacity:0;transition:opacity .5s ease;pointer-events:none;font-size:.9rem;font-family:inherit;max-width:420px;';
+  t.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11"/></svg><span>'+msg+'</span>';
+  document.body.appendChild(t);
+  requestAnimationFrame(function(){ t.style.opacity='1'; });
+  setTimeout(function(){ t.style.opacity='0'; setTimeout(function(){ t.remove(); },500); },4000);
+}
+
+// ── Date range enforcement ──
+document.addEventListener('DOMContentLoaded', function() {
+  var dateIds = [{id:"fot-date",errId:"fot-date-err"}];
+  function getToday() {
+    return new Date().toISOString().split('T')[0];
+  }
+  function getMaxDate() {
+    var d = new Date();
+    d.setFullYear(d.getFullYear() + 1);
+    return d.toISOString().split('T')[0];
+  }
+  dateIds.forEach(function(cfg) {
+    var el = document.getElementById(cfg.id);
+    if (!el) return;
+    var errEl = cfg.errId ? document.getElementById(cfg.errId) : null;
+    el.min = getToday();
+    el.max = getMaxDate();
+    function validate() {
+      var today = getToday();
+      var max = getMaxDate();
+      var lang = (document.documentElement.lang || 'es');
+      if (!el.value) return;
+      if (el.value < today) {
+        var msg = lang === 'en' ? 'Past dates cannot be selected.' : 'No se pueden seleccionar fechas pasadas.';
+        if (errEl) { errEl.textContent = msg; errEl.classList.add('visible'); errEl.style.display = 'block'; }
+        el.setCustomValidity(msg);
+      } else if (el.value > max) {
+        var msg2 = lang === 'en' ? 'The date cannot be more than one year from today.' : 'La fecha no puede ser mayor a un año desde hoy.';
+        if (errEl) { errEl.textContent = msg2; errEl.classList.add('visible'); errEl.style.display = 'block'; }
+        el.setCustomValidity(msg2);
+      } else {
+        if (errEl) { errEl.textContent = ''; errEl.classList.remove('visible'); errEl.style.display = ''; }
+        el.setCustomValidity('');
+      }
+    }
+    el.addEventListener('change', validate);
+    el.addEventListener('input', validate);
+  });
+});
+</script>
+</body>
+</html>

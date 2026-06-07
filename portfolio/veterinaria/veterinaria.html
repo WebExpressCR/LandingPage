@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clínica Veterinaria El Roble — Demo · WebExpressCR</title>
+<link rel="icon" type="image/svg+xml" href="../../imgs/SmallLogo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<style>
+:root{--max:1140px;--rad:16px;}
+html.dark{--bg:#021a1a;--sur:#062e2e;--sur2:#083838;--bor:#1a6060;--txt:#e0fafa;--mut:#80c4c4;--acc:#00c8c8;--grn:#00c8c8;--red:#00c8c8;--sec:#00e5e5;--hl:#1a6060;}
+html.light{--bg:#f0fafa;--sur:#e0fafa;--sur2:#ffffff;--bor:#80dada;--txt:#0d3333;--mut:#007a7a;--acc:#00b4b4;--grn:#00b4b4;--red:#00b4b4;--sec:#00d4d4;--hl:#80dada;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+::selection { background: rgba(0, 200, 200, 0.25); color: inherit; }
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--txt);font-weight:600;line-height:1.6;transition:background .25s ease,color .25s ease;overflow-x:hidden;}
+a{color:inherit;text-decoration:none;}
+button{cursor:pointer;font-family:inherit;}
+input,textarea,select{font-family:'Nunito',sans-serif;background:var(--sur2);border:2px solid var(--bor);color:var(--txt);padding:.75rem 1rem;width:100%;font-size:.9rem;border-radius:8px;transition:border-color .15s;}
+select{appearance:none;-webkit-appearance:none;padding-right:2.75rem;}
+.sel-wrap{position:relative;}
+.sel-wrap svg{position:absolute;right:0.85rem;top:50%;transform:translateY(-50%);pointer-events:none;color:currentColor;opacity:0.6;}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--sec);}
+
+/* Calendar picker */
+.cal-icon { width: 18px; height: 18px; cursor: pointer; position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); pointer-events: auto; }
+.cal-icon--dark { display: none; }
+html.dark .cal-icon--light { display: none; }
+html.dark .cal-icon--dark { display: inline-block; }
+.date-wrapper{position:relative;display:flex;align-items:center;}
+.date-wrapper input[type="date"]{padding-right:2.5rem;width:100%;}
+.cal-icon{position:absolute;right:0.75rem;top:50%;transform:translateY(-50%);width:18px;height:18px;cursor:pointer;pointer-events:all;}
+.date-wrapper input[type="date"]::-webkit-calendar-picker-indicator{opacity:0;position:absolute;right:0;width:2.5rem;height:100%;cursor:pointer;}
+.date-wrapper input[type="date"]{color-scheme:light;}
+html.dark .date-wrapper input[type="date"]{color-scheme:dark;}
+.field-error{font-size:0.78rem;color:var(--acc);margin-top:4px;display:none;}
+.field-error.visible{display:block;}
+
+/* Navbar — glassmorphism, three-column grid */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;min-height:76px;background:rgba(2,26,26,0.88);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,200,200,0.12);}
+html.light .nav{background:rgba(240,250,250,0.9);}
+.nav-inner{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:76px;padding:0 2rem;max-width:var(--max);margin:0 auto;}
+.nav-left{display:flex;align-items:center;}
+.nav-center{display:flex;justify-content:center;}
+.nav-right{display:flex;align-items:center;justify-content:flex-end;gap:.5rem;}
+.back-link-nav{font-size:.85rem;font-weight:800;color:var(--mut);transition:color .2s;}
+.back-link-nav:hover{color:var(--acc);}
+.icb{width:36px;height:36px;border-radius:50%;border:2px solid var(--bor);background:var(--sur);color:var(--txt);display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.icb:hover{background:var(--acc);color:#fff;border-color:var(--acc);}
+.lgb{border:2px solid var(--bor);background:var(--sur);color:var(--txt);border-radius:8px;padding:.25rem .65rem;font-size:.75rem;font-weight:800;cursor:pointer;height:36px;display:flex;align-items:center;}
+.lgb:hover{background:var(--acc);color:#fff;border-color:var(--acc);}
+
+/* i18n helpers */
+.lang-en{display:none;}
+html[lang="en"] .lang-es{display:none;}
+html[lang="en"] .lang-en{display:inline;}
+
+.hero{padding:calc(76px + 4rem) 2rem 5rem;background:var(--bg);}
+.hero-inner{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:1fr auto 1fr;gap:2rem;align-items:center;}
+@media(max-width:900px){.hero-inner{grid-template-columns:1fr;text-align:center;}}
+.hero-badge{display:inline-flex;align-items:center;gap:.4rem;background:var(--sur);border:3px solid var(--acc);color:var(--acc);font-size:.72rem;font-weight:800;padding:.35rem .9rem;border-radius:8px;margin-bottom:1.25rem;}
+.hero-title{font-size:clamp(2rem,5vw,3.4rem);font-weight:800;line-height:1.1;margin-bottom:1rem;}
+.hero-title span{color:var(--acc);}
+.hero-tag{font-size:1rem;color:var(--mut);font-weight:600;margin-bottom:2rem;max-width:380px;}
+@media(max-width:900px){.hero-tag{margin:0 auto 2rem;}}
+.ctas{display:flex;gap:1rem;flex-wrap:wrap;}
+@media(max-width:900px){.ctas{justify-content:center;}}
+.btnp{display:inline-flex;align-items:center;gap:.5rem;background:var(--acc);color:#fff;font-weight:800;font-size:.9rem;padding:.8rem 1.8rem;border-radius:8px;border:none;box-shadow:4px 4px 0px var(--hl);}
+.btnp:hover{background:#009898;}
+.btno{display:inline-flex;align-items:center;gap:.5rem;background:transparent;color:var(--txt);font-weight:800;font-size:.9rem;padding:.8rem 1.8rem;border-radius:8px;border:3px solid var(--bor);box-shadow:4px 4px 0px var(--bor);}
+.btno:hover{background:var(--txt);color:var(--bg);}
+
+.hero-pet{padding:1rem;}
+.hero-stats{display:flex;flex-direction:column;gap:1.5rem;}
+@media(max-width:900px){.hero-stats{flex-direction:row;justify-content:center;flex-wrap:wrap;}}
+.stat-card{background:var(--sur);border:3px solid var(--bor);border-radius:var(--rad);padding:1.25rem 1.5rem;text-align:center;min-width:120px;box-shadow:4px 4px 0px var(--hl);}
+.stat-num{font-size:2rem;font-weight:800;color:var(--acc);line-height:1;}
+.stat-lbl{font-size:.72rem;font-weight:800;color:var(--mut);margin-top:.25rem;}
+
+.section{padding:5rem 2rem;}
+.wrap{max-width:var(--max);margin:0 auto;}
+.sec-alt{background:var(--sur);}
+.sh{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;margin-bottom:.75rem;}
+.sh span{color:var(--acc);}
+.ss{color:var(--mut);font-size:.95rem;font-weight:600;margin-bottom:3rem;max-width:520px;}
+
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
+@media(max-width:900px){.svc-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:480px){.svc-grid{grid-template-columns:1fr;}}
+.svc-card{background:var(--sur);border:3px solid var(--bor);border-radius:var(--rad);padding:1.75rem;box-shadow:4px 4px 0px var(--hl);}
+html.light .svc-card{background:#ffffff;}
+.svc-card:hover{transform:translateY(-4px);}
+.svc-grid .svc-card .svc-icon{background:var(--acc);}
+.svc-icon{width:56px;height:56px;border-radius:50%;background:var(--acc);display:flex;align-items:center;justify-content:center;color:#fff;margin-bottom:1rem;}
+.svc-name{font-size:1.05rem;font-weight:800;margin-bottom:.4rem;}
+.svc-desc{font-size:.82rem;color:var(--mut);font-weight:600;line-height:1.6;}
+
+.emer{background:#00b4b4;padding:2.5rem 2rem;text-align:center;}
+.emer h2{font-size:1.5rem;font-weight:800;color:#fff;margin-bottom:.5rem;}
+.emer p{color:#fff;font-size:.95rem;font-weight:600;margin-bottom:1.25rem;}
+.emer-phone{display:inline-flex;align-items:center;gap:.6rem;background:#009898;border:3px solid #fff;color:#fff;font-size:1.6rem;font-weight:800;padding:.6rem 1.5rem;border-radius:8px;box-shadow:4px 4px 0px rgba(0,0,0,.3);}
+.emer-phone svg{animation:pulse 1.5s ease-in-out infinite;}
+@keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.15);}}
+
+.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
+@media(max-width:768px){.team-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:480px){.team-grid{grid-template-columns:1fr;}}
+.vet-card{background:var(--sur);border:3px solid var(--bor);border-radius:var(--rad);display:flex;flex-direction:row;align-items:center;gap:1rem;padding:1rem;box-shadow:4px 4px 0px var(--hl);}
+html.light .vet-card{background:#ffffff;}
+.vet-card:hover{transform:translateY(-4px);}
+.vet-avatar{width:70px;height:70px;min-width:70px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.vav1{background:#00b4b4;}
+.vav2{background:#009898;}
+.vav3{background:#00d4d4;}
+.vet-init{color:#fff;font-size:1.8rem;font-weight:800;}
+.vet-body{flex:1;}
+.vet-name{font-size:1rem;font-weight:800;margin-bottom:.2rem;}
+.vet-spec{font-size:.75rem;color:var(--acc);font-weight:800;margin-bottom:.6rem;}
+.days{display:flex;flex-wrap:wrap;gap:.3rem;}
+.day-chip{background:var(--acc);color:#fff;font-size:.65rem;font-weight:800;padding:.2rem .5rem;border-radius:4px;}
+
+.pet-tabs{display:flex;gap:.5rem;margin-bottom:2rem;flex-wrap:wrap;}
+.pt{background:var(--sur2);border:3px solid var(--bor);color:var(--txt);border-radius:8px;padding:.5rem 1.25rem;font-size:.82rem;font-weight:800;cursor:pointer;}
+.pt.on{background:var(--acc);border-color:var(--acc);color:#fff;}
+.pt:hover:not(.on){border-color:var(--acc);color:var(--acc);}
+.pet-info{background:var(--sur);border:3px solid var(--bor);border-radius:var(--rad);padding:2rem;display:none;box-shadow:4px 4px 0px var(--hl);}
+html.light .pet-info{background:#ffffff;}
+.pet-info.on{display:block;}
+.pet-info h3{font-size:1.2rem;font-weight:800;margin-bottom:1rem;color:var(--acc);}
+.pet-list{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;}
+@media(max-width:480px){.pet-list{grid-template-columns:1fr;}}
+.pet-item{display:flex;align-items:center;gap:.5rem;font-size:.85rem;color:var(--mut);font-weight:600;}
+.pet-item svg{color:var(--hl);flex-shrink:0;}
+
+.form-steps{margin-bottom:2rem;display:flex;gap:0;}
+.step-ind{flex:1;padding:.75rem;text-align:center;font-size:.75rem;font-weight:800;color:var(--mut);border-bottom:3px solid var(--bor);}
+.step-ind.active{color:var(--acc);border-bottom-color:var(--acc);}
+.step-ind.done{color:var(--hl);border-bottom-color:var(--hl);}
+.form-step{display:none;}
+.form-step.on{display:block;}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem;}
+@media(max-width:600px){.fg{grid-template-columns:1fr;}}
+.fi{display:flex;flex-direction:column;gap:.4rem;}
+.fi.full{grid-column:1/-1;}
+.fl{font-size:.78rem;font-weight:800;color:var(--mut);}
+.form-nav{display:flex;justify-content:space-between;gap:1rem;}
+.btn-next{display:inline-flex;align-items:center;gap:.4rem;background:var(--acc);color:#fff;font-weight:800;font-size:.85rem;padding:.7rem 1.5rem;border-radius:8px;border:none;box-shadow:4px 4px 0px var(--hl);}
+.btn-next:hover{background:#009898;}
+.btn-prev{display:inline-flex;align-items:center;gap:.4rem;background:transparent;color:var(--txt);font-weight:800;font-size:.85rem;padding:.7rem 1.5rem;border-radius:8px;border:3px solid var(--bor);}
+.btn-prev:hover{background:var(--txt);color:var(--bg);}
+
+.container{max-width:var(--max);margin:0 auto;padding:0 2rem;}
+@media(max-width:768px){}
+@media(max-width:768px){.hero-two-col{grid-template-columns:1fr!important;}}
+    @media(max-width:600px){ }
+    /* ── Footer ── */
+    #footer{background:#0a0a0a;border-top:1px solid rgba(255,255,255,0.08);padding:24px 48px 20px;color:#f0f0f0;}
+    #footer>div{max-width:1200px;margin:0 auto;}
+    .ft-inner{display:flex;flex-direction:column;gap:16px;}
+    .ft-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:nowrap;gap:16px;}
+    .ft-left{display:flex;flex-direction:column;align-items:flex-start;gap:4px;flex:0 0 auto;min-width:0;}
+    .ft-center{display:flex;align-items:center;gap:10px;flex:1;justify-content:center;}
+    .ft-right{display:flex;align-items:center;justify-content:flex-end;flex:0 0 auto;}
+    .ft-logo{height:32px;filter:brightness(0) invert(1);display:block;}
+    .ft-tagline{font-size:0.68rem;opacity:0.5;line-height:1.3;white-space:nowrap;}
+    .ft-btn{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,0.22);border-radius:6px;background:transparent;color:#f0f0f0;text-decoration:none;cursor:pointer;transition:border-color .2s,color .2s;padding:0;box-sizing:border-box;flex-shrink:0;}
+    .ft-btn:hover{border-color:#FF7F00;color:#FF7F00;}
+    .ft-bottom{font-size:0.68rem;opacity:0.5;text-align:center;margin:0;padding:0;line-height:1.5;white-space:normal;}
+    @media(max-width:900px){
+      #footer{padding:20px 24px 16px;}
+      .ft-top{flex-wrap:wrap;justify-content:center;gap:12px;}
+      .ft-left{align-items:center;width:100%;justify-content:center;}
+      .ft-tagline{white-space:normal;text-align:center;}
+      .ft-center{justify-content:center;}
+      .ft-right{width:auto;}
+    }
+    @media(max-width:480px){
+      .ft-top{flex-direction:column;align-items:center;}
+      .ft-right{width:100%;justify-content:center;}
+    }
+    </style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-left">
+      <a href="../../index.html#portfolio" class="back-link-nav">
+        <span class="lang-es">< Portafolio</span>
+        <span class="lang-en">< Portfolio</span>
+      </a>
+    </div>
+    <div class="nav-center">
+      <a href="../../index.html" aria-label="WebExpressCR">
+        <img src="../../imgs/FullLogo.svg" height="44" style="filter:brightness(0) invert(1);" alt="WebExpressCR" />
+      </a>
+    </div>
+    <div class="nav-right">
+      <button class="lgb" id="lng">EN</button>
+      <div class="icb" id="thm">
+        <i data-lucide="sun" width="16" height="16" id="si"></i>
+        <i data-lucide="moon" width="16" height="16" id="mi" style="display:none"></i>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<section style="position:relative;overflow:hidden;min-height:100vh;background:url('imgs/hero.jpg') center/cover no-repeat;">
+  <div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(2,26,26,0.85) 50%,rgba(0,180,180,0.45) 100%);z-index:1;"></div>
+  <div style="position:relative;z-index:2;width:100%;padding-top:76px;">
+    <div class="hero-two-col" style="display:grid;grid-template-columns:1fr 1fr;min-height:calc(100vh - 76px);align-items:center;max-width:1140px;margin:0 auto;padding:2rem;">
+      <div>
+        <div class="hero-badge"><i data-lucide="shield-check" width="12" height="12"></i><span data-i18n="badge">Clínica Certificada · Heredia</span></div>
+        <h1 class="hero-title"><span data-i18n="ht1">Clínica Veterinaria</span><br>El Roble</h1>
+        <p class="hero-tag" data-i18n="htag">Tu mascota, nuestra pasión. Atención profesional y cercana para perros, gatos y más.</p>
+        <div class="ctas">
+          <a href="#cita" class="btnp"><i data-lucide="calendar-plus" width="16" height="16"></i><span data-i18n="hc1">Pedir cita</span></a>
+          <a href="#servicios" class="btno"><i data-lucide="stethoscope" width="16" height="16"></i><span data-i18n="hc2">Servicios</span></a>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:1.5rem;align-items:center;">
+        <div class="hero-stats">
+          <div class="stat-card"><div class="stat-num">15+</div><div class="stat-lbl" data-i18n="st1">Años de experiencia</div></div>
+          <div class="stat-card"><div class="stat-num">8,400</div><div class="stat-lbl" data-i18n="st2">Mascotas atendidas</div></div>
+          <div class="stat-card"><div class="stat-num">6</div><div class="stat-lbl" data-i18n="st3">Veterinarios</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section sec-alt" id="servicios">
+  <div class="wrap">
+    <h2 class="sh" data-i18n="svh">Nuestros <span>servicios</span></h2>
+    <p class="ss" data-i18n="svs">Atención integral para todas las etapas de vida de tu mascota.</p>
+    <div class="svc-grid">
+      <div class="svc-card" style="padding:0;overflow:hidden;"><img src="imgs/servicio-consulta.jpg" style="width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:8px 8px 0 0;margin-bottom:.75rem;" alt="Consulta"><div style="padding:0 1.75rem 1.75rem;"><div class="svc-icon"><i data-lucide="stethoscope" width="22" height="22"></i></div><div class="svc-name" data-i18n="sv1">Consulta general</div><div class="svc-desc" data-i18n="sv1d">Revisión completa, vacunas y diagnóstico preventivo.</div></div></div>
+      <div class="svc-card" style="padding:0;overflow:hidden;"><img src="imgs/servicio-vacuna.jpg" style="width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:8px 8px 0 0;margin-bottom:.75rem;" alt="Vacunación"><div style="padding:0 1.75rem 1.75rem;"><div class="svc-icon"><i data-lucide="syringe" width="22" height="22"></i></div><div class="svc-name" data-i18n="sv4">Vacunación</div><div class="svc-desc" data-i18n="sv4d">Plan completo de vacunación para perros, gatos y hurones.</div></div></div>
+      <div class="svc-card" style="padding:0;overflow:hidden;"><img src="imgs/cirugia.jpg" style="width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:8px 8px 0 0;margin-bottom:.75rem;" alt="Cirugía"><div style="padding:0 1.75rem 1.75rem;"><div class="svc-icon"><i data-lucide="scissors" width="22" height="22"></i></div><div class="svc-name" data-i18n="sv2">Cirugía</div><div class="svc-desc" data-i18n="sv2d">Esterilización, ortopedia y procedimientos especializados.</div></div></div>
+      <div class="svc-card" style="padding:0;overflow:hidden;"><img src="imgs/servicio-gato.jpg" style="width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:8px 8px 0 0;margin-bottom:.75rem;" alt="Hospitalización"><div style="padding:0 1.75rem 1.75rem;"><div class="svc-icon"><i data-lucide="heart-pulse" width="22" height="22"></i></div><div class="svc-name" data-i18n="sv6">Hospitalización</div><div class="svc-desc" data-i18n="sv6d">Cuidados 24/7 con monitoreo constante por nuestro equipo.</div></div></div>
+      <div class="svc-card" style="padding:0;overflow:hidden;"><img src="imgs/servicio-grooming.jpg" style="width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:8px 8px 0 0;margin-bottom:.75rem;" alt="Grooming"><div style="padding:0 1.75rem 1.75rem;"><div class="svc-icon"><i data-lucide="bath" width="22" height="22"></i></div><div class="svc-name" data-i18n="sv5">Peluquería</div><div class="svc-desc" data-i18n="sv5d">Baño, corte, secado y tratamiento antiparasitario.</div></div></div>
+      <div class="svc-card" style="padding:0;overflow:hidden;"><img src="imgs/radiografia.jpg" style="width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:8px 8px 0 0;margin-bottom:.75rem;" alt="Diagnóstico"><div style="padding:0 1.75rem 1.75rem;"><div class="svc-icon"><i data-lucide="scan" width="22" height="22"></i></div><div class="svc-name" data-i18n="sv3">Diagnóstico por imagen</div><div class="svc-desc" data-i18n="sv3d">Radiografías y ultrasonido con equipos de última generación.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="emer">
+  <h2 data-i18n="eh">Emergencias 24 horas</h2>
+  <p data-i18n="es">Atención veterinaria de emergencia disponible todos los días del año.</p>
+  <div class="emer-phone"><i data-lucide="phone" width="24" height="24"></i><span>+506 2238-7700</span></div>
+</div>
+
+<section class="section" id="equipo">
+  <div class="wrap">
+    <h2 class="sh" data-i18n="th">Nuestro <span>equipo</span></h2>
+    <p class="ss" data-i18n="ts">Profesionales certificados comprometidos con el bienestar animal.</p>
+    <div class="team-grid" style="grid-template-columns:repeat(2,1fr);">
+      <div class="vet-card">
+        <img src="imgs/equipo-1.jpg" style="width:70px;height:70px;border-radius:50%;object-fit:cover;min-width:70px;" alt="Dr. Equipo 1">
+        <div class="vet-body"><div class="vet-name">Dra. María Rodríguez</div><div class="vet-spec" data-i18n="vs1">Medicina general y cirugía</div><div class="days"><span class="day-chip" data-i18n="dl">Lun</span><span class="day-chip" data-i18n="dm">Mar</span><span class="day-chip" data-i18n="dj">Jue</span><span class="day-chip" data-i18n="dv">Vie</span></div></div>
+      </div>
+      <div class="vet-card">
+        <img src="imgs/equipo-2.jpg" style="width:70px;height:70px;border-radius:50%;object-fit:cover;min-width:70px;" alt="Dr. Equipo 2">
+        <div class="vet-body"><div class="vet-name">Dr. Carlos Araya</div><div class="vet-spec" data-i18n="vs2">Dermatología y nutrición</div><div class="days"><span class="day-chip" data-i18n="dl">Lun</span><span class="day-chip" data-i18n="dmi">Mié</span><span class="day-chip" data-i18n="dv">Vie</span><span class="day-chip" data-i18n="ds">Sáb</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section sec-alt" id="tipos">
+  <div class="wrap">
+    <h2 class="sh" data-i18n="pth">Atendemos a <span>tu mascota</span></h2>
+    <p class="ss" data-i18n="pts">Selecciona el tipo de mascota para ver información específica.</p>
+    <div class="pet-tabs">
+      <button class="pt on" onclick="showPet('perros',this)" data-i18n="pt1">Perros</button>
+      <button class="pt" onclick="showPet('gatos',this)" data-i18n="pt2">Gatos</button>
+      <button class="pt" onclick="showPet('aves',this)" data-i18n="pt3">Aves</button>
+      <button class="pt" onclick="showPet('exoticos',this)" data-i18n="pt4">Exóticos</button>
+    </div>
+    <div id="perros" class="pet-info on">
+      <h3 data-i18n="pi1h">Servicios para perros</h3>
+      <div class="pet-list">
+        <div class="pet-item"><i data-lucide="check-circle" width="15" height="15"></i><span data-i18n="pi1a">Consulta preventiva anual</span></div>
+        <div class="pet-item"><i data-lucide="check-circle" width="15" height="15"></i><span data-i18n="pi1b">Vacunas contra rabia y moquillo</span></div>
+        <div class="pet-item"><i data-lucide="check-circle" width="15" height="15"></i><span data-i18n="pi1c">Desparasitación interna y externa</span></div>
+        <div class="pet-item"><i data-lucide="check-circle" width="15" height="15"></i><span data-i18n="pi1d">Esterilización y castración</span></div>
+        <div class="pet-item"><i data-lucide="check-circle" width="15" height="15"></i><span data-i18n="pi1e">Peluquería y estética</span></div>
+        <div class="pet-item"><i data-lucide="check-circle" width="15" height="15"></i><span data-i18n="pi1f">Planes de nutrición personalizada</span></div>
+      </div>
+    </div>
+    <div id="gatos" class="pet-info">
+      <h3 data-i18n="pi2h">Servicios para gatos</h3>
+      <div class="pet-list">
+        <div class="pet-item"><i data-lucide="check-circle" width="15" height="15"></i><span data-i18n="pi2a">Consulta en área exclusiva felina</span></div>
+        <div class="pet-item"><i data-lucide="check-circle" width="15" height="15"></i><span data-i18n="pi2b">Vacunas trivalente y leucemia</span></div>
+        <div class="pet-item"><i data-lucide="check-circle" width="15" height="15"></i><span data-i18n="pi2c">Control de enfermedades crónicas</span></div>
+        <div class="pet-item"><i data-lucide="check-circle" width="15" height="15"></i><span data-i18n="pi2d">Esterilización y castración</span></div>
+        <div class="pet-item"><i data-lucide="check-circle" width="15" height="15"></i><span data-i18n="pi2e">Baño y tratamiento de pelaje</span></div>
+        <div class="pet-item"><i data-lucide="check-circle" width="15" height="15"></i><span data-i18n="pi2f">Microchip de identificación</span></div>
+      </div>
+    </div>
+    <div id="aves" class="pet-info">
+      <h3 data-i18n="pi3h">Servicios para aves</h3>
+      <div class="pet-list">
+        <div class="pet-item"><i data-lucide="check-circle" width="15" height="15"></i><span data-i18n="pi3a">Consulta con especialista aviar</span></div>
+        <div class="pet-item"><i data-lucide="check-circle" width="15" height="15"></i><span data-i18n="pi3b">Diagnóstico de enfermedades respiratorias</span></div>
+        <div class="pet-item"><i data-lucide="check-circle" width="15" height="15"></i><span data-i18n="pi3c">Recorte de pico y uñas</span></div>
+        <div class="pet-item"><i data-lucide="check-circle" width="15" height="15"></i><span data-i18n="pi3d">Sexaje por ADN</span></div>
+      </div>
+    </div>
+    <div id="exoticos" class="pet-info">
+      <h3 data-i18n="pi4h">Animales exóticos</h3>
+      <div class="pet-list">
+        <div class="pet-item"><i data-lucide="check-circle" width="15" height="15"></i><span data-i18n="pi4a">Conejos y roedores</span></div>
+        <div class="pet-item"><i data-lucide="check-circle" width="15" height="15"></i><span data-i18n="pi4b">Reptiles y tortugas</span></div>
+        <div class="pet-item"><i data-lucide="check-circle" width="15" height="15"></i><span data-i18n="pi4c">Hurones y erizos</span></div>
+        <div class="pet-item"><i data-lucide="check-circle" width="15" height="15"></i><span data-i18n="pi4d">Asesoría de hábitat y alimentación</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="cita">
+  <div class="wrap" style="max-width:680px">
+    <h2 class="sh" data-i18n="fh">Reservar <span>cita</span></h2>
+    <p class="ss" data-i18n="fs">Completa los datos en 2 sencillos pasos.</p>
+    <div class="form-steps">
+      <div class="step-ind active" id="ind1" data-i18n="s1">1. Mascota</div>
+      <div class="step-ind" id="ind2" data-i18n="s2">2. Cita</div>
+    </div>
+    <form onsubmit="submitF(event)" novalidate>
+      <div id="step1" class="form-step on">
+        <div class="fg">
+          <div class="fi"><label class="fl" data-i18n="f1a">Nombre de la mascota<span aria-hidden="true" style="color: var(--acc); margin-left: 2px;">*</span></label><input type="text" id="vet-pet-name" required autocomplete="off"><span class="field-error" id="err-pet-name"></span></div>
+          <div class="fi"><label class="fl" data-i18n="f1b">Especie</label><div class="sel-wrap"><select id="vet-species" autocomplete="off"><option>Perro</option><option>Gato</option><option>Ave</option><option>Exótico</option>
+<option value="otro" data-i18n="form.other">Otro</option>
+</select><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div></div>
+          <div class="fi"><label class="fl" data-i18n="f1c">Raza</label><input type="text" id="vet-breed" autocomplete="off"></div>
+          <div class="fi"><label class="fl" data-i18n="f1d">Edad<span aria-hidden="true" style="color: var(--acc); margin-left: 2px;">*</span></label><input type="tel" id="vet-age" inputmode="numeric" pattern="[0-9]*" min="0" max="30" oninput="this.value=this.value.replace(/[^0-9]/g,'')" required autocomplete="off"><span class="field-error" id="err-age"></span></div>
+          <div class="fi full"><label class="fl" data-i18n="f1e">Nombre del propietario<span aria-hidden="true" style="color: var(--acc); margin-left: 2px;">*</span></label><input type="text" id="vet-owner" required autocomplete="name"><span class="field-error" id="err-owner"></span></div>
+        </div>
+        <div class="form-nav"><div></div><button type="button" class="btn-next" onclick="goStep(2)"><span data-i18n="fnext">Siguiente</span><i data-lucide="arrow-right" width="14" height="14"></i></button></div>
+      </div>
+      <div id="step2" class="form-step">
+        <div class="fg">
+          <div class="fi"><label class="fl" data-i18n="f2a">Teléfono<span aria-hidden="true" style="color: var(--acc); margin-left: 2px;">*</span></label><input type="tel" id="vet-phone" required inputmode="numeric" pattern="[0-9]*" maxlength="8" autocomplete="tel" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,8)"><span class="field-error" id="err-phone"></span></div>
+          <div class="fi"><label class="fl" data-i18n="f2b">Fecha preferida<span aria-hidden="true" style="color: var(--acc); margin-left: 2px;">*</span></label><div class="date-wrapper"><input type="date" required id="vet-date" autocomplete="off"><svg class="cal-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" onclick="try{document.getElementById('vet-date').showPicker()}catch(e){document.getElementById('vet-date').focus()}"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div><span class="field-error" id="err-date"></span></div>
+          <div class="fi"><label class="fl" data-i18n="f2c">Hora preferida</label><div class="sel-wrap"><select id="vet-time" autocomplete="off"><option>7:00am</option><option>9:00am</option><option>11:00am</option><option>1:00pm</option><option>3:00pm</option>
+<option value="otro" data-i18n="form.other">Otro</option>
+</select><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div></div>
+          <div class="fi"><label class="fl" data-i18n="f2d">Servicio</label><div class="sel-wrap"><select id="vet-service" autocomplete="off"><option data-i18n="fs1">Consulta general</option><option data-i18n="fs2">Vacunación</option><option data-i18n="fs3">Cirugía</option><option data-i18n="fs4">Peluquería</option>
+<option value="otro" data-i18n="form.other">Otro</option>
+</select><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div></div>
+          <div class="fi full"><label class="fl" data-i18n="f2e">Motivo de consulta</label><textarea rows="3" id="vet-reason" autocomplete="off"></textarea></div>
+        </div>
+        <div class="form-nav">
+          <button type="button" class="btn-prev" onclick="goStep(1)"><i data-lucide="arrow-left" width="14" height="14"></i><span data-i18n="fprev">Atrás</span></button>
+          <button type="submit" class="btn-next"><i data-lucide="check" width="14" height="14"></i><span data-i18n="fsub">Confirmar cita</span></button>
+        </div>
+        <p class="form-disc-note" id="form-disc-vet" style="font-size:0.72rem;opacity:0.6;text-align:center;margin-top:8px;"></p>
+      </div>
+    </form>
+  </div>
+</section>
+
+<footer id="footer">
+  <div class="ft-inner">
+
+    <div class="ft-top">
+      <div class="ft-left">
+        <img src="../../imgs/FullLogo.svg" alt="WebExpressCR" class="ft-logo">
+      </div>
+      <div class="ft-center">
+        <a href="https://www.instagram.com/webexpresscr/" class="ft-btn" aria-label="Instagram">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/company/webexpresscr" class="ft-btn" aria-label="LinkedIn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+        <a href="https://www.facebook.com/webexpresscr" class="ft-btn" aria-label="Facebook">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+        <a href="https://wa.me/50670553656" target="_blank" class="ft-btn" aria-label="WhatsApp">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M20.52 3.48A11.93 11.93 0 0 0 12 0C5.37 0 0 5.37 0 12c0 2.11.55 4.16 1.6 5.97L0 24l6.19-1.62A11.94 11.94 0 0 0 12 24c6.63 0 12-5.37 12-12 0-3.2-1.25-6.21-3.48-8.52zm-8.52 18.4a9.9 9.9 0 0 1-5.05-1.38l-.36-.21-3.73.98.99-3.63-.24-.38A9.9 9.9 0 0 1 2.1 12c0-5.46 4.44-9.9 9.9-9.9 2.65 0 5.13 1.03 7 2.9a9.87 9.87 0 0 1 2.9 7c0 5.46-4.44 9.9-9.9 9.9zm5.43-7.4c-.3-.15-1.77-.87-2.04-.97-.28-.1-.48-.15-.68.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.68-1.63-.93-2.23-.24-.59-.49-.51-.68-.52h-.58c-.2 0-.52.07-.79.37-.27.3-1.03 1.01-1.03 2.46s1.06 2.85 1.2 3.05c.15.2 2.08 3.18 5.04 4.46.7.3 1.25.48 1.68.62.71.22 1.35.19 1.86.12.57-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35z"/></svg>
+        </a>
+        <a href="mailto:webexpresscr@gmail.com" class="ft-btn" aria-label="Email">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </a>
+      </div>
+      <div class="ft-right">
+        <button class="ft-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Volver arriba">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <p class="ft-bottom" data-i18n="footer.disclaimer"></p>
+
+  </div>
+</footer>
+
+<script>
+function showToast(msg, accent) {
+  var ac = accent || 'var(--acc, #FF7F00)';
+  var t = document.createElement('div');
+  t.style.cssText = 'position:fixed;bottom:24px;left:24px;z-index:9999;background:' + ac + ';color:#fff;border-radius:8px;padding:14px 20px;box-shadow:0 4px 16px rgba(0,0,0,.25);display:flex;align-items:center;gap:8px;opacity:0;transition:opacity .5s ease;pointer-events:none;font-size:.9rem;font-family:inherit;max-width:420px;';
+  t.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11"/></svg><span>' + msg + '</span>';
+  document.body.appendChild(t);
+  requestAnimationFrame(function(){ t.style.opacity = '1'; });
+  setTimeout(function(){ t.style.opacity = '0'; setTimeout(function(){ t.remove(); }, 500); }, 4000);
+}
+
+const html=document.documentElement;
+const T={
+es:{back:'< Portafolio',fdisclaim1:'Sitio con fines demostrativos: Ninguna transacción será procesada ni ningún dato almacenado.',fdisclaim2:'Las imágenes utilizadas pertenecen a sus respectivos autores y se usan únicamente con fines ilustrativos.',formdisc:'Sitio con fines demostrativos: Ninguna transacción será procesada ni ningún dato almacenado.',badge:'Clínica Certificada · Heredia',ht1:'Clínica Veterinaria',htag:'Tu mascota, nuestra pasión. Atención profesional y cercana para perros, gatos y más.',hc1:'Pedir cita',hc2:'Servicios',st1:'Años de experiencia',st2:'Mascotas atendidas',st3:'Veterinarios',svh:'Nuestros <span>servicios</span>',svs:'Atención integral para todas las etapas de vida de tu mascota.',sv1:'Consulta general',sv1d:'Revisión completa, vacunas y diagnóstico preventivo.',sv2:'Cirugía',sv2d:'Esterilización, ortopedia y procedimientos especializados.',sv3:'Diagnóstico por imagen',sv3d:'Radiografías y ultrasonido con equipos de última generación.',sv4:'Vacunación',sv4d:'Plan completo de vacunación para perros, gatos y hurones.',sv5:'Peluquería',sv5d:'Baño, corte, secado y tratamiento antiparasitario.',sv6:'Hospitalización',sv6d:'Cuidados 24/7 con monitoreo constante por nuestro equipo.',eh:'Emergencias 24 horas',es:'Atención veterinaria de emergencia disponible todos los días del año.',th:'Nuestro <span>equipo</span>',ts:'Profesionales certificados comprometidos con el bienestar animal.',vs1:'Medicina general y cirugía',vs2:'Dermatología y nutrición',vs3:'Ortopedia y diagnóstico',dl:'Lun',dm:'Mar',dmi:'Mié',dj:'Jue',dv:'Vie',ds:'Sáb',pth:'Atendemos a <span>tu mascota</span>',pts:'Selecciona el tipo de mascota para ver información específica.',pt1:'Perros',pt2:'Gatos',pt3:'Aves',pt4:'Exóticos',pi1h:'Servicios para perros',pi1a:'Consulta preventiva anual',pi1b:'Vacunas contra rabia y moquillo',pi1c:'Desparasitación interna y externa',pi1d:'Esterilización y castración',pi1e:'Peluquería y estética',pi1f:'Planes de nutrición personalizada',pi2h:'Servicios para gatos',pi2a:'Consulta en área exclusiva felina',pi2b:'Vacunas trivalente y leucemia',pi2c:'Control de enfermedades crónicas',pi2d:'Esterilización y castración',pi2e:'Baño y tratamiento de pelaje',pi2f:'Microchip de identificación',pi3h:'Servicios para aves',pi3a:'Consulta con especialista aviar',pi3b:'Diagnóstico de enfermedades respiratorias',pi3c:'Recorte de pico y uñas',pi3d:'Sexaje por ADN',pi4h:'Animales exóticos',pi4a:'Conejos y roedores',pi4b:'Reptiles y tortugas',pi4c:'Hurones y erizos',pi4d:'Asesoría de hábitat y alimentación',fh:'Reservar <span>cita</span>',fs:'Completa los datos en 2 sencillos pasos.',s1:'1. Mascota',s2:'2. Cita',f1a:'Nombre de la mascota',f1b:'Especie',f1c:'Raza',f1d:'Edad',f1e:'Nombre del propietario',fnext:'Siguiente',f2a:'Teléfono',f2b:'Fecha preferida',f2c:'Hora preferida',f2d:'Servicio',f2e:'Motivo de consulta',fs1:'Consulta general',fs2:'Vacunación',fs3:'Cirugía',fs4:'Peluquería',fprev:'Atrás',fsub:'Confirmar cita',fc:'Sitio creado por',errRequired:'Este campo es obligatorio.',errPhone:'Ingresa un teléfono válido de 8 dígitos.',toastSuccess:'Tu cita ha sido agendada con éxito.','form.other':'Otro','footer.tagline':'Creación de páginas web · Costa Rica','footer.disclaimer':'Sitio con fines demostrativos: Ninguna transacción será procesada ni ningún dato almacenado.  © 2026 WebExpressCR. Todos los derechos reservados.  Las imágenes utilizadas pertenecen a sus respectivos autores y se usan únicamente con fines ilustrativos.'},
+en:{back:'< Portfolio',fdisclaim1:'Demonstration site: No transactions will be processed or data stored.',fdisclaim2:'Images used belong to their respective authors and are used for illustrative purposes only.',formdisc:'Demonstration site: No transactions will be processed or data stored.',badge:'Certified Clinic · Heredia',ht1:'Veterinary Clinic',htag:'Your pet, our passion. Professional and caring attention for dogs, cats and more.',hc1:'Book appointment',hc2:'Services',st1:'Years of experience',st2:'Pets treated',st3:'Veterinarians',svh:'Our <span>services</span>',svs:'Comprehensive care for every stage of your pet\'s life.',sv1:'General consultation',sv1d:'Full checkup, vaccines and preventive diagnosis.',sv2:'Surgery',sv2d:'Sterilization, orthopedics and specialized procedures.',sv3:'Diagnostic imaging',sv3d:'X-rays and ultrasound with state-of-the-art equipment.',sv4:'Vaccination',sv4d:'Complete vaccination plan for dogs, cats and ferrets.',sv5:'Grooming',sv5d:'Bath, cut, drying and antiparasitic treatment.',sv6:'Hospitalization',sv6d:'24/7 care with constant monitoring by our team.',eh:'24-hour emergencies',es:'Emergency veterinary care available every day of the year.',th:'Our <span>team</span>',ts:'Certified professionals committed to animal welfare.',vs1:'General medicine and surgery',vs2:'Dermatology and nutrition',vs3:'Orthopedics and diagnostics',dl:'Mon',dm:'Tue',dmi:'Wed',dj:'Thu',dv:'Fri',ds:'Sat',pth:'We care for <span>your pet</span>',pts:'Select the type of pet to see specific information.',pt1:'Dogs',pt2:'Cats',pt3:'Birds',pt4:'Exotic',pi1h:'Services for dogs',pi1a:'Annual preventive checkup',pi1b:'Rabies and distemper vaccines',pi1c:'Internal and external deworming',pi1d:'Sterilization and neutering',pi1e:'Grooming and aesthetics',pi1f:'Personalized nutrition plans',pi2h:'Services for cats',pi2a:'Consultation in exclusive feline area',pi2b:'Trivalent and leukemia vaccines',pi2c:'Chronic disease management',pi2d:'Sterilization and neutering',pi2e:'Bath and coat treatment',pi2f:'Identification microchip',pi3h:'Services for birds',pi3a:'Consultation with avian specialist',pi3b:'Respiratory disease diagnosis',pi3c:'Beak and nail trimming',pi3d:'DNA sexing',pi4h:'Exotic animals',pi4a:'Rabbits and rodents',pi4b:'Reptiles and turtles',pi4c:'Ferrets and hedgehogs',pi4d:'Habitat and feeding advice',fh:'Book an <span>appointment</span>',fs:'Complete the details in 2 easy steps.',s1:'1. Pet',s2:'2. Appointment',f1a:'Pet name',f1b:'Species',f1c:'Breed',f1d:'Age',f1e:"Owner's name",fnext:'Next',f2a:'Phone',f2b:'Preferred date',f2c:'Preferred time',f2d:'Service',f2e:'Reason for visit',fs1:'General consultation',fs2:'Vaccination',fs3:'Surgery',fs4:'Grooming',fprev:'Back',fsub:'Confirm appointment',fc:'Site built by',errRequired:'This field is required.',errPhone:'Enter a valid 8-digit phone number.',toastSuccess:'Your appointment has been booked successfully.','form.other':'Other','footer.tagline':'Web development · Costa Rica','footer.disclaimer':'Demonstration site: No transactions will be processed or data stored.  © 2026 WebExpressCR. All rights reserved.  Images used belong to their respective authors and are used for illustrative purposes only.'}
+};
+let lg=localStorage.getItem('vet-lang')||'es',th=localStorage.getItem('vet-theme')||'dark';
+html.className=th;
+function upTh(){const d=html.classList.contains('dark');document.getElementById('si').style.display=d?'block':'none';document.getElementById('mi').style.display=d?'none':'block';}
+upTh();
+document.getElementById('thm').addEventListener('click',()=>{th=th==='dark'?'light':'dark';html.className=th;localStorage.setItem('vet-theme',th);upTh();});
+function applyL(l){
+  lg=l;
+  html.lang=l;
+  document.getElementById('lng').textContent=l==='es'?'EN':'ES';
+  document.querySelectorAll('[data-i18n]').forEach(e=>{const k=e.getAttribute('data-i18n');if(T[l][k]!==undefined)e.innerHTML=T[l][k];});
+  const fcp=document.getElementById('vet-footer-copy');if(fcp)fcp.textContent=l==='es'?'© 2026 WebExpressCR. Todos los derechos reservados.':'© 2026 WebExpressCR. All rights reserved.';
+  const fd1=document.getElementById('vet-footer-disc1');if(fd1)fd1.textContent=T[l].fdisclaim1;
+  const fd2=document.getElementById('vet-footer-disc2');if(fd2)fd2.textContent=T[l].fdisclaim2;
+  const fd=document.getElementById('form-disc-vet');if(fd)fd.textContent=T[l].formdisc;
+  lucide.createIcons();
+}
+applyL(lg);
+document.getElementById('lng').addEventListener('click',()=>{lg=lg==='es'?'en':'es';localStorage.setItem('vet-lang',lg);applyL(lg);});
+function showPet(id,btn){document.querySelectorAll('.pet-info').forEach(p=>p.classList.remove('on'));document.querySelectorAll('.pt').forEach(b=>b.classList.remove('on'));document.getElementById(id).classList.add('on');btn.classList.add('on');}
+let curStep=1;
+function goStep(n){
+  if(n>curStep){
+    // Validate current step fields
+    var valid=true;
+    var step=document.getElementById('step'+curStep);
+    var required=step.querySelectorAll('input[required],select[required],textarea[required]');
+    required.forEach(function(field){
+      var errId='err-'+field.id.replace('vet-','');
+      var errEl=document.getElementById(errId);
+      if(!field.value.trim()){
+        valid=false;
+        if(errEl){errEl.textContent=T[lg].errRequired;errEl.classList.add('visible');}
+      } else if(field.type==='tel'&&field.id==='vet-phone'&&field.value.replace(/[^0-9]/g,'').length<8){
+        valid=false;
+        if(errEl){errEl.textContent=T[lg].errPhone;errEl.classList.add('visible');}
+      } else {
+        if(errEl){errEl.textContent='';errEl.classList.remove('visible');}
+      }
+    });
+    if(!valid)return;
+  }
+  document.getElementById('step'+curStep).classList.remove('on');
+  document.getElementById('ind'+curStep).classList.remove('active');
+  if(n>curStep)document.getElementById('ind'+curStep).classList.add('done');
+  curStep=n;
+  document.getElementById('step'+curStep).classList.add('on');
+  document.getElementById('ind'+curStep).classList.add('active');
+}
+function submitF(e){
+  e.preventDefault();
+  showToast(T[lg].toastSuccess,'var(--acc,#00c8c8)');
+  e.target.reset();
+  goStep(1);
+  // reset done indicators
+  document.getElementById('ind1').classList.remove('done');
+  document.getElementById('ind2').classList.remove('done');
+}
+lucide.createIcons();
+
+// ── Date range enforcement ──
+document.addEventListener('DOMContentLoaded', function() {
+  var dateIds = [{id:"vet-date",errId:"err-date"}];
+  function getToday() {
+    return new Date().toISOString().split('T')[0];
+  }
+  function getMaxDate() {
+    var d = new Date();
+    d.setFullYear(d.getFullYear() + 1);
+    return d.toISOString().split('T')[0];
+  }
+  dateIds.forEach(function(cfg) {
+    var el = document.getElementById(cfg.id);
+    if (!el) return;
+    var errEl = cfg.errId ? document.getElementById(cfg.errId) : null;
+    el.min = getToday();
+    el.max = getMaxDate();
+    function validate() {
+      var today = getToday();
+      var max = getMaxDate();
+      var lang = (document.documentElement.lang || 'es');
+      if (!el.value) return;
+      if (el.value < today) {
+        var msg = lang === 'en' ? 'Past dates cannot be selected.' : 'No se pueden seleccionar fechas pasadas.';
+        if (errEl) { errEl.textContent = msg; errEl.classList.add('visible'); errEl.style.display = 'block'; }
+        el.setCustomValidity(msg);
+      } else if (el.value > max) {
+        var msg2 = lang === 'en' ? 'The date cannot be more than one year from today.' : 'La fecha no puede ser mayor a un año desde hoy.';
+        if (errEl) { errEl.textContent = msg2; errEl.classList.add('visible'); errEl.style.display = 'block'; }
+        el.setCustomValidity(msg2);
+      } else {
+        if (errEl) { errEl.textContent = ''; errEl.classList.remove('visible'); errEl.style.display = ''; }
+        el.setCustomValidity('');
+      }
+    }
+    el.addEventListener('change', validate);
+    el.addEventListener('input', validate);
+  });
+});
+</script>
+</body>
+</html>

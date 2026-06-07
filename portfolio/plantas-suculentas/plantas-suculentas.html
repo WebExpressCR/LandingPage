@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verde Raíz — Plantas y Suculentas</title>
+  <meta name="description" content="Tienda de plantas y suculentas en Alajuela, Costa Rica. Suculentas, cactus, tropicales y terrarios con guías de cuidado." />
+  <link rel="icon" type="image/svg+xml" href="../../imgs/SmallLogo.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    /* ── Variables ── */
+    html.light {
+      --bg: #f1f8e9;
+      --surf1: #ffffff;
+      --surf2: #f1f8e9;
+      --text: #1b5e20;
+      --accent: #2e7d32;
+      --accent-hover: #1b5e20;
+      --secondary: #f9a825;
+      --secondary-hover: #f57f17;
+      --border: #1b5e20;
+      --muted: #388e3c;
+    }
+    html.dark {
+      --bg: #0a1a08;
+      --surf1: #1b3320;
+      --surf2: #0a1a08;
+      --text: #dcedc8;
+      --accent: #66bb6a;
+      --accent-hover: #81c784;
+      --secondary: #ffca28;
+      --secondary-hover: #ffd54f;
+      --border: #dcedc8;
+      --muted: #a5d6a7;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    ::selection { background: rgba(102, 187, 106, 0.25); color: inherit; }
+    body {
+      font-family: 'Atkinson Hyperlegible', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    button { cursor: pointer; font-family: inherit; }
+    input, textarea, select { font-family: 'Atkinson Hyperlegible', sans-serif; }
+
+    /* ── Layout ── */
+    .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+    section { padding: 4rem 0; }
+
+    /* ── Navbar ── */
+    #navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      background: rgba(var(--surf1-raw, 255,255,255), 0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 2px solid var(--border);
+    }
+    html.light #navbar { background: rgba(255,255,255,0.75); }
+    html.dark #navbar { background: rgba(27,51,32,0.8); }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 72px; padding: 0 1.5rem; max-width: 1200px; margin: 0 auto;
+      position: relative;
+    }
+    .nav-back {
+      font-size: 0.82rem; font-weight: 700;
+      color: var(--text); text-decoration: none;
+      white-space: nowrap;
+      transition: color 0.15s;
+    }
+    .nav-back:hover { color: var(--accent); }
+    .nav-logo-center {
+      position: absolute; left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+      display: flex; align-items: center;
+    }
+    .nav-controls {
+      display: flex; align-items: center; gap: 0.5rem;
+      margin-left: auto;
+    }
+    .nav-btn {
+      display: flex; align-items: center; gap: 0.3rem;
+      padding: 0.35rem 0.7rem;
+      font-size: 0.8rem; font-weight: 700;
+      background: var(--bg);
+      border: 2px solid var(--border);
+      color: var(--text);
+      cursor: pointer;
+      border-radius: 2px;
+      width: 38px; height: 38px;
+      justify-content: center;
+      transition: background-color 0.15s;
+    }
+    .nav-btn.lang-btn { width: auto; padding: 0.35rem 0.7rem; }
+    .nav-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+    /* ── Back bar ── */
+    .back-bar { padding: 72px 0 0; background: var(--surf1); border-bottom: 2px solid var(--border); }
+    .back-link {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.82rem; font-weight: 700;
+      color: var(--text);
+      padding: 0.5rem 0.75rem;
+      margin: 0.5rem 0;
+      border: 2px solid var(--border);
+      border-radius: 2px;
+      transition: background-color 0.15s;
+    }
+    .back-link:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+    /* ── Section header ── */
+    .section-header { margin-bottom: 2.5rem; }
+    .section-badge {
+      display: inline-block;
+      font-family: 'Caveat', cursive;
+      font-size: 1rem; font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 0.25rem;
+    }
+    .section-title {
+      font-family: 'Caveat', cursive;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+    .section-sub { font-size: 0.9rem; color: var(--muted); }
+
+    /* ── Hero ── */
+    #hero { background: var(--surf1); border-bottom: 2px solid var(--border); padding: 3rem 0 4rem; margin-top: 72px; }
+    .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+    .hero-chip {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      border: 2px solid var(--accent);
+      padding: 0.25rem 0.75rem;
+      font-size: 0.78rem; font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      border-radius: 2px;
+    }
+    .hero-title {
+      font-family: 'Caveat', cursive;
+      font-size: clamp(2.8rem, 7vw, 4.5rem);
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 0.75rem;
+    }
+    .hero-title span { color: var(--accent); }
+    .hero-tagline { font-size: 1rem; color: var(--muted); margin-bottom: 1.75rem; max-width: 440px; }
+    .hero-ctas { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+
+    /* ── Buttons ── */
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.6rem 1.4rem;
+      font-size: 0.9rem; font-weight: 700;
+      border: 2px solid transparent;
+      border-radius: 2px;
+      transition: background-color 0.15s;
+      cursor: pointer;
+    }
+    .btn-green { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .btn-green:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+    .btn-outline { background: transparent; border-color: var(--border); color: var(--text); }
+    .btn-outline:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .btn-secondary { background: var(--secondary); color: #fff; border-color: var(--secondary); }
+    .btn-secondary:hover { background: var(--secondary-hover); border-color: var(--secondary-hover); }
+
+    .hero-visual {
+      aspect-ratio: 1;
+      border: 2px solid var(--border);
+      background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 4px;
+    }
+    @media(max-width: 768px) { .hero-grid { grid-template-columns: 1fr; } .hero-visual { display: none; } }
+
+    /* ── Shop (surf2) ── */
+    #shop { background: var(--surf2); border-bottom: 2px solid var(--border); }
+    .tab-bar { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 2rem; }
+    .tab-btn {
+      padding: 0.4rem 1rem;
+      font-size: 0.82rem; font-weight: 700;
+      background: var(--bg);
+      border: 2px solid var(--border);
+      color: var(--text);
+      border-radius: 2px;
+      cursor: pointer;
+      transition: background-color 0.15s;
+    }
+    .tab-btn.active, .tab-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* ── Product grid ── */
+    .plants-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 1.25rem; }
+    .plant-card {
+      background: var(--bg);
+      border: 2px solid var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .card-top-strip { height: 6px; background: var(--accent); }
+    .card-top-strip.secondary { background: var(--secondary); }
+    .plant-img {
+      aspect-ratio: 1;
+      background: var(--surf1);
+      border-bottom: 2px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+    }
+    .plant-img i { color: var(--accent); opacity: 0.5; }
+    .difficulty-badge {
+      position: absolute; top: 0.5rem; right: 0.5rem;
+      font-size: 0.65rem; font-weight: 700;
+      padding: 0.15rem 0.5rem;
+      border: 2px solid currentColor;
+      border-radius: 2px;
+    }
+    .diff-easy { color: var(--accent); background: transparent; }
+    .diff-medium { color: var(--secondary); background: transparent; }
+    .diff-hard { color: #dc2626; background: transparent; }
+    .plant-info { padding: 0.9rem; }
+    .plant-name { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.25rem; }
+    .plant-desc { font-size: 0.78rem; color: var(--muted); margin-bottom: 0.75rem; }
+    .plant-
+    .plant-price { font-weight: 700; font-size: 0.95rem; color: var(--accent); }
+    .add-btn {
+      display: flex; align-items: center; gap: 0.25rem;
+      padding: 0.35rem 0.75rem;
+      background: var(--accent); color: #fff;
+      border: 2px solid var(--accent);
+      font-size: 0.75rem; font-weight: 700;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: background-color 0.15s;
+    }
+    .add-btn:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+
+    /* ── Care guides (surf1) ── */
+    #care { background: var(--surf1); border-bottom: 2px solid var(--border); }
+    .care-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
+    .care-card { border: 2px solid var(--border); background: var(--bg); border-radius: 2px; overflow: hidden; }
+    .care-header {
+      padding: 1rem;
+      border-bottom: 2px solid transparent;
+      display: flex; align-items: center; gap: 0.75rem;
+      cursor: pointer;
+      transition: background-color 0.15s;
+    }
+    .care-header:hover { background: var(--surf1); }
+    .care-card.open .care-header { border-bottom-color: var(--border); }
+    .care-icon {
+      width: 36px; height: 36px;
+      border: 2px solid var(--accent);
+      border-radius: 2px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+    .care-title { font-weight: 700; font-size: 0.95rem; }
+    .care-sub { font-size: 0.78rem; color: var(--muted); }
+    .care-chevron { margin-left: auto; color: var(--muted); transition: transform 0.25s; }
+    .care-card.open .care-chevron { transform: rotate(180deg); }
+    .care-body { padding: 0; max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+    .care-card.open .care-body { max-height: 300px; }
+    .care-body-inner { padding: 1rem; }
+    .care-row { display: flex; gap: 0.6rem; margin-bottom: 0.6rem; font-size: 0.82rem; align-items: flex-start; }
+    .care-row:last-child { margin-bottom: 0; }
+    .care-row i { color: var(--accent); flex-shrink: 0; margin-top: 0.1rem; }
+    .care-row span { color: var(--muted); }
+
+    /* ── About (surf2) ── */
+    #about { background: var(--surf2); border-bottom: 2px solid var(--border); }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+    .about-visual {
+      aspect-ratio: 1;
+      border: 2px solid var(--border);
+      background: var(--surf1);
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 4px;
+    }
+    .about-text h2 { font-family: 'Caveat', cursive; font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 700; margin-bottom: 1rem; }
+    .about-text h2 span { color: var(--accent); }
+    .about-text p { color: var(--muted); margin-bottom: 1rem; font-size: 0.92rem; }
+    .about-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+    .about-tag {
+      padding: 0.25rem 0.7rem;
+      border: 2px solid var(--accent);
+      color: var(--accent);
+      font-size: 0.75rem; font-weight: 700;
+      border-radius: 2px;
+    }
+    @media(max-width: 768px) { .about-grid { grid-template-columns: 1fr; } }
+
+    /* ── Cart panel ── */
+    .cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 2000; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+    .cart-overlay.open { opacity: 1; pointer-events: all; }
+    .cart-panel {
+      position: fixed; top: 0; right: 0; height: 100vh;
+      width: min(380px, 100vw);
+      background: var(--bg); border-left: 2px solid var(--border);
+      z-index: 2001;
+      display: flex; flex-direction: column;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+    }
+    .cart-panel.open { transform: translateX(0); }
+    .cart-header { padding: 1.25rem 1.5rem; border-bottom: 2px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+    .cart-header h3 { font-family: 'Caveat', cursive; font-size: 1.3rem; font-weight: 700; }
+    .cart-close { padding: 0.35rem; border: 2px solid var(--border); color: var(--text); background: none; border-radius: 2px; cursor: pointer; transition: background-color 0.15s; display: flex; align-items: center; justify-content: center; }
+    .cart-close:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .cart-items { flex: 1; overflow-y: auto; padding: 1rem 1.5rem; }
+    .cart-empty {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 3rem 0; color: var(--muted); font-size: 0.88rem; gap: 0.75rem; text-align: center;
+    }
+    .cart-empty i { opacity: 0.4; }
+    .cart-item {
+      display: flex; align-items: flex-start; gap: 0.75rem;
+      padding: 0.75rem 0; border-bottom: 2px solid var(--border);
+      position: relative; min-height: 80px;
+    }
+    .cart-item-info { flex: 1; display: flex; flex-direction: column; gap: 0.2rem; }
+    .cart-item-name { font-weight: 700; font-size: 0.85rem; }
+    .cart-item-unit { font-size: 0.78rem; color: var(--muted); opacity: 0.7; }
+    .cart-item-subtotal { font-size: 0.95rem; font-weight: 700; color: var(--accent); }
+    .cart-item-controls { display: flex; align-items: center; gap: 0.35rem; flex-shrink: 0; }
+    .cart-item-controls button {
+      width: 26px; height: 26px;
+      border: 2px solid var(--border); background: none; color: var(--text);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-weight: 700; font-size: 0.95rem;
+      border-radius: 2px; transition: background-color 0.15s;
+    }
+    .cart-item-controls button:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .cart-item-controls span { font-size: 0.82rem; font-weight: 700; min-width: 18px; text-align: center; }
+    .remove-btn { color: var(--muted) !important; border-color: transparent !important; }
+    .remove-btn:hover { color: #dc2626 !important; background: transparent !important; border-color: transparent !important; }
+    .cart-panel, .cart-panel *, .checkout-modal, .checkout-modal * { font-family: inherit; }
+    .cart-item-trash { position: absolute; bottom: 8px; right: 8px; }
+
+    .cart-total { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; margin-bottom: 1rem; }
+    .cart-total span:first-child { font-weight: 700; font-size: 0.9rem; }
+    .cart-total span:last-child { font-family: 'Caveat', cursive; font-size: 1.4rem; font-weight: 700; color: var(--accent); }
+
+    /* ── Demo disclaimer inside cart ── */
+    .demo-disclaimer {
+      display: flex; align-items: flex-start; gap: 0.5rem;
+      padding: 0.6rem 0.75rem;
+      border: 1.5px solid var(--accent);
+      border-radius: 4px;
+      font-size: 0.72rem; color: var(--muted);
+      margin-bottom: 0.85rem;
+      opacity: 0.85;
+    }
+    .demo-disclaimer svg { flex-shrink: 0; margin-top: 0.1rem; color: var(--accent); }
+
+    /* ── Cart badge (navbar) ── */
+    #cart-badge {
+      background: var(--accent); color: #fff;
+      border-radius: 50%; width: 18px; height: 18px;
+      font-size: 0.65rem; font-weight: 800;
+      display: none; align-items: center; justify-content: center;
+      position: absolute; top: -6px; right: -6px;
+    }
+    .cart-nav-btn { position: relative; }
+
+    /* ── Floating cart button ── */
+    .cart-btn-float {
+      position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 100;
+      background: var(--accent); color: #fff;
+      border: 2px solid var(--accent);
+      padding: 0.7rem 1.2rem;
+      font-weight: 700; font-size: 0.88rem;
+      display: flex; align-items: center; gap: 0.5rem;
+      cursor: pointer; border-radius: 2px;
+      transition: background-color 0.15s;
+    }
+    .cart-btn-float:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+    .cart-count { background: #fff; color: var(--accent); border-radius: 50%; width: 20px; height: 20px; font-size: 0.7rem; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+            /* ── Footer ── */
+    #footer{background:#0a0a0a;border-top:1px solid rgba(255,255,255,0.08);padding:24px 48px 20px;color:#f0f0f0;}
+    #footer>div{max-width:1200px;margin:0 auto;}
+    .ft-inner{display:flex;flex-direction:column;gap:16px;}
+    .ft-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:nowrap;gap:16px;}
+    .ft-left{display:flex;flex-direction:column;align-items:flex-start;gap:4px;flex:0 0 auto;min-width:0;}
+    .ft-center{display:flex;align-items:center;gap:10px;flex:1;justify-content:center;}
+    .ft-right{display:flex;align-items:center;justify-content:flex-end;flex:0 0 auto;}
+    .ft-logo{height:32px;filter:brightness(0) invert(1);display:block;}
+    .ft-tagline{font-size:0.68rem;opacity:0.5;line-height:1.3;white-space:nowrap;}
+    .ft-btn{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,0.22);border-radius:6px;background:transparent;color:#f0f0f0;text-decoration:none;cursor:pointer;transition:border-color .2s,color .2s;padding:0;box-sizing:border-box;flex-shrink:0;}
+    .ft-btn:hover{border-color:#FF7F00;color:#FF7F00;}
+    .ft-bottom{font-size:0.68rem;opacity:0.5;text-align:center;margin:0;padding:0;line-height:1.5;white-space:normal;}
+    @media(max-width:900px){
+      #footer{padding:20px 24px 16px;}
+      .ft-top{flex-wrap:wrap;justify-content:center;gap:12px;}
+      .ft-left{align-items:center;width:100%;justify-content:center;}
+      .ft-tagline{white-space:normal;text-align:center;}
+      .ft-center{justify-content:center;}
+      .ft-right{width:auto;}
+    }
+    @media(max-width:480px){
+      .ft-top{flex-direction:column;align-items:center;}
+      .ft-right{width:100%;justify-content:center;}
+    }
+    </style>
+</head>
+<body>
+
+<header id="navbar">
+  <div class="nav-inner">
+    <a href="../../index.html#portfolio" class="nav-back" id="back-nav-link">< Portafolio</a>
+    <div class="nav-logo-center">
+      <a href="../../index.html" aria-label="WebExpressCR">
+        <img src="../../imgs/FullLogo.svg" alt="WebExpressCR" height="44" style="filter:brightness(0) invert(1);display:block;" />
+      </a>
+    </div>
+    <div class="nav-controls">
+      <button class="nav-btn lang-btn" id="langToggle"><i data-lucide="globe" width="14" height="14"></i><span id="langLabel">EN</span></button>
+      <button class="nav-btn" id="themeToggle"><i data-lucide="sun" width="14" height="14" id="themeIcon"></i></button>
+      <button class="nav-btn cart-nav-btn" id="cartToggle" aria-label="Carrito">
+        <i data-lucide="shopping-cart" width="16" height="16"></i>
+        <span id="cart-badge"></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<section id="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div>
+        <div class="hero-chip"><i data-lucide="leaf" width="13" height="13"></i><span data-i18n="hero.chip">Tienda de plantas · Alajuela, CR</span></div>
+        <h1 class="hero-title">Verde <span>Raíz</span></h1>
+        <p class="hero-tagline" data-i18n="hero.tagline">Tu jardín empieza aquí. Plantas, suculentas y terrarios para todos los espacios.</p>
+        <div class="hero-ctas">
+          <a href="#shop" class="btn btn-green"><i data-lucide="shopping-bag" width="15" height="15"></i><span data-i18n="hero.cta1">Explorar tienda</span></a>
+          <a href="#care" class="btn btn-outline" data-i18n="hero.cta2">Guías de cuidado</a>
+        </div>
+      </div>
+      <div class="hero-visual" style="overflow:hidden;padding:0;">
+        <img src="imgs/hero.jpg" alt="Suculentas y plantas" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="shop">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-badge" data-i18n="shop.badge">— Catálogo</span>
+      <h2 class="section-title" data-i18n="shop.title">Nuestras plantas</h2>
+      <p class="section-sub" data-i18n="shop.sub">Todas crecidas con amor, entregadas listas para tu espacio.</p>
+    </div>
+    <div class="tab-bar">
+      <button class="tab-btn active" data-tab="suculentas" data-i18n="tab.suculentas">Suculentas</button>
+      <button class="tab-btn" data-tab="cactus" data-i18n="tab.cactus">Cactus</button>
+      <button class="tab-btn" data-tab="tropicales" data-i18n="tab.tropicales">Tropicales</button>
+      <button class="tab-btn" data-tab="terrarios" data-i18n="tab.terrarios">Terrarios</button>
+    </div>
+
+    <div class="tab-content active" id="tab-suculentas">
+      <div class="plants-grid">
+        <div class="plant-card"><div class="card-top-strip"></div><div class="plant-img" style="overflow:hidden;"><img src="imgs/categoria-suculentas.webp" style="width:100%;aspect-ratio:4/3;object-fit:cover;" alt="Suculentas"><span class="difficulty-badge diff-easy" data-i18n="diff.easy">Fácil</span></div><div class="plant-info"><div class="plant-name">Echeveria Elegans</div><div class="plant-desc" data-i18n="s1.d">Roseta azul-gris. Perfecta para interiores con luz indirecta.</div><div class="plant-footer"><span class="plant-price">₡3.500</span><button class="add-btn" onclick="addToCart('p1', 'Echeveria Elegans', 3500)"><i data-lucide="plus" width="12" height="12"></i><span data-i18n="add">Agregar</span></button></div></div></div>
+        <div class="plant-card"><div class="card-top-strip"></div><div class="plant-img" style="overflow:hidden;"><img src="imgs/haworthia.jpg" style="width:100%;aspect-ratio:4/3;object-fit:cover;" alt="Haworthia"><span class="difficulty-badge diff-easy" data-i18n="diff.easy">Fácil</span></div><div class="plant-info"><div class="plant-name">Haworthia</div><div class="plant-desc" data-i18n="s2.d">Rayas blancas, crece bien en sombra. Ideal para escritorios.</div><div class="plant-footer"><span class="plant-price">₡4.000</span><button class="add-btn" onclick="addToCart('p2', 'Haworthia', 4000)"><i data-lucide="plus" width="12" height="12"></i><span data-i18n="add">Agregar</span></button></div></div></div>
+        <div class="plant-card"><div class="card-top-strip secondary"></div><div class="plant-img" style="overflow:hidden;"><img src="imgs/aloe.jpg" style="width:100%;aspect-ratio:4/3;object-fit:cover;" alt="Aloe Vera"><span class="difficulty-badge diff-medium" data-i18n="diff.medium">Medio</span></div><div class="plant-info"><div class="plant-name">Aloe Vera</div><div class="plant-desc" data-i18n="s3.d">La clásica planta medicinal. Hojas largas con propiedades curativas.</div><div class="plant-footer"><span class="plant-price">₡5.000</span><button class="add-btn" onclick="addToCart('p3', 'Aloe Vera', 5000)"><i data-lucide="plus" width="12" height="12"></i><span data-i18n="add">Agregar</span></button></div></div></div>
+        <div class="plant-card"><div class="card-top-strip"></div><div class="plant-img" style="overflow:hidden;"><img src="imgs/sedum.jpg" style="width:100%;aspect-ratio:4/3;object-fit:cover;" alt="Sedum"><span class="difficulty-badge diff-easy" data-i18n="diff.easy">Fácil</span></div><div class="plant-info"><div class="plant-name">Sedum</div><div class="plant-desc" data-i18n="s4.d">Cola de burro, perfecta para colgar. Tallos colgantes con hojitas redondas.</div><div class="plant-footer"><span class="plant-price">₡6.500</span><button class="add-btn" onclick="addToCart('p4', 'Sedum', 6500)"><i data-lucide="plus" width="12" height="12"></i><span data-i18n="add">Agregar</span></button></div></div></div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="tab-cactus">
+      <div class="plants-grid">
+        <div class="plant-card"><div class="card-top-strip"></div><div class="plant-img" style="overflow:hidden;"><img src="imgs/categoria-cactus.jpg" style="width:100%;aspect-ratio:4/3;object-fit:cover;" alt="Cactus"><span class="difficulty-badge diff-easy" data-i18n="diff.easy">Fácil</span></div><div class="plant-info"><div class="plant-name">Cactus San Pedro</div><div class="plant-desc" data-i18n="c1.d">Columnar de rápido crecimiento. Flores blancas nocturnas espectaculares.</div><div class="plant-footer"><span class="plant-price">₡7.000</span><button class="add-btn" onclick="addToCart('p5', 'Cactus San Pedro', 7000)"><i data-lucide="plus" width="12" height="12"></i><span data-i18n="add">Agregar</span></button></div></div></div>
+        <div class="plant-card"><div class="card-top-strip secondary"></div><div class="plant-img" style="overflow:hidden;"><img src="imgs/gymnocalycium.jpg" style="width:100%;aspect-ratio:4/3;object-fit:cover;" alt="Gymnocalycium"><span class="difficulty-badge diff-easy" data-i18n="diff.easy">Fácil</span></div><div class="plant-info"><div class="plant-name">Gymnocalycium</div><div class="plant-desc" data-i18n="c2.d">Cactus bola colorida, injertado. Colores vivos de rosa, amarillo y naranja.</div><div class="plant-footer"><span class="plant-price">₡5.500</span><button class="add-btn" onclick="addToCart('p6', 'Gymnocalycium', 5500)"><i data-lucide="plus" width="12" height="12"></i><span data-i18n="add">Agregar</span></button></div></div></div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="tab-tropicales">
+      <div class="plants-grid">
+        <div class="plant-card"><div class="card-top-strip secondary"></div><div class="plant-img" style="overflow:hidden;"><img src="imgs/categoria-tropicales.jpg" style="width:100%;aspect-ratio:4/3;object-fit:cover;" alt="Tropicales"><span class="difficulty-badge diff-medium" data-i18n="diff.medium">Medio</span></div><div class="plant-info"><div class="plant-name">Monstera Deliciosa</div><div class="plant-desc" data-i18n="t1.d">La icónica costilla de Adán. Hojas fenestradas, símbolo de interiores modernos.</div><div class="plant-footer"><span class="plant-price">₡18.000</span><button class="add-btn" onclick="addToCart('p7', 'Monstera Deliciosa', 18000)"><i data-lucide="plus" width="12" height="12"></i><span data-i18n="add">Agregar</span></button></div></div></div>
+        <div class="plant-card"><div class="card-top-strip"></div><div class="plant-img" style="overflow:hidden;"><img src="imgs/calathea.jpg" style="width:100%;aspect-ratio:4/3;object-fit:cover;" alt="Calathea"><span class="difficulty-badge diff-hard" data-i18n="diff.hard">Avanzado</span></div><div class="plant-info"><div class="plant-name">Calathea</div><div class="plant-desc" data-i18n="t2.d">Hojas rayadas en rosa y verde. Requiere humedad constante.</div><div class="plant-footer"><span class="plant-price">₡14.000</span><button class="add-btn" onclick="addToCart('p8', 'Calathea', 14000)"><i data-lucide="plus" width="12" height="12"></i><span data-i18n="add">Agregar</span></button></div></div></div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="tab-terrarios">
+      <div class="plants-grid">
+        <div class="plant-card"><div class="card-top-strip"></div><div class="plant-img" style="overflow:hidden;"><img src="imgs/categoria-terrario.jpg" alt="Terrario Abierto Mini" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;"><span class="difficulty-badge diff-easy" data-i18n="diff.easy">Fácil</span></div><div class="plant-info"><div class="plant-name" data-i18n="te1.n">Terrario Abierto Mini</div><div class="plant-desc" data-i18n="te1.d">Vidrio con 2–3 suculentas, piedras y musgo. Hecho a mano, ideal para regalo.</div><div class="plant-footer"><span class="plant-price">₡27.000</span><button class="add-btn" onclick="addToCart('p9', 'Terrario Abierto Mini', 27000)"><i data-lucide="plus" width="12" height="12"></i><span data-i18n="add">Agregar</span></button></div></div></div>
+        <div class="plant-card"><div class="card-top-strip secondary"></div><div class="plant-img" style="overflow:hidden;"><img src="imgs/terrariocerrado.jpg" alt="Terrario Cerrado Tropical" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;"><span class="difficulty-badge diff-medium" data-i18n="diff.medium">Medio</span></div><div class="plant-info"><div class="plant-name" data-i18n="te2.n">Terrario Cerrado Tropical</div><div class="plant-desc" data-i18n="te2.d">Ecosistema cerrado con musgo, helechos y piedras. Se mantiene solo.</div><div class="plant-footer"><span class="plant-price">₡46.500</span><button class="add-btn" onclick="addToCart('p10', 'Terrario Cerrado Tropical', 46500)"><i data-lucide="plus" width="12" height="12"></i><span data-i18n="add">Agregar</span></button></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="care">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-badge" data-i18n="care.badge">— Cuidados</span>
+      <h2 class="section-title" data-i18n="care.title">Guías de cuidado</h2>
+      <p class="section-sub" data-i18n="care.sub">Consejos para que tus plantas vivan muchos años.</p>
+    </div>
+    <div class="care-grid">
+      <div class="care-card">
+        <div class="care-header" onclick="toggleCare(this)">
+          <div class="care-icon"><i data-lucide="leaf" width="16" height="16"></i></div>
+          <div><div class="care-title" data-i18n="care1.t">Suculentas</div><div class="care-sub" data-i18n="care1.s">Riego, luz y sustrato</div></div>
+          <i data-lucide="chevron-down" width="18" height="18" class="care-chevron"></i>
+        </div>
+        <div class="care-body"><div class="care-body-inner">
+          <div class="care-row"><i data-lucide="sun" width="14" height="14"></i><span data-i18n="care1.light">Luz brillante directa 4–6h/día. Interior: cerca de ventanas sur u oeste.</span></div>
+          <div class="care-row"><i data-lucide="droplets" width="14" height="14"></i><span data-i18n="care1.water">Riego profundo una vez por semana en verano, cada 2 semanas en invierno. Dejar secar entre riegos.</span></div>
+          <div class="care-row"><i data-lucide="layers" width="14" height="14"></i><span data-i18n="care1.soil">Sustrato poroso: tierra cactus y perlita 50/50. Maceta con drenaje.</span></div>
+        </div></div>
+      </div>
+      <div class="care-card">
+        <div class="care-header" onclick="toggleCare(this)">
+          <div class="care-icon"><i data-lucide="leaf" width="16" height="16"></i></div>
+          <div><div class="care-title" data-i18n="care2.t">Cactus</div><div class="care-sub" data-i18n="care2.s">Mínimo mantenimiento</div></div>
+          <i data-lucide="chevron-down" width="18" height="18" class="care-chevron"></i>
+        </div>
+        <div class="care-body"><div class="care-body-inner">
+          <div class="care-row"><i data-lucide="sun" width="14" height="14"></i><span data-i18n="care2.light">Pleno sol, mínimo 6 horas directas al día.</span></div>
+          <div class="care-row"><i data-lucide="droplets" width="14" height="14"></i><span data-i18n="care2.water">Riego muy escaso. Cada 2–4 semanas en temporada de crecimiento.</span></div>
+          <div class="care-row"><i data-lucide="alert-triangle" width="14" height="14"></i><span data-i18n="care2.issue">Problema más común: exceso de riego. Raíces podridas = base blanda y amarilla.</span></div>
+        </div></div>
+      </div>
+      <div class="care-card">
+        <div class="care-header" onclick="toggleCare(this)">
+          <div class="care-icon"><i data-lucide="wind" width="16" height="16"></i></div>
+          <div><div class="care-title" data-i18n="care3.t">Tropicales</div><div class="care-sub" data-i18n="care3.s">Humedad y temperatura</div></div>
+          <i data-lucide="chevron-down" width="18" height="18" class="care-chevron"></i>
+        </div>
+        <div class="care-body"><div class="care-body-inner">
+          <div class="care-row"><i data-lucide="sun" width="14" height="14"></i><span data-i18n="care3.light">Luz indirecta brillante. Evitar sol directo.</span></div>
+          <div class="care-row"><i data-lucide="droplets" width="14" height="14"></i><span data-i18n="care3.water">Sustrato húmedo pero no encharcado. Pulverizar hojas 2 veces por semana.</span></div>
+          <div class="care-row"><i data-lucide="thermometer" width="14" height="14"></i><span data-i18n="care3.temp">Temperatura ideal 18–28°C. Proteger de corrientes frías.</span></div>
+        </div></div>
+      </div>
+      <div class="care-card">
+        <div class="care-header" onclick="toggleCare(this)">
+          <div class="care-icon"><i data-lucide="box" width="16" height="16"></i></div>
+          <div><div class="care-title" data-i18n="care4.t">Terrarios</div><div class="care-sub" data-i18n="care4.s">Ecosistemas en vidrio</div></div>
+          <i data-lucide="chevron-down" width="18" height="18" class="care-chevron"></i>
+        </div>
+        <div class="care-body"><div class="care-body-inner">
+          <div class="care-row"><i data-lucide="sun" width="14" height="14"></i><span data-i18n="care4.light">Luz indirecta. Nunca sol directo — el efecto invernadero puede dañar las plantas.</span></div>
+          <div class="care-row"><i data-lucide="droplets" width="14" height="14"></i><span data-i18n="care4.water">Abiertos: riego ligero semanal. Cerrados: raramente necesitan agua.</span></div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-visual" style="overflow:hidden;padding:0;">
+        <img src="imgs/about.jpg" alt="Familia Verde Raíz" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;">
+      </div>
+      <div class="about-text">
+        <h2 data-i18n="about.title">Un negocio <span>familiar</span></h2>
+        <p data-i18n="about.p1">Verde Raíz nació en el jardín trasero de la familia Vásquez en Alajuela. Lo que comenzó como una colección personal de suculentas se convirtió en un pequeño negocio que hoy surte cientos de hogares costarricenses cada mes.</p>
+        <p data-i18n="about.p2">Crecemos todo en nuestro invernadero en San Ramón, sin pesticidas. Cada planta sale con su guía de cuidado y garantía de 15 días. Hacemos envíos seguros a todo Costa Rica.</p>
+        <div class="about-tags">
+          <span class="about-tag" data-i18n="tag.family">Negocio familiar</span>
+          <span class="about-tag" data-i18n="tag.since">Desde 2019</span>
+          <span class="about-tag" data-i18n="tag.alajuela">Alajuela, CR</span>
+          <span class="about-tag" data-i18n="tag.nopest">Sin pesticidas</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="cart-overlay" id="cartOverlay"></div>
+<div class="cart-panel" id="cartPanel">
+  <div class="cart-header">
+    <h3 data-i18n="cart.title">Tu carrito</h3>
+    <button class="cart-close" id="cartClose"><i data-lucide="x" width="16" height="16"></i></button>
+  </div>
+  <div class="cart-items" id="cart-items">
+    <div class="cart-empty" id="cart-empty">
+      <i data-lucide="shopping-cart" width="36" height="36"></i>
+      <span data-i18n="cart.empty">Tu carrito está vacío</span>
+    </div>
+  </div>
+  <div class="cart-footer">
+    <div class="cart-total"><span data-i18n="cart.total">Total</span><span id="cart-total">₡0</span></div>
+    <div class="demo-disclaimer" id="cart-disclaimer">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <span id="disclaimer-text">Sitio con fines demostrativos: Ninguna transacción será procesada ni ningún dato almacenado.</span>
+    </div>
+    <button class="btn btn-green" style="width:100%;justify-content:center;" onclick="openCheckout()">
+      <i data-lucide="truck" width="15" height="15"></i>
+      <span data-i18n="cart.checkout">Confirmar pedido</span>
+    </button>
+  </div>
+</div>
+<button class="cart-btn-float" id="cartFloatBtn">
+  <i data-lucide="shopping-cart" width="17" height="17"></i>
+  <span data-i18n="cart.btn">Carrito</span>
+  <span class="cart-count" id="cartCount">0</span>
+</button>
+
+<!-- Checkout Modal -->
+<div id="coOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:3000;align-items:center;justify-content:center;padding:1rem;">
+  <div style="background:var(--bg);border:2px solid var(--border);border-radius:4px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;display:flex;flex-direction:column;">
+    <div style="padding:1.25rem 1.5rem;border-bottom:2px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+      <h3 style="font-family:'Caveat',cursive;font-size:1.3rem;font-weight:700;" id="coTitle">Paso 1 — Contacto</h3>
+      <button onclick="closeCheckout()" style="background:none;border:2px solid var(--border);color:var(--text);padding:.3rem;cursor:pointer;border-radius:2px;">✕</button>
+    </div>
+    <!-- Step indicators -->
+    <div style="display:flex;padding:.75rem 1.5rem;gap:.5rem;border-bottom:2px solid var(--border);">
+      <span id="step-dot-1" style="flex:1;text-align:center;font-size:.72rem;font-weight:700;padding:.3rem;border:2px solid var(--accent);color:var(--accent);border-radius:2px;">1 Contacto</span>
+      <span id="step-dot-2" style="flex:1;text-align:center;font-size:.72rem;font-weight:700;padding:.3rem;border:2px solid var(--border);color:var(--muted);border-radius:2px;">2 Envío</span>
+      <span id="step-dot-3" style="flex:1;text-align:center;font-size:.72rem;font-weight:700;padding:.3rem;border:2px solid var(--border);color:var(--muted);border-radius:2px;">3 Pago</span>
+      <span id="step-dot-4" style="flex:1;text-align:center;font-size:.72rem;font-weight:700;padding:.3rem;border:2px solid var(--border);color:var(--muted);border-radius:2px;">4 Resumen</span>
+    </div>
+    <!-- Checkout disclaimer -->
+    <div class="demo-disclaimer" style="margin:0.75rem 1.5rem 0;flex-shrink:0;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <span id="checkout-disclaimer-text">Sitio con fines demostrativos: Ninguna transacción será procesada ni ningún dato almacenado.</span>
+    </div>
+    <!-- Step 1: Contacto -->
+    <div id="co-step-1" style="padding:1.25rem 1.5rem;display:flex;flex-direction:column;gap:.75rem;">
+      <div><label style="font-size:.82rem;font-weight:700;display:block;margin-bottom:.3rem;" data-i18n="co.name">Nombre completo</label><input id="co-name" type="text" autocomplete="name" placeholder="Su nombre" style="width:100%;padding:.5rem .75rem;border:2px solid var(--border);background:var(--surf1);color:var(--text);font-family:inherit;border-radius:2px;" /></div>
+      <div><label style="font-size:.82rem;font-weight:700;display:block;margin-bottom:.3rem;" data-i18n="co.email">Correo electrónico</label><input id="co-email" type="email" autocomplete="email" placeholder="su@correo.com" style="width:100%;padding:.5rem .75rem;border:2px solid var(--border);background:var(--surf1);color:var(--text);font-family:inherit;border-radius:2px;" /></div>
+      <div><label style="font-size:.82rem;font-weight:700;display:block;margin-bottom:.3rem;" data-i18n="co.phone">Teléfono</label><input id="co-phone" type="tel" inputmode="numeric" pattern="[0-9]*" autocomplete="tel" maxlength="8" placeholder="+506 8888-0000" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,8)" style="width:100%;padding:.5rem .75rem;border:2px solid var(--border);background:var(--surf1);color:var(--text);font-family:inherit;border-radius:2px;" /></div>
+      <div class="demo-disclaimer" id="step1-disclaimer" style="margin-top:.25rem;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span id="step1-disclaimer-text">Sitio con fines demostrativos: Ninguna transacción será procesada ni ningún dato almacenado.</span>
+      </div>
+      <button onclick="coNext(1)" class="btn btn-green" style="justify-content:center;margin-top:.5rem;" data-i18n="co.continue">Continuar →</button>
+    </div>
+    <!-- Step 2: Envío -->
+    <div id="co-step-2" style="padding:1.25rem 1.5rem;display:none;flex-direction:column;gap:.75rem;">
+      <div><label style="font-size:.82rem;font-weight:700;display:block;margin-bottom:.3rem;" data-i18n="co.province">Provincia</label>
+        <div style="position:relative;"><select id="co-province" style="width:100%;padding:.5rem .75rem;padding-right:2.75rem;border:2px solid var(--border);background:var(--surf1);color:var(--text);font-family:inherit;border-radius:2px;appearance:none;-webkit-appearance:none;-moz-appearance:none;">
+          <option value="" data-i18n="co.selectprov">Seleccionar provincia...</option>
+          <option>San José</option><option>Alajuela</option><option>Cartago</option><option>Heredia</option><option>Guanacaste</option><option>Puntarenas</option><option>Limón</option>
+        
+<option value="otro" data-i18n="form.other">Otro</option>
+</select><svg style="position:absolute;right:0.85rem;top:50%;transform:translateY(-50%);pointer-events:none;color:currentColor;opacity:0.6;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+      </div>
+      <div><label style="font-size:.82rem;font-weight:700;display:block;margin-bottom:.3rem;" data-i18n="co.address">Dirección</label><input id="co-addr" type="text" autocomplete="street-address" placeholder="Dirección de entrega" style="width:100%;padding:.5rem .75rem;border:2px solid var(--border);background:var(--surf1);color:var(--text);font-family:inherit;border-radius:2px;" /></div>
+      <div><label style="font-size:.82rem;font-weight:700;display:block;margin-bottom:.3rem;" data-i18n="co.notes">Notas (opcional)</label><textarea id="co-notes" placeholder="Instrucciones de entrega..." style="width:100%;padding:.5rem .75rem;border:2px solid var(--border);background:var(--surf1);color:var(--text);font-family:inherit;border-radius:2px;resize:vertical;min-height:80px;"></textarea></div>
+      <div class="demo-disclaimer" id="step2-disclaimer">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span id="step2-disclaimer-text">Sitio con fines demostrativos: Ninguna transacción será procesada ni ningún dato almacenado.</span>
+      </div>
+      <div style="display:flex;gap:.5rem;margin-top:.5rem;">
+        <button onclick="coBack(2)" class="btn btn-outline" style="justify-content:center;flex:1;" data-i18n="co.back">← Volver</button>
+        <button onclick="coNext(2)" class="btn btn-green" style="justify-content:center;flex:2;" data-i18n="co.continue">Continuar →</button>
+      </div>
+    </div>
+    <!-- Step 3: Pago -->
+    <div id="co-step-3" style="padding:1.25rem 1.5rem;display:none;flex-direction:column;gap:.75rem;">
+      <p style="font-size:.82rem;font-weight:700;margin-bottom:.25rem;" data-i18n="co.paymethod">Método de pago</p>
+      <label style="display:flex;align-items:flex-start;gap:.75rem;padding:.75rem;border:2px solid var(--accent);border-radius:2px;cursor:pointer;background:var(--surf1);">
+        <input type="radio" name="pay" value="sinpe" checked style="margin-top:.2rem;" />
+        <div><strong>SINPE Móvil</strong> <span style="font-size:.7rem;background:var(--accent);color:#fff;padding:.1rem .4rem;border-radius:2px;margin-left:.25rem;" data-i18n="co.recommended">Recomendado</span><div style="font-size:.78rem;color:var(--muted);margin-top:.2rem;">Transferencia instantánea · 8888-0000</div></div>
+      </label>
+      <!-- SINPE reference field (shown by default since SINPE is pre-selected) -->
+      <div id="sinpe-ref-section" style="display:flex;flex-direction:column;gap:.3rem;">
+        <label for="sinpe-ref" style="font-size:.82rem;font-weight:700;" data-i18n="co.sinpe.ref">Número de referencia SINPE</label>
+        <input id="sinpe-ref" type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="20"
+          oninput="this.value=this.value.replace(/[^0-9]/g,'')"
+          placeholder="Ej: 123456789"
+          style="width:100%;padding:.5rem .75rem;border:2px solid var(--border);background:var(--surf1);color:var(--text);font-family:inherit;border-radius:2px;" />
+        <div class="field-error" id="sinpe-ref-error" data-i18n-err="err.sinpe.ref">Ingrese el número de referencia SINPE.</div>
+      </div>
+
+      <label style="display:flex;align-items:flex-start;gap:.75rem;padding:.75rem;border:2px solid var(--border);border-radius:2px;cursor:pointer;background:var(--surf1);">
+        <input type="radio" name="pay" value="card" style="margin-top:.2rem;" />
+        <div><strong data-i18n="co.card">Tarjeta de crédito/débito</strong><div style="font-size:.78rem;color:var(--muted);margin-top:.2rem;">Visa, Mastercard, American Express</div></div>
+      </label>
+      <label style="display:flex;align-items:flex-start;gap:.75rem;padding:.75rem;border:2px solid var(--border);border-radius:2px;cursor:pointer;background:var(--surf1);">
+        <input type="radio" name="pay" value="paypal" style="margin-top:.2rem;" />
+        <div><strong>PayPal</strong><div style="font-size:.78rem;color:var(--muted);margin-top:.2rem;" data-i18n="co.paypal.sub">Pago internacional seguro</div></div>
+      </label>
+
+      <!-- Card form section -->
+      <div id="card-form-section" style="display:none;">
+        <div style="margin-bottom:.75rem;padding:.6rem .75rem;background:#fff3cd;border:1px solid #ffc107;border-radius:.35rem;font-size:.75rem;color:#856404;display:flex;gap:.4rem;align-items:flex-start;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;margin-top:.1rem;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <span id="card-demo-label">Demostración — ningún dato es almacenado ni procesado.</span>
+        </div>
+        <!-- Card inputs -->
+        <div style="display:flex;flex-direction:column;gap:.6rem;">
+          <div>
+            <label style="font-size:.82rem;font-weight:700;display:block;margin-bottom:.3rem;" data-i18n="cc.number">Número de tarjeta</label>
+            <input id="cc-number" type="tel" inputmode="numeric" placeholder="0000 0000 0000 0000" maxlength="19" autocomplete="cc-number" oninput="formatCardNumber(event)" style="width:100%;padding:.5rem .75rem;border:2px solid var(--border);background:var(--surf1);color:var(--text);font-family:'Courier New',monospace;border-radius:2px;font-size:1rem;letter-spacing:0.05em;" />
+          </div>
+          <div>
+            <label style="font-size:.82rem;font-weight:700;display:block;margin-bottom:.3rem;" data-i18n="cc.holder">Nombre en tarjeta</label>
+            <input id="cc-name" type="text" autocomplete="cc-name" placeholder="Como aparece en la tarjeta" oninput="updateCardMockup()" style="width:100%;padding:.5rem .75rem;border:2px solid var(--border);background:var(--surf1);color:var(--text);font-family:inherit;border-radius:2px;" />
+          </div>
+          <div class="cc-input-row">
+            <div>
+              <label style="font-size:.82rem;font-weight:700;display:block;margin-bottom:.3rem;" data-i18n="cc.expires">Vencimiento</label>
+              <input id="cc-expiry" type="tel" inputmode="numeric" pattern="[0-9/]*" placeholder="MM/YY" maxlength="5" autocomplete="cc-exp" oninput="formatExpiry(event)" style="width:100%;padding:.5rem .75rem;border:2px solid var(--border);background:var(--surf1);color:var(--text);font-family:inherit;border-radius:2px;" />
+              <div class="field-error" id="expiry-error">Tarjeta vencida</div>
+            </div>
+            <div>
+              <label style="font-size:.82rem;font-weight:700;display:block;margin-bottom:.3rem;">CVV</label>
+              <input id="cc-cvv" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="•••" maxlength="4" autocomplete="cc-csc" oninput="this.value=this.value.replace(/[^0-9]/g,'')" style="width:100%;padding:.5rem .75rem;border:2px solid var(--border);background:var(--surf1);color:var(--text);font-family:inherit;border-radius:2px;" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-disclaimer" id="step3-disclaimer">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span id="step3-disclaimer-text">Sitio con fines demostrativos: Ninguna transacción será procesada ni ningún dato almacenado.</span>
+      </div>
+      <div style="display:flex;gap:.5rem;margin-top:.5rem;">
+        <button onclick="coBack(3)" class="btn btn-outline" style="justify-content:center;flex:1;" data-i18n="co.back">← Volver</button>
+        <button onclick="coNext(3)" class="btn btn-green" style="justify-content:center;flex:2;" data-i18n="co.summary">Ver resumen →</button>
+      </div>
+    </div>
+    <!-- Step 4: Resumen -->
+    <div id="co-step-4" style="padding:1.25rem 1.5rem;display:none;flex-direction:column;gap:.75rem;">
+      <div id="co-summary" style="font-size:.85rem;"></div>
+      <div class="demo-disclaimer" id="step4-disclaimer">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span id="step4-disclaimer-text">Sitio con fines demostrativos: Ninguna transacción será procesada ni ningún dato almacenado.</span>
+      </div>
+      <div style="display:flex;gap:.5rem;margin-top:.5rem;">
+        <button onclick="coBack(4)" class="btn btn-outline" style="justify-content:center;flex:1;" data-i18n="co.back">← Volver</button>
+        <button onclick="confirmOrder()" class="btn btn-green" style="justify-content:center;flex:2;" data-i18n="co.confirm">✓ Confirmar pedido</button>
+      </div>
+    </div>
+    <!-- Success -->
+    <div id="co-success" style="padding:2rem 1.5rem;display:none;text-align:center;flex-direction:column;align-items:center;gap:1rem;">
+      <div style="width:64px;height:64px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.75rem;color:#fff;">✓</div>
+      <h3 style="font-family:'Caveat',cursive;font-size:1.5rem;font-weight:700;" data-i18n="co.success.title">¡Pedido recibido!</h3>
+      <p id="co-ref" style="font-size:.9rem;color:var(--muted);"></p>
+      <p style="font-size:.85rem;color:var(--muted);" data-i18n="co.delivery">Entrega estimada: 3–5 días hábiles.</p>
+      <p style="font-size:.75rem;color:var(--muted);font-style:italic;" data-i18n="co.demo.note">Esta es una demostración — ningún dato fue procesado.</p>
+      <button onclick="closeCheckout()" class="btn btn-green" style="justify-content:center;" data-i18n="co.close">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<footer id="footer">
+  <div class="ft-inner">
+
+    <div class="ft-top">
+      <div class="ft-left">
+        <img src="../../imgs/FullLogo.svg" alt="WebExpressCR" class="ft-logo">
+      </div>
+      <div class="ft-center">
+        <a href="https://www.instagram.com/webexpresscr/" class="ft-btn" aria-label="Instagram">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/company/webexpresscr" class="ft-btn" aria-label="LinkedIn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+        <a href="https://www.facebook.com/webexpresscr" class="ft-btn" aria-label="Facebook">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+        <a href="https://wa.me/50670553656" target="_blank" class="ft-btn" aria-label="WhatsApp">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M20.52 3.48A11.93 11.93 0 0 0 12 0C5.37 0 0 5.37 0 12c0 2.11.55 4.16 1.6 5.97L0 24l6.19-1.62A11.94 11.94 0 0 0 12 24c6.63 0 12-5.37 12-12 0-3.2-1.25-6.21-3.48-8.52zm-8.52 18.4a9.9 9.9 0 0 1-5.05-1.38l-.36-.21-3.73.98.99-3.63-.24-.38A9.9 9.9 0 0 1 2.1 12c0-5.46 4.44-9.9 9.9-9.9 2.65 0 5.13 1.03 7 2.9a9.87 9.87 0 0 1 2.9 7c0 5.46-4.44 9.9-9.9 9.9zm5.43-7.4c-.3-.15-1.77-.87-2.04-.97-.28-.1-.48-.15-.68.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.68-1.63-.93-2.23-.24-.59-.49-.51-.68-.52h-.58c-.2 0-.52.07-.79.37-.27.3-1.03 1.01-1.03 2.46s1.06 2.85 1.2 3.05c.15.2 2.08 3.18 5.04 4.46.7.3 1.25.48 1.68.62.71.22 1.35.19 1.86.12.57-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35z"/></svg>
+        </a>
+        <a href="mailto:webexpresscr@gmail.com" class="ft-btn" aria-label="Email">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </a>
+      </div>
+      <div class="ft-right">
+        <button class="ft-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Volver arriba">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <p class="ft-bottom" data-i18n="footer.disclaimer"></p>
+
+  </div>
+</footer>
+
+<script>
+'use strict';
+lucide.createIcons();
+
+const html = document.documentElement;
+
+function applyTheme(t) {
+  html.className = t;
+  document.getElementById('themeIcon').setAttribute('data-lucide', t === 'dark' ? 'sun' : 'moon');
+  lucide.createIcons();
+  localStorage.setItem('vr-theme', t);
+}
+
+const _st = localStorage.getItem('vr-theme');
+applyTheme(_st ? _st : 'dark');
+
+document.getElementById('themeToggle').addEventListener('click', () => {
+  applyTheme(html.classList.contains('dark') ? 'light' : 'dark');
+});
+
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+  if (!localStorage.getItem('vr-theme')) applyTheme(e.matches ? 'dark' : 'light');
+});
+
+const T = {
+  es: {
+    'back': '< Portafolio',
+    'hero.chip': 'Tienda de plantas · Alajuela, CR',
+    'hero.tagline': 'Tu jardín empieza aquí. Plantas, suculentas y terrarios para todos los espacios.',
+    'hero.cta1': 'Explorar tienda', 'hero.cta2': 'Guías de cuidado', 'hero.visual': 'Naturaleza en tu hogar',
+    'shop.badge': '— Catálogo', 'shop.title': 'Nuestras plantas', 'shop.sub': 'Todas crecidas con amor, entregadas listas para tu espacio.',
+    'tab.suculentas': 'Suculentas', 'tab.cactus': 'Cactus', 'tab.tropicales': 'Tropicales', 'tab.terrarios': 'Terrarios',
+    'diff.easy': 'Fácil', 'diff.medium': 'Medio', 'diff.hard': 'Avanzado', 'add': 'Agregar',
+    's1.d': 'Roseta azul-gris. Perfecta para interiores con luz indirecta.',
+    's2.d': 'Rayas blancas, crece bien en sombra. Ideal para escritorios.',
+    's3.d': 'La clásica planta medicinal. Hojas largas con propiedades curativas.',
+    's4.d': 'Cola de burro, perfecta para colgar. Tallos colgantes con hojitas redondas.',
+    'c1.d': 'Columnar de rápido crecimiento. Flores blancas nocturnas espectaculares.',
+    'c2.d': 'Cactus bola colorida, injertado. Colores vivos de rosa, amarillo y naranja.',
+    't1.d': 'La icónica costilla de Adán. Hojas fenestradas, símbolo de interiores modernos.',
+    't2.d': 'Hojas rayadas en rosa y verde. Requiere humedad constante.',
+    'te1.n': 'Terrario Abierto Mini', 'te1.d': 'Vidrio con 2–3 suculentas, piedras y musgo. Hecho a mano, ideal para regalo.',
+    'te2.n': 'Terrario Cerrado Tropical', 'te2.d': 'Ecosistema cerrado con musgo, helechos y piedras. Se mantiene solo.',
+    'care.badge': '— Cuidados', 'care.title': 'Guías de cuidado', 'care.sub': 'Consejos para que tus plantas vivan muchos años.',
+    'care1.t': 'Suculentas', 'care1.s': 'Riego, luz y sustrato',
+    'care1.light': 'Luz brillante directa 4–6h/día. Interior: cerca de ventanas sur u oeste.',
+    'care1.water': 'Riego profundo una vez por semana en verano, cada 2 semanas en invierno.',
+    'care1.soil': 'Sustrato poroso: tierra cactus y perlita 50/50. Maceta con drenaje.',
+    'care2.t': 'Cactus', 'care2.s': 'Mínimo mantenimiento',
+    'care2.light': 'Pleno sol, mínimo 6 horas directas al día.',
+    'care2.water': 'Riego muy escaso. Cada 2–4 semanas en temporada de crecimiento.',
+    'care2.issue': 'Problema más común: exceso de riego. Raíces podridas = base blanda y amarilla.',
+    'care3.t': 'Tropicales', 'care3.s': 'Humedad y temperatura',
+    'care3.light': 'Luz indirecta brillante. Evitar sol directo.',
+    'care3.water': 'Sustrato húmedo pero no encharcado. Pulverizar hojas 2 veces por semana.',
+    'care3.temp': 'Temperatura ideal 18–28°C. Proteger de corrientes frías.',
+    'care4.t': 'Terrarios', 'care4.s': 'Ecosistemas en vidrio',
+    'care4.light': 'Luz indirecta. Nunca sol directo.',
+    'care4.water': 'Abiertos: riego ligero semanal. Cerrados: raramente necesitan agua.',
+    'about.title': 'Un negocio familiar', 'about.visual': 'Familia Verde Raíz',
+    'about.p1': 'Verde Raíz nació en el jardín trasero de la familia Vásquez en Alajuela. Lo que comenzó como una colección personal de suculentas se convirtió en un pequeño negocio que hoy surte cientos de hogares costarricenses cada mes.',
+    'about.p2': 'Crecemos todo en nuestro invernadero en San Ramón, sin pesticidas. Cada planta sale con su guía de cuidado y garantía de 15 días. Hacemos envíos seguros a todo Costa Rica.',
+    'tag.family': 'Negocio familiar', 'tag.since': 'Desde 2019', 'tag.alajuela': 'Alajuela, CR', 'tag.nopest': 'Sin pesticidas',
+    'cart.title': 'Tu carrito', 'cart.empty': 'Tu carrito está vacío', 'cart.total': 'Total',
+    'cart.checkout': 'Confirmar pedido', 'cart.btn': 'Carrito',
+    'co.name': 'Nombre completo', 'co.email': 'Correo electrónico', 'co.phone': 'Teléfono',
+    'co.province': 'Provincia', 'co.selectprov': 'Seleccionar provincia...', 'co.address': 'Dirección',
+    'co.notes': 'Notas (opcional)', 'co.continue': 'Continuar →', 'co.back': '← Volver',
+    'co.paymethod': 'Método de pago', 'co.recommended': 'Recomendado', 'co.card': 'Tarjeta de crédito/débito',
+    'co.paypal.sub': 'Pago internacional seguro', 'co.summary': 'Ver resumen →', 'co.confirm': '✓ Confirmar pedido',
+    'co.success.title': '¡Pedido recibido!', 'co.delivery': 'Entrega estimada: 3–5 días hábiles.',
+    'co.demo.note': 'Esta es una demostración — ningún dato fue procesado.', 'co.close': 'Cerrar',
+    'cc.number': 'Número de tarjeta', 'cc.holder': 'Nombre en tarjeta', 'cc.expires': 'Vencimiento',
+    'expiry.error': 'Tarjeta vencida',
+    'co.sinpe.ref': 'Número de referencia SINPE',
+    'err.sinpe.ref': 'Ingrese el número de referencia SINPE.',
+    'cart.disclaimer': 'Sitio con fines demostrativos: Ninguna transacción será procesada ni ningún dato almacenado.',
+    'card.demo': 'Demostración — ningún dato es almacenado ni procesado.','form.other':'Otro','footer.tagline':'Creación de páginas web · Costa Rica','footer.disclaimer':'Sitio con fines demostrativos: Ninguna transacción será procesada ni ningún dato almacenado.  © 2026 WebExpressCR. Todos los derechos reservados.  Las imágenes utilizadas pertenecen a sus respectivos autores y se usan únicamente con fines ilustrativos.'},
+  en: {
+    'back': '< Portfolio',
+    'hero.chip': 'Plant shop · Alajuela, CR',
+    'hero.tagline': 'Your garden starts here. Plants, succulents and terrariums for every space.',
+    'hero.cta1': 'Browse shop', 'hero.cta2': 'Care guides', 'hero.visual': 'Nature in your home',
+    'shop.badge': '— Catalog', 'shop.title': 'Our plants', 'shop.sub': 'All grown with love, delivered ready for your space.',
+    'tab.suculentas': 'Succulents', 'tab.cactus': 'Cacti', 'tab.tropicales': 'Tropicals', 'tab.terrarios': 'Terrariums',
+    'diff.easy': 'Easy', 'diff.medium': 'Medium', 'diff.hard': 'Advanced', 'add': 'Add',
+    's1.d': 'Blue-gray rosette. Perfect indoors with indirect light.',
+    's2.d': 'White-striped, grows well in shade. Ideal for desks.',
+    's3.d': 'Classic medicinal plant. Long green leaves with healing properties.',
+    's4.d': "Burro's tail, perfect for hanging. Trailing stems with small leaves.",
+    'c1.d': 'Fast-growing columnar. Spectacular white nocturnal flowers.',
+    'c2.d': 'Colorful grafted ball cactus. Vivid pink, yellow and orange.',
+    't1.d': 'Iconic Swiss cheese plant. Large fenestrated leaves.',
+    't2.d': 'Pink-and-green striped leaves. Requires constant humidity.',
+    'te1.n': 'Open Mini Terrarium', 'te1.d': 'Glass with 2–3 succulents, stones and moss. Handmade, great gift.',
+    'te2.n': 'Closed Tropical Terrarium', 'te2.d': 'Closed ecosystem with moss, ferns and rocks. Self-sustaining.',
+    'care.badge': '— Care', 'care.title': 'Care guides', 'care.sub': 'Tips to keep your plants thriving for years.',
+    'care1.t': 'Succulents', 'care1.s': 'Watering, light and soil',
+    'care1.light': 'Bright direct light 4–6h/day. Indoors: near south or west windows.',
+    'care1.water': 'Deep watering once a week in summer, every 2 weeks in winter.',
+    'care1.soil': 'Porous substrate: cactus soil and perlite 50/50. Pot with drainage.',
+    'care2.t': 'Cacti', 'care2.s': 'Minimal maintenance',
+    'care2.light': 'Full sun, minimum 6 direct hours daily.',
+    'care2.water': 'Very sparse watering. Every 2–4 weeks during growing season.',
+    'care2.issue': 'Most common problem: overwatering. Rotted roots = yellow soft base.',
+    'care3.t': 'Tropicals', 'care3.s': 'Humidity and temperature',
+    'care3.light': 'Bright indirect light. Avoid direct sun.',
+    'care3.water': 'Keep substrate moist but not waterlogged. Mist leaves twice a week.',
+    'care3.temp': 'Ideal temperature 18–28°C. Protect from cold drafts.',
+    'care4.t': 'Terrariums', 'care4.s': 'Glass ecosystems',
+    'care4.light': 'Indirect light. Never direct sun.',
+    'care4.water': 'Open: light watering weekly. Closed: rarely need water.',
+    'about.title': 'A family business', 'about.visual': 'Verde Raíz Family',
+    'about.p1': "Verde Raíz was born in the Vásquez family's backyard in Alajuela. What started as a succulent collection became a business that now supplies hundreds of Costa Rican homes each month.",
+    'about.p2': 'We grow everything pesticide-free in our greenhouse in San Ramón. Each plant comes with a care guide and 15-day guarantee.',
+    'tag.family': 'Family business', 'tag.since': 'Since 2019', 'tag.alajuela': 'Alajuela, CR', 'tag.nopest': 'Pesticide-free',
+    'cart.title': 'Your cart', 'cart.empty': 'Your cart is empty', 'cart.total': 'Total',
+    'cart.checkout': 'Confirm order', 'cart.btn': 'Cart',
+    'co.name': 'Full name', 'co.email': 'Email address', 'co.phone': 'Phone',
+    'co.province': 'Province', 'co.selectprov': 'Select province...', 'co.address': 'Address',
+    'co.notes': 'Notes (optional)', 'co.continue': 'Continue →', 'co.back': '← Back',
+    'co.paymethod': 'Payment method', 'co.recommended': 'Recommended', 'co.card': 'Credit/Debit card',
+    'co.paypal.sub': 'Secure international payment', 'co.summary': 'Review order →', 'co.confirm': '✓ Confirm order',
+    'co.success.title': 'Order received!', 'co.delivery': 'Estimated delivery: 3–5 business days.',
+    'co.demo.note': 'This is a demo — no data was processed.', 'co.close': 'Close',
+    'cc.number': 'Card number', 'cc.holder': 'Name on card', 'cc.expires': 'Expires',
+    'expiry.error': 'Card expired',
+    'co.sinpe.ref': 'SINPE Móvil reference number',
+    'err.sinpe.ref': 'Please enter the SINPE reference number.',
+    'cart.disclaimer': 'Demonstration site: No transactions will be processed or data stored.',
+    'card.demo': 'Demo — no data is stored or processed.','form.other':'Other','footer.tagline':'Web development · Costa Rica','footer.disclaimer':'Demonstration site: No transactions will be processed or data stored.  © 2026 WebExpressCR. All rights reserved.  Images used belong to their respective authors and are used for illustrative purposes only.'}
+};
+
+let lang = localStorage.getItem('vr-lang') || 'es';
+
+function getCurrentLang() { return lang; }
+
+function applyLang(l) {
+  lang = l;
+  document.documentElement.lang = l;
+  document.getElementById('langLabel').textContent = l === 'es' ? 'EN' : 'ES';
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const k = el.getAttribute('data-i18n');
+    if (T[l] && T[l][k] !== undefined) el.textContent = T[l][k];
+  });
+  // Update non-data-i18n dynamic elements
+  const backNavLink = document.getElementById('back-nav-link');
+  if (backNavLink) backNavLink.textContent = T[l]['back'];
+  const disclaimerText = document.getElementById('disclaimer-text');
+  if (disclaimerText) disclaimerText.textContent = T[l]['cart.disclaimer'];
+  const checkoutDisclaimerText = document.getElementById('checkout-disclaimer-text');
+  if (checkoutDisclaimerText) checkoutDisclaimerText.textContent = T[l]['cart.disclaimer'];
+  ['step1-disclaimer-text','step2-disclaimer-text','step3-disclaimer-text','step4-disclaimer-text'].forEach(function(id) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = T[l]['cart.disclaimer'];
+  });
+  const footerCopy = document.getElementById('footer-copy');
+  if (footerCopy) footerCopy.textContent = T[l]['footer.copy'];
+  const footerDisclaimer1 = document.getElementById('footer-disclaimer-1');
+  if (footerDisclaimer1) footerDisclaimer1.textContent = l === 'es' ? 'Sitio con fines demostrativos: Ninguna transacción será procesada ni ningún dato almacenado.' : 'Demonstration site: No transactions will be processed or data stored.';
+  const footerDisclaimer2 = document.getElementById('footer-disclaimer-2');
+  if (footerDisclaimer2) footerDisclaimer2.textContent = l === 'es' ? 'Las imágenes utilizadas pertenecen a sus respectivos autores y se usan únicamente con fines ilustrativos.' : 'Images used belong to their respective authors and are used for illustrative purposes only.';
+  const cardDemoLabel = document.getElementById('card-demo-label');
+  if (cardDemoLabel) cardDemoLabel.textContent = T[l]['card.demo'];
+  const expiryErr = document.getElementById('expiry-error');
+  if (expiryErr) expiryErr.textContent = T[l]['expiry.error'];
+  const sinpeRefLabel = document.querySelector('label[for="sinpe-ref"]');
+  if (sinpeRefLabel) sinpeRefLabel.textContent = T[l]['co.sinpe.ref'];
+  const sinpeRefErr = document.getElementById('sinpe-ref-error');
+  if (sinpeRefErr) sinpeRefErr.textContent = T[l]['err.sinpe.ref'];
+  localStorage.setItem('vr-lang', l);
+}
+document.getElementById('langToggle').addEventListener('click', () => applyLang(lang === 'es' ? 'en' : 'es'));
+applyLang(lang);
+
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+  });
+});
+
+function toggleCare(header) { header.parentElement.classList.toggle('open'); }
+
+// ── Cart state ──
+let cart = [];
+
+function addToCart(id, name, price) {
+  const existing = cart.find(i => i.id === id);
+  if (existing) { existing.qty++; } else { cart.push({ id, name, price, qty: 1 }); }
+  renderCart();
+  const addMsg = lang === 'es' ? name + ' añadido con éxito al carrito' : name + ' successfully added to cart';
+  showToast(addMsg);
+  updateBadge();
+}
+
+function renderCart() {
+  const cartItemsEl = document.getElementById('cart-items');
+  const cartEmptyEl = document.getElementById('cart-empty');
+  const cartTotalEl = document.getElementById('cart-total');
+  if (!cartItemsEl) return;
+
+  if (cart.length === 0) {
+    cartItemsEl.innerHTML = '';
+    if (cartEmptyEl) {
+      cartEmptyEl.style.display = 'flex';
+      cartItemsEl.appendChild(cartEmptyEl);
+    }
+    if (cartTotalEl) cartTotalEl.textContent = '₡0';
+    return;
+  }
+  if (cartEmptyEl) cartEmptyEl.style.display = 'none';
+
+  cartItemsEl.innerHTML = cart.map(item => `
+    <div class="cart-item" data-id="${item.id}">
+      <div class="cart-item-info">
+        <span class="cart-item-name">${item.name}</span>
+        <span class="cart-item-unit">₡${item.price.toLocaleString()} c/u</span>
+        <span class="cart-item-subtotal">₡${(item.price * item.qty).toLocaleString()}</span>
+      </div>
+      <div class="cart-item-controls">
+        <button onclick="updateQuantity('${item.id}', -1)">−</button>
+        <span>${item.qty}</span>
+        <button onclick="updateQuantity('${item.id}', 1)">+</button>
+        <button onclick="removeFromCart('${item.id}')" class="remove-btn cart-item-trash"><i data-lucide="trash-2" width="14" height="14"></i></button>
+      </div>
+    </div>
+  `).join('');
+
+  const total = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+  if (cartTotalEl) cartTotalEl.textContent = '₡' + total.toLocaleString();
+
+  lucide.createIcons();
+}
+
+function updateQuantity(id, delta) {
+  const item = cart.find(i => i.id === id);
+  if (!item) return;
+  item.qty += delta;
+  if (item.qty <= 0) cart = cart.filter(i => i.id !== id);
+  renderCart();
+  updateBadge();
+}
+
+function removeFromCart(id) {
+  cart = cart.filter(i => i.id !== id);
+  renderCart();
+  updateBadge();
+}
+
+function updateBadge() {
+  const badge = document.getElementById('cart-badge');
+  const floatCount = document.getElementById('cartCount');
+  const count = cart.reduce((sum, i) => sum + i.qty, 0);
+  if (badge) {
+    badge.textContent = count;
+    badge.style.display = count > 0 ? 'flex' : 'none';
+  }
+  if (floatCount) floatCount.textContent = count;
+}
+
+function showToast(msg, accent) {
+  var ac = accent || 'var(--acc, #4a7c59)';
+  var t = document.createElement('div');
+  t.style.cssText = 'position:fixed;bottom:24px;left:24px;z-index:9999;background:' + ac + ';color:#fff;border-radius:8px;padding:14px 20px;box-shadow:0 4px 16px rgba(0,0,0,.25);display:flex;align-items:center;gap:8px;opacity:0;transition:opacity .5s ease;pointer-events:none;font-size:.9rem;font-family:inherit;max-width:420px;';
+  t.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11"/></svg><span>' + msg + '</span>';
+  document.body.appendChild(t);
+  requestAnimationFrame(function(){ t.style.opacity = '1'; });
+  setTimeout(function(){ t.style.opacity = '0'; setTimeout(function(){ t.remove(); }, 500); }, 4000);
+}
+
+function openCart() { document.getElementById('cartPanel').classList.add('open'); document.getElementById('cartOverlay').classList.add('open'); }
+function closeCart() { document.getElementById('cartPanel').classList.remove('open'); document.getElementById('cartOverlay').classList.remove('open'); }
+
+function openCheckout() {
+  if (!cart.length) return;
+  closeCart();
+  showCoStep(1);
+  const el = document.getElementById('coOverlay');
+  el.style.display = 'flex';
+}
+function closeCheckout() {
+  document.getElementById('coOverlay').style.display = 'none';
+  ['co-step-1','co-step-2','co-step-3','co-step-4','co-success'].forEach(id => {
+    const el = document.getElementById(id);
+    el.style.display = 'none';
+    el.style.flexDirection = '';
+  });
+}
+function showCoStep(n) {
+  [1,2,3,4].forEach(i => {
+    const step = document.getElementById('co-step-' + i);
+    if (step) { step.style.display = i === n ? 'flex' : 'none'; if (i === n) step.style.flexDirection = 'column'; }
+    const dot = document.getElementById('step-dot-' + i);
+    if (dot) { dot.style.borderColor = i === n ? 'var(--accent)' : 'var(--border)'; dot.style.color = i === n ? 'var(--accent)' : 'var(--muted)'; }
+  });
+  document.getElementById('co-success').style.display = 'none';
+  const titles = {
+    es: ['','Paso 1 — Contacto','Paso 2 — Envío','Paso 3 — Pago','Paso 4 — Resumen'],
+    en: ['','Step 1 — Contact','Step 2 — Shipping','Step 3 — Payment','Step 4 — Summary']
+  };
+  document.getElementById('coTitle').textContent = (titles[lang] || titles.es)[n] || '';
+}
+function coNext(step) {
+  if (step === 1) {
+    const nameVal = (document.getElementById('co-name') || {}).value || '';
+    const emailVal = (document.getElementById('co-email') || {}).value || '';
+    const phoneVal = (document.getElementById('co-phone') || {}).value || '';
+    if (!nameVal.trim() || !emailVal.trim() || !phoneVal.trim()) {
+      const msg = lang === 'es' ? 'Por favor complete todos los campos requeridos.' : 'Please fill in all required fields.';
+      showToast(msg, '#dc2626');
+      return;
+    }
+  }
+  if (step === 2) {
+    const provVal = (document.getElementById('co-province') || {}).value || '';
+    const addrVal = (document.getElementById('co-addr') || {}).value || '';
+    if (!provVal.trim() || !addrVal.trim()) {
+      const msg = lang === 'es' ? 'Por favor complete todos los campos requeridos.' : 'Please fill in all required fields.';
+      showToast(msg, '#dc2626');
+      return;
+    }
+  }
+  if (step === 3) {
+    const payVal = document.querySelector('input[name="pay"]:checked');
+    // Validate SINPE reference if SINPE is selected
+    if (payVal && payVal.value === 'sinpe') {
+      const sinpeRefInput = document.getElementById('sinpe-ref');
+      const sinpeRefErr = document.getElementById('sinpe-ref-error');
+      if (sinpeRefInput && sinpeRefInput.value.trim().length < 1) {
+        if (sinpeRefErr) sinpeRefErr.classList.add('visible');
+        sinpeRefInput.style.borderColor = '#dc2626';
+        return;
+      }
+      if (sinpeRefErr) sinpeRefErr.classList.remove('visible');
+      if (sinpeRefInput) sinpeRefInput.style.borderColor = '';
+    }
+    // Validate card expiry if card is selected
+    if (payVal && payVal.value === 'card') {
+      const expiryInput = document.getElementById('cc-expiry');
+      const errEl = document.getElementById('expiry-error');
+      if (expiryInput && !validateExpiry(expiryInput.value)) {
+        if (errEl) errEl.classList.add('visible');
+        expiryInput.style.borderColor = '#dc2626';
+        return;
+      }
+      if (errEl) errEl.classList.remove('visible');
+      if (expiryInput) expiryInput.style.borderColor = '';
+    }
+  }
+  if (step === 4) { confirmOrder(); return; }
+  showCoStep(step + 1);
+  if (step + 1 === 4) buildSummary();
+}
+function coBack(step) { showCoStep(step - 1); }
+
+function validateExpiry(expiryVal) {
+  const match = expiryVal.match(/^(\d{2})\/(\d{2})$/);
+  if (!match) return false;
+  const month = parseInt(match[1]);
+  const year = parseInt('20' + match[2]);
+  if (month < 1 || month > 12) return false;
+  const expDate = new Date(year, month, 1); // first day AFTER expiry month
+  return expDate > new Date();
+}
+
+function buildSummary() {
+  const pay = document.querySelector('input[name="pay"]:checked');
+  const payLabel = pay ? (pay.value === 'sinpe' ? 'SINPE Móvil' : pay.value === 'card' ? (lang === 'es' ? 'Tarjeta' : 'Card') : 'PayPal') : '';
+  const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  const fmtCRC = n => '₡' + n.toLocaleString();
+  const delivLabel = lang === 'es' ? 'Envío' : 'Shipping';
+  const payLabelStr = lang === 'es' ? 'Pago' : 'Payment';
+  document.getElementById('co-summary').innerHTML = `
+    <div style="border:2px solid var(--border);border-radius:2px;overflow:hidden;margin-bottom:.75rem;">
+      ${cart.map(i => `<div style="display:flex;justify-content:space-between;padding:.5rem .75rem;border-bottom:1px solid var(--border);font-size:.83rem;"><span>${i.name} × ${i.qty}</span><span style="font-weight:700;">${fmtCRC(i.price * i.qty)}</span></div>`).join('')}
+      <div style="display:flex;justify-content:space-between;padding:.6rem .75rem;font-weight:700;font-size:.9rem;background:var(--surf1);"><span>Total</span><span style="color:var(--accent);">${fmtCRC(total)}</span></div>
+    </div>
+    <p style="font-size:.82rem;margin-bottom:.25rem;"><strong>${payLabelStr}:</strong> ${payLabel}</p>
+    <p style="font-size:.82rem;"><strong>${delivLabel}:</strong> 3–5 ${lang === 'es' ? 'días hábiles' : 'business days'}</p>`;
+}
+function confirmOrder() {
+  const ref = Math.floor(100000 + Math.random() * 900000);
+  [1,2,3,4].forEach(i => { const el = document.getElementById('co-step-' + i); if (el) el.style.display = 'none'; });
+  const suc = document.getElementById('co-success');
+  suc.style.display = 'flex';
+  suc.style.flexDirection = 'column';
+  document.getElementById('co-ref').textContent = (lang === 'es' ? 'Referencia de pedido: #' : 'Order reference: #') + ref;
+  document.getElementById('coTitle').textContent = lang === 'es' ? '¡Listo!' : 'Done!';
+  const orderMsg = lang === 'es' ? 'Tu pedido ha sido realizado con éxito.' : 'Your order has been placed successfully.';
+  showToast(orderMsg);
+  cart = [];
+  renderCart();
+  updateBadge();
+}
+
+document.getElementById('cartToggle').addEventListener('click', openCart);
+document.getElementById('cartFloatBtn').addEventListener('click', openCart);
+document.getElementById('cartClose').addEventListener('click', closeCart);
+document.getElementById('cartOverlay').addEventListener('click', closeCart);
+
+// ── Card payment formatters ──
+function formatCardNumber(e) {
+  let v = e.target.value.replace(/\D/g, '').substring(0, 16);
+  e.target.value = v.replace(/(.{4})/g, '$1 ').trim();
+  updateCardMockup();
+}
+function formatExpiry(e) {
+  let v = e.target.value.replace(/\D/g, '').substring(0, 4);
+  if (v.length >= 2) v = v.substring(0, 2) + '/' + v.substring(2);
+  e.target.value = v;
+  // Clear error on input change
+  const errEl = document.getElementById('expiry-error');
+  const input = document.getElementById('cc-expiry');
+  if (errEl) errEl.classList.remove('visible');
+  if (input) input.style.borderColor = '';
+  updateCardMockup();
+}
+function updateCardMockup() {
+  const num = document.getElementById('cc-number');
+  const exp = document.getElementById('cc-expiry');
+  const name = document.getElementById('cc-name');
+  const mockNum = document.getElementById('mock-number');
+  const mockExp = document.getElementById('mock-expiry');
+  const mockName = document.getElementById('mock-name');
+  if (!num || !mockNum) return;
+  const raw = num.value.replace(/\s/g, '');
+  const padded = (raw + '................').substring(0, 16).replace(/\./g, '•');
+  const mockNumStr = padded.replace(/(.{4})/g, '$1 ').trim();
+  mockNum.textContent = mockNumStr || '•••• •••• •••• ••••';
+  mockExp.textContent = exp ? (exp.value || 'MM/YY') : 'MM/YY';
+  mockName.textContent = name ? (name.value.toUpperCase() || 'NOMBRE EN TARJETA') : 'NOMBRE EN TARJETA';
+}
+
+// Toggle card form / SINPE ref field visibility
+document.addEventListener('change', function(e) {
+  if (e.target.name === 'pay') {
+    const cardForm = document.getElementById('card-form-section');
+    if (cardForm) cardForm.style.display = e.target.value === 'card' ? 'block' : 'none';
+    const sinpeRef = document.getElementById('sinpe-ref-section');
+    if (sinpeRef) sinpeRef.style.display = e.target.value === 'sinpe' ? 'flex' : 'none';
+  }
+});
+
+// Initial badge state
+updateBadge();
+</script>
+</body>
+</html>

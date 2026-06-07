@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clínica Vida Sana — Consultorio Médico</title>
+  <meta name="description" content="Consultorio médico privado en San José, Costa Rica. Medicina general, pediatría, ginecología, cardiología, dermatología y nutrición." />
+  <meta property="og:title" content="Clínica Vida Sana — Consultorio Médico" />
+  <meta property="og:description" content="Tu salud, nuestra prioridad. Consultorio médico privado en Costa Rica." />
+  <meta property="og:image" content="../../imgs/SmallLogo.svg" />
+  <link rel="icon" type="image/svg+xml" href="../../imgs/SmallLogo.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    :root {
+      --font: 'Quicksand', sans-serif;
+      --transition: 0.3s ease;
+      --section-py: 5rem;
+      --radius: 16px;
+      --radius-sm: 10px;
+    }
+    html.light {
+      --bg: #ffffff;
+      --surface: #f4f4f4;
+      --text: #1a1a1a;
+      --text-muted: #5a5a6a;
+      --accent: #1976d2;
+      --secondary: #388e3c;
+      --border: #d8d8e8;
+      --s1: #90caf9;
+      --s2: #fff176;
+      --s3: #ce93d8;
+      --s4: #a5d6a7;
+      --s5: #f48fb1;
+    }
+    html.dark {
+      --bg: #0f0f1a;
+      --surface: #1a1a2e;
+      --text: #f0f0f0;
+      --text-muted: #8888a8;
+      --accent: #42a5f5;
+      --secondary: #66bb6a;
+      --border: #2a2a44;
+      --s1: #0a2d4a;
+      --s2: #1f1e00;
+      --s3: #220a36;
+      --s4: #062a14;
+      --s5: #350a18;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    ::selection { background: rgba(66, 165, 245, 0.25); color: inherit; }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background var(--transition), color var(--transition);
+      overflow-x: hidden;
+      font-weight: 500;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+    button { cursor: pointer; border: none; background: none; font-family: var(--font); font-weight: 600; }
+    input, textarea, select { font-family: var(--font); font-size: 1rem; font-weight: 500; }
+    section { padding: var(--section-py) 0; }
+    .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+    .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .fade-in.visible { opacity: 1; transform: none; }
+    .delay-1 { transition-delay: .1s; }
+    .delay-2 { transition-delay: .2s; }
+    .delay-3 { transition-delay: .3s; }
+    .delay-4 { transition-delay: .4s; }
+
+    /* Navbar — glassmorphism */
+    #navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.72);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 2px solid var(--border);
+    }
+    html.dark #navbar {
+      background: rgba(15, 15, 26, 0.72);
+    }
+    .nav-inner {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 76px;
+      padding: 0 1.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .nav-left {
+      display: flex;
+      align-items: center;
+      flex: 1;
+    }
+    .nav-center {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      pointer-events: none;
+    }
+    .nav-center a { pointer-events: all; }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      flex: 1;
+      justify-content: flex-end;
+    }
+    .nav-back-link {
+      font-size: .82rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-decoration: none;
+      white-space: nowrap;
+      transition: color var(--transition);
+    }
+    .nav-back-link:hover { color: var(--accent); }
+    .nav-controls { display: flex; align-items: center; gap: .5rem; }
+    .nav-btn {
+      display: flex;
+      align-items: center;
+      gap: .35rem;
+      padding: .4rem .9rem;
+      border-radius: 100px;
+      font-size: .8rem;
+      font-weight: 700;
+      color: var(--text);
+      background: transparent;
+      border: 2px solid var(--border);
+      transition: all var(--transition);
+      cursor: pointer;
+      height: 36px;
+      min-width: 36px;
+      justify-content: center;
+    }
+    .nav-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* Back bar */
+    .back-bar { padding-top: 76px; }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      font-size: .82rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      padding: .5rem 1rem;
+      margin: .75rem 0;
+      border: 2px solid var(--border);
+      border-radius: 100px;
+      transition: all var(--transition);
+    }
+    .back-link:hover { color: var(--accent); border-color: var(--accent); }
+
+    /* Section heading */
+    .section-header { text-align: center; margin-bottom: 3rem; }
+    .section-chip {
+      display: inline-block;
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      padding: .28rem .9rem;
+      border-radius: 100px;
+      background: var(--accent);
+      color: #fff;
+      margin-bottom: .65rem;
+    }
+    .section-title {
+      font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: .6rem;
+    }
+    .section-sub { color: var(--text-muted); max-width: 560px; margin: 0 auto; }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      padding: .72rem 1.6rem;
+      border-radius: 100px;
+      font-family: var(--font);
+      font-weight: 700;
+      font-size: .9rem;
+      transition: all var(--transition);
+      cursor: pointer;
+    }
+    .btn-accent { background: var(--accent); color: #fff; border: 2px solid var(--accent); }
+    .btn-accent:hover { opacity: 0.88; }
+    .btn-outline { background: transparent; border: 2px solid var(--border); color: var(--text); }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* Hero */
+    #hero {
+      min-height: 92vh;
+      position: relative;
+      overflow: hidden;
+      padding-top: 76px;
+      border-bottom: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+    }
+    .hero-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 3.5rem;
+      align-items: center;
+      padding: 4rem 0 5rem;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      background: rgba(255,255,255,0.18);
+      border: 2px solid rgba(255,255,255,0.5);
+      border-radius: 100px;
+      padding: .35rem 1.1rem;
+      font-size: .76rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 1.25rem;
+    }
+    .hero-title {
+      font-size: clamp(2rem, 4.5vw, 3rem);
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: .75rem;
+      color: #ffffff;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    }
+    .hero-title span { color: #90caf9; }
+    .hero-tagline {
+      font-size: 1rem;
+      color: #ffffff !important;
+      text-shadow: 0 1px 6px rgba(0,0,0,0.7) !important;
+      margin-bottom: 2rem;
+      line-height: 1.7;
+    }
+    .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    /* Hero CTA button — glassmorphism style */
+    .btn-hero-cta {
+      background: rgba(0, 87, 168, 0.55);
+      border: 1.5px solid rgba(0, 87, 168, 0.9);
+      color: #ffffff;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+    .btn-hero-cta:hover {
+      background: rgba(0, 87, 168, 0.80);
+      opacity: 1;
+    }
+
+    @media (max-width: 768px) {
+      .hero-layout { grid-template-columns: 1fr; }
+    }
+
+    /* Specialties */
+    #specialties { background: var(--s1); }
+    .spec-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+    .spec-card {
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      border: 2px solid transparent;
+      transition: border-color var(--transition);
+    }
+    .spec-card:hover { border-color: currentColor; }
+    .spec-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.1rem;
+    }
+    html.dark .spec-icon { background: rgba(0,0,0,0.25); }
+    .spec-name { font-weight: 700; font-size: 1rem; margin-bottom: .35rem; }
+    .spec-desc { font-size: .85rem; color: var(--text-muted); line-height: 1.65; }
+
+    /* Specialty card unique colors */
+    .sc-blue { background: #bbdefb; }
+    .sc-amber { background: #fff59d; }
+    .sc-pink { background: #e8b4f8; }
+    .sc-purple { background: #c8e6c9; }
+    .sc-green { background: #f8bbd0; }
+    .sc-orange { background: #ffe0b2; }
+    html.dark .sc-blue { background: #0e2f52; }
+    html.dark .sc-amber { background: #2e2800; }
+    html.dark .sc-pink { background: #330020; }
+    html.dark .sc-purple { background: #251250; }
+    html.dark .sc-green { background: #0c2a18; }
+    html.dark .sc-orange { background: #301a00; }
+    .ic-blue { color: #1976d2; }
+    .ic-amber { color: #d97706; }
+    .ic-pink { color: #be185d; }
+    .ic-purple { color: #7c3aed; }
+    .ic-green { color: #059669; }
+    .ic-orange { color: #ea580c; }
+
+    /* Doctors — horizontal pill cards */
+    #doctors { background: var(--s2); }
+    .doctors-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 1.25rem;
+      justify-content: center;
+      justify-items: center;
+    }
+    .doctor-card {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      border-radius: 100px;
+      padding: 1rem 1.5rem 1rem 1rem;
+      background: var(--bg);
+      border: 2px solid var(--border);
+      transition: border-color var(--transition);
+      width: 100%;
+    }
+    .doctor-card:hover { border-color: var(--accent); }
+    .doctor-avatar {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .doctor-info { flex: 1; min-width: 0; }
+    .doctor-name { font-weight: 700; font-size: .95rem; margin-bottom: .1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .doctor-spec { font-size: .8rem; color: var(--accent); font-weight: 700; margin-bottom: .1rem; }
+    .doctor-lic { font-size: .7rem; color: var(--text-muted); margin-bottom: .35rem; }
+    .doctor-avail { display: flex; flex-wrap: wrap; gap: .25rem; }
+    .day-chip {
+      padding: .15rem .5rem;
+      background: var(--s1);
+      border: 1px solid var(--accent);
+      border-radius: 100px;
+      font-size: .62rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    @media (max-width: 600px) {
+      .doctors-grid { grid-template-columns: 1fr; }
+      .doctor-card { border-radius: var(--radius); }
+    }
+
+    /* Insurance & payments */
+    #insurance { background: var(--s3); }
+    .insurance-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+    .insurance-card {
+      background: var(--bg);
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+    }
+    .insurance-card h3 {
+      font-weight: 700;
+      font-size: .95rem;
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    .ins-icon { color: var(--secondary); }
+    .pay-icon { color: var(--accent); }
+    .insurance-list { display: flex; flex-direction: column; gap: .6rem; }
+    .insurance-item {
+      display: flex;
+      align-items: center;
+      gap: .65rem;
+      font-size: .88rem;
+      padding: .5rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .insurance-item:last-child { border-bottom: none; }
+    .insurance-item i { flex-shrink: 0; color: var(--secondary); }
+    @media (max-width: 768px) { .insurance-grid { grid-template-columns: 1fr; } }
+
+    /* Hours & location */
+    #hours { background: var(--s4); }
+    .hours-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+    .hours-block, .map-block {
+      background: var(--bg);
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+    }
+    .block-title {
+      font-weight: 700;
+      font-size: .95rem;
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      color: var(--accent);
+    }
+    .hours-table { width: 100%; border-collapse: collapse; }
+    .hours-table tr { border-bottom: 1px solid var(--border); }
+    .hours-table tr:last-child { border-bottom: none; }
+    .hours-table td { padding: .6rem 0; font-size: .9rem; }
+    .hours-table td:last-child { text-align: right; color: var(--text-muted); font-weight: 600; }
+    .map-ph {
+      aspect-ratio: 16/9;
+      background: var(--surface);
+      border: 2px dashed var(--border);
+      border-radius: var(--radius-sm);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      color: var(--text-muted);
+      font-size: .82rem;
+      margin-bottom: .9rem;
+    }
+    .map-ph i { color: var(--accent); }
+    @media (max-width: 768px) { .hours-layout { grid-template-columns: 1fr; } }
+
+    /* Appointment form */
+    #appointment { background: var(--s5); }
+    .apt-card {
+      background: var(--bg);
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .form-group { display: flex; flex-direction: column; gap: .3rem; }
+    .form-group.full { grid-column: span 2; }
+    .form-group label {
+      font-size: .72rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: .06em;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: .65rem .9rem;
+      color: var(--text);
+      font-size: .9rem;
+      transition: border-color var(--transition);
+    }
+    .form-group select {
+      appearance: none;
+      -webkit-appearance: none;
+      padding-right: 2.75rem;
+      width: 100%;
+    }
+    .form-group select option { background: var(--surface); }
+    .form-group textarea { resize: vertical; min-height: 90px; }
+
+    /* Different focus accent color per form field */
+    .form-group:nth-child(1) input:focus,
+    .form-group:nth-child(1) select:focus { outline: none; border-color: #2980b9; }
+    .form-group:nth-child(2) input:focus,
+    .form-group:nth-child(2) select:focus { outline: none; border-color: #27ae60; }
+    .form-group:nth-child(3) input:focus,
+    .form-group:nth-child(3) select:focus { outline: none; border-color: #e67e22; }
+    .form-group:nth-child(4) input:focus,
+    .form-group:nth-child(4) select:focus { outline: none; border-color: #9b59b6; }
+    .form-group:nth-child(5) input:focus,
+    .form-group:nth-child(5) select:focus { outline: none; border-color: #e91e63; }
+    .form-group:nth-child(6) input:focus,
+    .form-group:nth-child(6) select:focus { outline: none; border-color: #00acc1; }
+    .form-group:nth-child(7) input:focus,
+    .form-group:nth-child(7) select:focus { outline: none; border-color: #ff5722; }
+    .form-group:nth-child(8) input:focus,
+    .form-group:nth-child(8) select:focus { outline: none; border-color: #43a047; }
+    @media (max-width: 600px) {
+      .form-grid { grid-template-columns: 1fr; }
+      .form-group.full { grid-column: span 1; }
+    }
+
+    /* Calendar icon */
+    .date-wrapper { position: relative; display: flex; align-items: center; }
+    .date-wrapper input[type="date"] { padding-right: 2.5rem; width: 100%; }
+    .cal-icon { position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; cursor: pointer; pointer-events: all; }
+    .date-wrapper input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0; position: absolute; right: 0; width: 2.5rem; height: 100%; cursor: pointer; }
+    .date-wrapper input[type="date"] { color-scheme: light; }
+    html.dark .date-wrapper input[type="date"] { color-scheme: dark; }
+    .field-error { font-size: 0.78rem; color: var(--accent); margin-top: 4px; display: none; }
+    .field-error.visible { display: block; }
+
+    /* Select wrap */
+    .select-wrap { position: relative; width: 100%; }@media(max-width:768px){}
+    @media(max-width:600px){ }
+            /* ── Footer ── */
+    #footer{background:#0a0a0a;border-top:1px solid rgba(255,255,255,0.08);padding:24px 48px 20px;color:#f0f0f0;}
+    #footer>div{max-width:1200px;margin:0 auto;}
+    .ft-inner{display:flex;flex-direction:column;gap:16px;}
+    .ft-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:nowrap;gap:16px;}
+    .ft-left{display:flex;flex-direction:column;align-items:flex-start;gap:4px;flex:0 0 auto;min-width:0;}
+    .ft-center{display:flex;align-items:center;gap:10px;flex:1;justify-content:center;}
+    .ft-right{display:flex;align-items:center;justify-content:flex-end;flex:0 0 auto;}
+    .ft-logo{height:32px;filter:brightness(0) invert(1);display:block;}
+    .ft-tagline{font-size:0.68rem;opacity:0.5;line-height:1.3;white-space:nowrap;}
+    .ft-btn{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,0.22);border-radius:6px;background:transparent;color:#f0f0f0;text-decoration:none;cursor:pointer;transition:border-color .2s,color .2s;padding:0;box-sizing:border-box;flex-shrink:0;}
+    .ft-btn:hover{border-color:#FF7F00;color:#FF7F00;}
+    .ft-bottom{font-size:0.68rem;opacity:0.5;text-align:center;margin:0;padding:0;line-height:1.5;white-space:normal;}
+    @media(max-width:900px){
+      #footer{padding:20px 24px 16px;}
+      .ft-top{flex-wrap:wrap;justify-content:center;gap:12px;}
+      .ft-left{align-items:center;width:100%;justify-content:center;}
+      .ft-tagline{white-space:normal;text-align:center;}
+      .ft-center{justify-content:center;}
+      .ft-right{width:auto;}
+    }
+    @media(max-width:480px){
+      .ft-top{flex-direction:column;align-items:center;}
+      .ft-right{width:100%;justify-content:center;}
+    }
+    </style>
+</head>
+<body>
+  <header id="navbar">
+    <div class="nav-inner">
+      <div class="nav-left">
+        <a href="../../index.html#portfolio" class="nav-back-link" id="back-nav-link">< Portafolio</a>
+      </div>
+      <div class="nav-center">
+        <a href="../../index.html">
+          <img src="../../imgs/FullLogo.svg" alt="WebExpressCR" height="44" style="filter:brightness(0) invert(1);" />
+        </a>
+      </div>
+      <div class="nav-right">
+        <button class="nav-btn" id="langToggle"><i data-lucide="globe" width="15" height="15"></i><span id="langLabel">ES</span></button>
+        <button class="nav-btn" id="themeToggle"><i data-lucide="sun" width="15" height="15" id="themeIcon"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <section id="hero">
+    <img src="imgs/hero.jpg" alt="Clínica Vida Sana" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;display:block;">
+    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.55),rgba(0,0,0,0.3));z-index:1;"></div>
+    <div style="position:relative;z-index:2;width:100%;">
+    <div class="container">
+      <div class="hero-layout">
+        <div class="fade-in">
+          <div class="hero-badge">
+            <i data-lucide="shield-check" width="15" height="15"></i>
+            <span data-i18n="hero.badge">Consultorio privado · San José, CR</span>
+          </div>
+          <h1 class="hero-title">Clínica <span>Vida Sana</span></h1>
+          <p class="hero-tagline" data-i18n="hero.tagline">Tu salud, nuestra prioridad. Médicos especialistas, atención personalizada y tecnología de vanguardia.</p>
+          <div class="hero-ctas">
+            <a href="#specialties" class="btn btn-hero-cta"><i data-lucide="stethoscope" width="17" height="17"></i><span data-i18n="hero.cta1">Ver especialidades</span></a>
+            <a href="#appointment" class="btn btn-hero-cta" data-i18n="hero.cta2">Agendar cita</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <section id="specialties">
+    <div class="container">
+      <div class="section-header fade-in">
+        <span class="section-chip" data-i18n="spec.chip">Especialidades</span>
+        <h2 class="section-title" data-i18n="spec.title">Nuestras especialidades</h2>
+        <p class="section-sub" data-i18n="spec.sub">Atención integral con médicos certificados en cada área.</p>
+      </div>
+      <div class="spec-grid">
+        <div class="spec-card sc-blue fade-in delay-1">
+          <div class="spec-icon" style="overflow:hidden;"><img src="imgs/especialidad-general.jpg" alt="Medicina General" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+          <div class="spec-name" data-i18n="sp1.n">Medicina General</div>
+          <div class="spec-desc" data-i18n="sp1.d">Consultas de diagnóstico, control de enfermedades crónicas, certificados médicos y referencias a especialistas.</div>
+        </div>
+        <div class="spec-card sc-amber fade-in delay-2">
+          <div class="spec-icon" style="overflow:hidden;"><img src="imgs/especialidad-pediatra.jpg" alt="Pediatría" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+          <div class="spec-name" data-i18n="sp2.n">Pediatría</div>
+          <div class="spec-desc" data-i18n="sp2.d">Control de crecimiento y desarrollo, vacunas, enfermedades infantiles y orientación nutricional para niños.</div>
+        </div>
+        <div class="spec-card sc-pink fade-in delay-3">
+          <div class="spec-icon" style="overflow:hidden;"><img src="imgs/ginecologia.jpg" alt="Ginecología" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+          <div class="spec-name" data-i18n="sp3.n">Ginecología</div>
+          <div class="spec-desc" data-i18n="sp3.d">Salud femenina integral, control prenatal, Papanicolau, colposcopía y planificación familiar.</div>
+        </div>
+        <div class="spec-card sc-purple fade-in delay-1">
+          <div class="spec-icon" style="overflow:hidden;"><img src="imgs/cardiologia.jpg" alt="Cardiología" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+          <div class="spec-name" data-i18n="sp4.n">Cardiología</div>
+          <div class="spec-desc" data-i18n="sp4.d">Evaluación cardiovascular, electrocardiograma, ecocardiografía y manejo de hipertensión arterial.</div>
+        </div>
+        <div class="spec-card sc-green fade-in delay-2">
+          <div class="spec-icon" style="overflow:hidden;"><img src="imgs/dermatologia.jpg" alt="Dermatología" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+          <div class="spec-name" data-i18n="sp5.n">Dermatología</div>
+          <div class="spec-desc" data-i18n="sp5.d">Diagnóstico y tratamiento de enfermedades de la piel, cabello y uñas. Dermatología estética.</div>
+        </div>
+        <div class="spec-card sc-orange fade-in delay-3">
+          <div class="spec-icon" style="overflow:hidden;"><img src="imgs/nutricion.jpg" alt="Nutrición" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+          <div class="spec-name" data-i18n="sp6.n">Nutrición</div>
+          <div class="spec-desc" data-i18n="sp6.d">Planes de alimentación personalizados para control de peso, diabetes, colesterol y patologías específicas.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="doctors">
+    <div class="container">
+      <div class="section-header fade-in">
+        <span class="section-chip" data-i18n="doc.chip">Nuestro equipo</span>
+        <h2 class="section-title" data-i18n="doc.title">Médicos especialistas</h2>
+      </div>
+      <div class="doctors-grid">
+        <div class="doctor-card fade-in delay-1">
+          <div class="doctor-avatar" style="overflow:hidden;"><img src="imgs/drana.jpg" alt="Dra. Ana Segura Muñoz" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;"></div>
+          <div class="doctor-info">
+            <div class="doctor-name">Dra. Ana Segura Muñoz</div>
+            <div class="doctor-spec" data-i18n="doc1.spec">Médica General</div>
+            <div class="doctor-lic" data-i18n="doc1.lic">Cédula médica: CMG-04821</div>
+            <div class="doctor-avail">
+              <span class="day-chip" data-i18n="day.lun">Lun</span>
+              <span class="day-chip" data-i18n="day.mar">Mar</span>
+              <span class="day-chip" data-i18n="day.mie">Mié</span>
+              <span class="day-chip" data-i18n="day.jue">Jue</span>
+              <span class="day-chip" data-i18n="day.vie">Vie</span>
+            </div>
+          </div>
+        </div>
+        <div class="doctor-card fade-in delay-2">
+          <div class="doctor-avatar" style="overflow:hidden;"><img src="imgs/drjorge.jpg" alt="Dr. Jorge Calvo Piedra" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;"></div>
+          <div class="doctor-info">
+            <div class="doctor-name">Dr. Jorge Calvo Piedra</div>
+            <div class="doctor-spec" style="color:var(--secondary);" data-i18n="doc2.spec">Cardiólogo</div>
+            <div class="doctor-lic" data-i18n="doc2.lic">Cédula médica: CCA-09112</div>
+            <div class="doctor-avail">
+              <span class="day-chip" style="color:var(--secondary);border-color:var(--secondary);background:var(--s4);" data-i18n="day.lun">Lun</span>
+              <span class="day-chip" style="color:var(--secondary);border-color:var(--secondary);background:var(--s4);" data-i18n="day.mie">Mié</span>
+              <span class="day-chip" style="color:var(--secondary);border-color:var(--secondary);background:var(--s4);" data-i18n="day.vie">Vie</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="insurance">
+    <div class="container">
+      <div class="section-header fade-in">
+        <span class="section-chip" data-i18n="ins.chip">Seguros y pagos</span>
+        <h2 class="section-title" data-i18n="ins.title">Seguros aceptados y métodos de pago</h2>
+      </div>
+      <div class="insurance-grid">
+        <div class="insurance-card fade-in delay-1">
+          <h3>
+            <i data-lucide="shield" width="22" height="22" class="ins-icon"></i>
+            <span data-i18n="ins.accepted">Seguros aceptados</span>
+          </h3>
+          <div class="insurance-list">
+            <div class="insurance-item"><i data-lucide="check-circle" width="18" height="18"></i><span data-i18n="ins.ccss">CCSS (Caja Costarricense del Seguro Social)</span></div>
+            <div class="insurance-item"><i data-lucide="check-circle" width="18" height="18"></i><span data-i18n="ins.ins">INS (Instituto Nacional de Seguros)</span></div>
+            <div class="insurance-item"><i data-lucide="check-circle" width="18" height="18"></i><span>MediSmart</span></div>
+            <div class="insurance-item"><i data-lucide="check-circle" width="18" height="18"></i><span>PALIG — Pan-American Life Insurance</span></div>
+            <div class="insurance-item"><i data-lucide="check-circle" width="18" height="18"></i><span data-i18n="ins.private">Seguros privados varios</span></div>
+          </div>
+        </div>
+        <div class="insurance-card fade-in delay-2">
+          <h3>
+            <i data-lucide="credit-card" width="22" height="22" class="pay-icon"></i>
+            <span data-i18n="pay.title">Métodos de pago</span>
+          </h3>
+          <div class="insurance-list">
+            <div class="insurance-item"><i data-lucide="banknote" width="18" height="18" style="color:var(--accent);"></i><span data-i18n="pay.cash">Efectivo (colones y dólares)</span></div>
+            <div class="insurance-item"><i data-lucide="credit-card" width="18" height="18" style="color:var(--accent);"></i><span data-i18n="pay.card">Tarjetas VISA / Mastercard</span></div>
+            <div class="insurance-item"><i data-lucide="smartphone" width="18" height="18" style="color:var(--accent);"></i><span data-i18n="pay.sinpe">SINPE Móvil</span></div>
+            <div class="insurance-item"><i data-lucide="building" width="18" height="18" style="color:var(--accent);"></i><span data-i18n="pay.transfer">Transferencia bancaria</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="hours">
+    <div class="container">
+      <div class="section-header fade-in">
+        <span class="section-chip" data-i18n="hrs.chip">Información</span>
+        <h2 class="section-title" data-i18n="hrs.title">Horarios y ubicación</h2>
+      </div>
+      <div class="hours-layout">
+        <div class="hours-block fade-in delay-1" style="min-height:280px;width:100%;">
+          <div class="block-title"><i data-lucide="clock" width="20" height="20"></i><span data-i18n="hrs.schedule">Horario de atención</span></div>
+          <table class="schedule-table" style="width:100%;border-collapse:collapse;min-height:280px;">
+            <tbody>
+              <tr><td style="padding:0.5rem 1rem;font-weight:600;" data-i18n-day="Lunes">Lunes</td><td style="padding:0.5rem 1rem;">7:00 am – 7:00 pm</td></tr>
+              <tr><td style="padding:0.5rem 1rem;font-weight:600;" data-i18n-day="Martes">Martes</td><td style="padding:0.5rem 1rem;">7:00 am – 7:00 pm</td></tr>
+              <tr><td style="padding:0.5rem 1rem;font-weight:600;" data-i18n-day="Miércoles">Miércoles</td><td style="padding:0.5rem 1rem;">7:00 am – 7:00 pm</td></tr>
+              <tr><td style="padding:0.5rem 1rem;font-weight:600;" data-i18n-day="Jueves">Jueves</td><td style="padding:0.5rem 1rem;">7:00 am – 7:00 pm</td></tr>
+              <tr><td style="padding:0.5rem 1rem;font-weight:600;" data-i18n-day="Viernes">Viernes</td><td style="padding:0.5rem 1rem;">7:00 am – 6:00 pm</td></tr>
+              <tr><td style="padding:0.5rem 1rem;font-weight:600;" data-i18n-day="Sábado">Sábado</td><td style="padding:0.5rem 1rem;">8:00 am – 2:00 pm</td></tr>
+              <tr><td style="padding:0.5rem 1rem;font-weight:600;opacity:0.5;" data-i18n-day="Domingo">Domingo</td><td style="padding:0.5rem 1rem;opacity:0.5;" data-i18n="Cerrado">Cerrado / Closed</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="map-block fade-in delay-2">
+          <div class="block-title"><i data-lucide="map-pin" width="20" height="20"></i><span data-i18n="hrs.location">Ubicación</span></div>
+          <div style="aspect-ratio:16/9;border-radius:var(--radius-sm);overflow:hidden;margin-bottom:.9rem;border:2px solid var(--border);">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3930.8766!2d-84.0479!3d9.9317!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8fa0e3b9b7c5f889%3A0x7f6c8e9a00b10e00!2sMall%20San%20Pedro!5e0!3m2!1ses!2scr!4v1716000000000" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Clínica Vida Sana — San Pedro, San José"></iframe>
+          </div>
+          <p style="font-size:.85rem;color:var(--text-muted);" data-i18n="hrs.addr">Centro Médico San Pedro, Edificio B, Piso 2. 100 metros al norte del Mall San Pedro, San José.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="appointment">
+    <div class="container">
+      <div class="section-header fade-in">
+        <span class="section-chip" data-i18n="apt.chip">Citas</span>
+        <h2 class="section-title" data-i18n="apt.title">Agendar cita médica</h2>
+        <p class="section-sub" data-i18n="apt.sub">Llenná el formulario y te confirmamos la cita en máximo 2 horas.</p>
+      </div>
+      <div class="apt-card fade-in">
+        <form onsubmit="return false;" class="form-grid" novalidate>
+          <div class="form-group"><label data-i18n="f.patient">Nombre del paciente<span aria-hidden="true" style="color: var(--accent); margin-left: 2px;">*</span></label><input type="text" placeholder="Nombre completo" required autocomplete="name" /></div>
+          <div class="form-group"><label data-i18n="f.id">Número de cédula</label><input type="text" placeholder="X-XXXX-XXXX" autocomplete="off" /></div>
+          <div class="form-group">
+            <label data-i18n="f.spec">Especialidad</label>
+            <div class="select-wrap">
+              <select autocomplete="off">
+                <option data-i18n="f.sel">Seleccionar...</option>
+                <option data-i18n="sp1.n">Medicina General</option>
+                <option data-i18n="sp2.n">Pediatría</option>
+                <option data-i18n="sp3.n">Ginecología</option>
+                <option data-i18n="sp4.n">Cardiología</option>
+                <option data-i18n="sp5.n">Dermatología</option>
+                <option data-i18n="sp6.n">Nutrición</option>
+              
+<option value="otro" data-i18n="form.other">Otro</option>
+</select>
+              <svg style="position:absolute;right:0.85rem;top:50%;transform:translateY(-50%);pointer-events:none;z-index:1;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+          </div>
+          <div class="form-group">
+            <label data-i18n="f.doctor">Doctor preferido</label>
+            <div class="select-wrap">
+              <select autocomplete="off">
+                <option data-i18n="f.any">Sin preferencia</option>
+                <option>Dra. Ana Segura</option>
+                <option>Dr. Jorge Calvo</option>
+              
+<option value="otro" data-i18n="form.other">Otro</option>
+</select>
+              <svg style="position:absolute;right:0.85rem;top:50%;transform:translateY(-50%);pointer-events:none;z-index:1;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+          </div>
+          <div class="form-group"><label data-i18n="f.date">Fecha preferida<span aria-hidden="true" style="color: var(--accent); margin-left: 2px;">*</span></label><div class="date-wrapper"><input type="date" id="cm-date" required /><svg class="cal-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" onclick="this.previousElementSibling.showPicker?this.previousElementSibling.showPicker():this.previousElementSibling.focus()"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div></div><span class="field-error" id="cm-date-err"></span>
+          <div class="form-group">
+            <label data-i18n="f.insurance">Tipo de seguro</label>
+            <div class="select-wrap">
+              <select autocomplete="off">
+                <option data-i18n="f.sel">Seleccionar...</option>
+                <option data-i18n="ins.ccss">CCSS</option>
+                <option data-i18n="ins.ins">INS</option>
+                <option data-i18n="ins.private">Seguro privado</option>
+                <option data-i18n="pay.cash">Particular (sin seguro)</option>
+              
+<option value="otro" data-i18n="form.other">Otro</option>
+</select>
+              <svg style="position:absolute;right:0.85rem;top:50%;transform:translateY(-50%);pointer-events:none;z-index:1;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+          </div>
+          <div class="form-group"><label data-i18n="f.phone">Teléfono<span aria-hidden="true" style="color: var(--accent); margin-left: 2px;">*</span></label><input type="tel" id="phoneInput" placeholder="+506 8888-0000" inputmode="numeric" pattern="[0-9]*" required maxlength="8" autocomplete="tel" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,8)" /></div>
+          <div class="form-group"><label data-i18n="f.email">Correo electrónico<span aria-hidden="true" style="color: var(--accent); margin-left: 2px;">*</span></label><input type="email" placeholder="tu@correo.com" required autocomplete="email" /></div>
+          <div class="form-group full">
+            <button type="submit" id="apt-submit" class="btn btn-accent">
+              <i data-lucide="calendar-check" width="17" height="17"></i>
+              <span data-i18n="f.submit">Solicitar cita</span>
+            </button>
+            <p id="form-disc-cm" style="font-size:0.72rem;opacity:0.6;text-align:center;margin-top:8px;"></p>
+            <div id="apt-confirm" style="display:none;margin-top:1rem;padding:1rem 1.25rem;background:#d4edda;border:1px solid #c3e6cb;border-radius:var(--radius-sm);color:#155724;font-size:.9rem;"></div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer id="footer">
+  <div class="ft-inner">
+
+    <div class="ft-top">
+      <div class="ft-left">
+        <img src="../../imgs/FullLogo.svg" alt="WebExpressCR" class="ft-logo">
+      </div>
+      <div class="ft-center">
+        <a href="https://www.instagram.com/webexpresscr/" class="ft-btn" aria-label="Instagram">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/company/webexpresscr" class="ft-btn" aria-label="LinkedIn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+        <a href="https://www.facebook.com/webexpresscr" class="ft-btn" aria-label="Facebook">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+        <a href="https://wa.me/50670553656" target="_blank" class="ft-btn" aria-label="WhatsApp">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M20.52 3.48A11.93 11.93 0 0 0 12 0C5.37 0 0 5.37 0 12c0 2.11.55 4.16 1.6 5.97L0 24l6.19-1.62A11.94 11.94 0 0 0 12 24c6.63 0 12-5.37 12-12 0-3.2-1.25-6.21-3.48-8.52zm-8.52 18.4a9.9 9.9 0 0 1-5.05-1.38l-.36-.21-3.73.98.99-3.63-.24-.38A9.9 9.9 0 0 1 2.1 12c0-5.46 4.44-9.9 9.9-9.9 2.65 0 5.13 1.03 7 2.9a9.87 9.87 0 0 1 2.9 7c0 5.46-4.44 9.9-9.9 9.9zm5.43-7.4c-.3-.15-1.77-.87-2.04-.97-.28-.1-.48-.15-.68.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.68-1.63-.93-2.23-.24-.59-.49-.51-.68-.52h-.58c-.2 0-.52.07-.79.37-.27.3-1.03 1.01-1.03 2.46s1.06 2.85 1.2 3.05c.15.2 2.08 3.18 5.04 4.46.7.3 1.25.48 1.68.62.71.22 1.35.19 1.86.12.57-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35z"/></svg>
+        </a>
+        <a href="mailto:webexpresscr@gmail.com" class="ft-btn" aria-label="Email">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </a>
+      </div>
+      <div class="ft-right">
+        <button class="ft-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Volver arriba">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <p class="ft-bottom" data-i18n="footer.disclaimer"></p>
+
+  </div>
+</footer>
+
+  <script>
+    lucide.createIcons();
+    const html = document.documentElement;
+
+    const _storedTheme = localStorage.getItem('cm-theme');
+    let currentTheme = _storedTheme
+      ? _storedTheme
+      : 'dark';
+
+    function setTheme(t) {
+      currentTheme = t;
+      html.className = t;
+      document.getElementById('themeIcon').setAttribute('data-lucide', t === 'dark' ? 'sun' : 'moon');
+      lucide.createIcons();
+    }
+
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      setTheme(currentTheme === 'dark' ? 'light' : 'dark');
+      localStorage.setItem('cm-theme', currentTheme);
+    });
+
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+      if (!localStorage.getItem('cm-theme')) setTheme(e.matches ? 'dark' : 'light');
+    });
+
+    setTheme(currentTheme);
+
+    const T = {
+      es: {
+        'back': '< Portafolio',
+        'hero.badge': 'Consultorio privado · San José, CR',
+        'hero.tagline': 'Tu salud, nuestra prioridad. Médicos especialistas, atención personalizada y tecnología de vanguardia.',
+        'hero.cta1': 'Ver especialidades',
+        'hero.cta2': 'Agendar cita',
+        'spec.chip': 'Especialidades',
+        'spec.title': 'Nuestras especialidades',
+        'spec.sub': 'Atención integral con médicos certificados en cada área.',
+        'sp1.n': 'Medicina General',
+        'sp1.d': 'Consultas de diagnóstico, control de enfermedades crónicas, certificados médicos y referencias.',
+        'sp2.n': 'Pediatría',
+        'sp2.d': 'Control de crecimiento y desarrollo, vacunas, enfermedades infantiles y orientación nutricional.',
+        'sp3.n': 'Ginecología',
+        'sp3.d': 'Salud femenina integral, control prenatal, Papanicolau, colposcopía y planificación familiar.',
+        'sp4.n': 'Cardiología',
+        'sp4.d': 'Evaluación cardiovascular, electrocardiograma, ecocardiografía y manejo de hipertensión.',
+        'sp5.n': 'Dermatología',
+        'sp5.d': 'Diagnóstico y tratamiento de enfermedades de la piel, cabello y uñas. Dermatología estética.',
+        'sp6.n': 'Nutrición',
+        'sp6.d': 'Planes de alimentación personalizados para control de peso, diabetes, colesterol y patologías.',
+        'doc.chip': 'Nuestro equipo',
+        'doc.title': 'Médicos especialistas',
+        'doc1.spec': 'Médica General',
+        'doc1.lic': 'Cédula médica: CMG-04821',
+        'doc2.spec': 'Cardiólogo',
+        'doc2.lic': 'Cédula médica: CCA-09112',
+        'doc3.spec': 'Pediatra',
+        'doc3.lic': 'Cédula médica: CPE-07645',
+        'doc4.spec': 'Ginecóloga',
+        'doc4.lic': 'Cédula médica: CGO-11320',
+        'day.lun': 'Lun',
+        'day.mar': 'Mar',
+        'day.mie': 'Mié',
+        'day.jue': 'Jue',
+        'day.vie': 'Vie',
+        'day.sab': 'Sáb',
+        'ins.chip': 'Seguros y pagos',
+        'ins.title': 'Seguros aceptados y métodos de pago',
+        'ins.accepted': 'Seguros aceptados',
+        'ins.ccss': 'CCSS (Caja Costarricense del Seguro Social)',
+        'ins.ins': 'INS (Instituto Nacional de Seguros)',
+        'ins.private': 'Seguros privados varios',
+        'pay.title': 'Métodos de pago',
+        'pay.cash': 'Efectivo (colones y dólares)',
+        'pay.card': 'Tarjetas VISA / Mastercard',
+        'pay.sinpe': 'SINPE Móvil',
+        'pay.transfer': 'Transferencia bancaria',
+        'hrs.chip': 'Información',
+        'hrs.title': 'Horarios y ubicación',
+        'hrs.schedule': 'Horario de atención',
+        'hrs.location': 'Ubicación',
+        'day.lunfri': 'Lunes – Viernes',
+        'day.sat': 'Sábado',
+        'day.sun': 'Domingo',
+        'hrs.closed': 'Cerrado',
+        'map.ph': 'Google Maps — San Pedro, San José',
+        'hrs.addr': 'Centro Médico San Pedro, Edificio B, Piso 2. 100 metros al norte del Mall San Pedro.',
+        'apt.chip': 'Citas',
+        'apt.title': 'Agendar cita médica',
+        'apt.sub': 'Llenná el formulario y te confirmamos la cita en máximo 2 horas.',
+        'f.patient': 'Nombre del paciente',
+        'f.id': 'Número de cédula',
+        'f.spec': 'Especialidad',
+        'f.sel': 'Seleccionar...',
+        'f.doctor': 'Doctor preferido',
+        'f.any': 'Sin preferencia',
+        'f.date': 'Fecha preferida',
+        'f.insurance': 'Tipo de seguro',
+        'f.phone': 'Teléfono',
+        'f.email': 'Correo electrónico',
+        'f.submit': 'Solicitar cita',
+        'form.disc': 'Sitio con fines demostrativos: Ninguna transacción será procesada ni ningún dato almacenado.','form.other':'Otro','footer.tagline':'Creación de páginas web · Costa Rica','footer.disclaimer':'Sitio con fines demostrativos: Ninguna transacción será procesada ni ningún dato almacenado.  © 2026 WebExpressCR. Todos los derechos reservados.  Las imágenes utilizadas pertenecen a sus respectivos autores y se usan únicamente con fines ilustrativos.'},
+      en: {
+        'back': '< Portfolio',
+        'hero.badge': 'Private clinic · San José, CR',
+        'hero.tagline': 'Your health, our priority. Specialist doctors, personalized care and cutting-edge technology.',
+        'hero.cta1': 'View specialties',
+        'hero.cta2': 'Book appointment',
+        'spec.chip': 'Specialties',
+        'spec.title': 'Our specialties',
+        'spec.sub': 'Comprehensive care with board-certified doctors in each area.',
+        'sp1.n': 'General Medicine',
+        'sp1.d': 'Diagnostic consultations, chronic disease management, medical certificates and referrals.',
+        'sp2.n': 'Pediatrics',
+        'sp2.d': 'Growth and development monitoring, vaccines, childhood diseases and nutritional guidance.',
+        'sp3.n': 'Gynecology',
+        'sp3.d': 'Comprehensive women\'s health, prenatal care, Pap smear, colposcopy and family planning.',
+        'sp4.n': 'Cardiology',
+        'sp4.d': 'Cardiovascular evaluation, EKG, echocardiography and hypertension management.',
+        'sp5.n': 'Dermatology',
+        'sp5.d': 'Diagnosis and treatment of skin, hair and nail conditions. Aesthetic dermatology.',
+        'sp6.n': 'Nutrition',
+        'sp6.d': 'Personalized meal plans for weight management, diabetes, cholesterol and specific conditions.',
+        'doc.chip': 'Our team',
+        'doc.title': 'Specialist doctors',
+        'doc1.spec': 'General Physician',
+        'doc1.lic': 'Medical license: CMG-04821',
+        'doc2.spec': 'Cardiologist',
+        'doc2.lic': 'Medical license: CCA-09112',
+        'doc3.spec': 'Pediatrician',
+        'doc3.lic': 'Medical license: CPE-07645',
+        'doc4.spec': 'Gynecologist',
+        'doc4.lic': 'Medical license: CGO-11320',
+        'day.lun': 'Mon',
+        'day.mar': 'Tue',
+        'day.mie': 'Wed',
+        'day.jue': 'Thu',
+        'day.vie': 'Fri',
+        'day.sab': 'Sat',
+        'ins.chip': 'Insurance & payments',
+        'ins.title': 'Accepted insurance and payment methods',
+        'ins.accepted': 'Accepted insurance',
+        'ins.ccss': 'CCSS (Social Security)',
+        'ins.ins': 'INS (National Insurance Institute)',
+        'ins.private': 'Various private insurances',
+        'pay.title': 'Payment methods',
+        'pay.cash': 'Cash (colones and dollars)',
+        'pay.card': 'VISA / Mastercard',
+        'pay.sinpe': 'SINPE Móvil',
+        'pay.transfer': 'Bank transfer',
+        'hrs.chip': 'Information',
+        'hrs.title': 'Hours and location',
+        'hrs.schedule': 'Office hours',
+        'hrs.location': 'Location',
+        'day.lunfri': 'Monday – Friday',
+        'day.sat': 'Saturday',
+        'day.sun': 'Sunday',
+        'hrs.closed': 'Closed',
+        'map.ph': 'Google Maps — San Pedro, San José',
+        'hrs.addr': 'Centro Médico San Pedro, Building B, Floor 2. 100 meters north of Mall San Pedro.',
+        'apt.chip': 'Appointments',
+        'apt.title': 'Book a medical appointment',
+        'apt.sub': 'Fill out the form and we\'ll confirm your appointment within 2 hours.',
+        'f.patient': 'Patient name',
+        'f.id': 'ID number',
+        'f.spec': 'Specialty',
+        'f.sel': 'Select...',
+        'f.doctor': 'Preferred doctor',
+        'f.any': 'No preference',
+        'f.date': 'Preferred date',
+        'f.insurance': 'Insurance type',
+        'f.phone': 'Phone',
+        'f.email': 'Email address',
+        'f.submit': 'Request appointment',
+        'form.disc': 'Demonstration site: No transactions will be processed or data stored.','form.other':'Other','footer.tagline':'Web development · Costa Rica','footer.disclaimer':'Demonstration site: No transactions will be processed or data stored.  © 2026 WebExpressCR. All rights reserved.  Images used belong to their respective authors and are used for illustrative purposes only.'}
+    };
+
+    let lang = localStorage.getItem('cm-lang') || 'es';
+
+    function applyLang(l) {
+      lang = l;
+      document.documentElement.lang = l;
+      document.getElementById('langLabel').textContent = l.toUpperCase();
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const k = el.getAttribute('data-i18n');
+        if (T[l] && T[l][k]) el.textContent = T[l][k];
+      });
+      const backLink = document.getElementById('back-nav-link');
+      if(backLink) backLink.textContent = T[l]['back'];
+      const fd1 = document.getElementById('cm-footer-disc1');
+      if(fd1) fd1.textContent = l==='es' ? 'Sitio con fines demostrativos: Ninguna transacción será procesada ni ningún dato almacenado.' : 'Demonstration site: No transactions will be processed or data stored.';
+      const fd2 = document.getElementById('cm-footer-disc2');
+      if(fd2) fd2.textContent = l==='es' ? 'Las imágenes utilizadas pertenecen a sus respectivos autores y se usan únicamente con fines ilustrativos.' : 'Images used belong to their respective authors and are used for illustrative purposes only.';
+      const fd = document.getElementById('form-disc-cm');
+      if(fd) fd.textContent = T[l]['form.disc'];
+      localStorage.setItem('cm-lang', l);
+    }
+
+    document.getElementById('langToggle').addEventListener('click', () => applyLang(lang === 'es' ? 'en' : 'es'));
+    applyLang(lang);
+
+    function showToast(msg, accent) {
+      var ac = accent || 'var(--accent, #1976d2)';
+      var t = document.createElement('div');
+      t.style.cssText = 'position:fixed;bottom:24px;left:24px;z-index:9999;background:' + ac + ';color:#fff;border-radius:8px;padding:14px 20px;box-shadow:0 4px 16px rgba(0,0,0,.25);display:flex;align-items:center;gap:8px;opacity:0;transition:opacity .5s ease;pointer-events:none;font-size:.9rem;font-family:inherit;max-width:420px;';
+      t.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11"/></svg><span>' + msg + '</span>';
+      document.body.appendChild(t);
+      requestAnimationFrame(function(){ t.style.opacity = '1'; });
+      setTimeout(function(){ t.style.opacity = '0'; setTimeout(function(){ t.remove(); }, 500); }, 4000);
+    }
+
+    document.querySelector('form.form-grid').addEventListener('submit', function(e) {
+      e.preventDefault();
+      var msg = lang === 'en' ? 'Appointment request received. We\'ll confirm within 2 hours.' : 'Solicitud de cita recibida. La confirmaremos en máximo 2 horas.';
+      showToast(msg, 'var(--accent)');
+      e.target.reset();
+    });
+
+    const obs = new IntersectionObserver(e => e.forEach(x => {
+      if (x.isIntersecting) { x.target.classList.add('visible'); obs.unobserve(x.target); }
+    }), { threshold: 0.07 });
+    document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+  
+// ── Date range enforcement ──
+document.addEventListener('DOMContentLoaded', function() {
+  var dateIds = [{id:"cm-date",errId:"cm-date-err"}];
+  function getToday() {
+    return new Date().toISOString().split('T')[0];
+  }
+  function getMaxDate() {
+    var d = new Date();
+    d.setFullYear(d.getFullYear() + 1);
+    return d.toISOString().split('T')[0];
+  }
+  dateIds.forEach(function(cfg) {
+    var el = document.getElementById(cfg.id);
+    if (!el) return;
+    var errEl = cfg.errId ? document.getElementById(cfg.errId) : null;
+    el.min = getToday();
+    el.max = getMaxDate();
+    function validate() {
+      var today = getToday();
+      var max = getMaxDate();
+      var lang = (document.documentElement.lang || 'es');
+      if (!el.value) return;
+      if (el.value < today) {
+        var msg = lang === 'en' ? 'Past dates cannot be selected.' : 'No se pueden seleccionar fechas pasadas.';
+        if (errEl) { errEl.textContent = msg; errEl.classList.add('visible'); errEl.style.display = 'block'; }
+        el.setCustomValidity(msg);
+      } else if (el.value > max) {
+        var msg2 = lang === 'en' ? 'The date cannot be more than one year from today.' : 'La fecha no puede ser mayor a un año desde hoy.';
+        if (errEl) { errEl.textContent = msg2; errEl.classList.add('visible'); errEl.style.display = 'block'; }
+        el.setCustomValidity(msg2);
+      } else {
+        if (errEl) { errEl.textContent = ''; errEl.classList.remove('visible'); errEl.style.display = ''; }
+        el.setCustomValidity('');
+      }
+    }
+    el.addEventListener('change', validate);
+    el.addEventListener('input', validate);
+  });
+});
+</script>
+</body>
+</html>

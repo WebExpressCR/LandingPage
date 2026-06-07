@@ -1,2 +1,2 @@
-# LandingPage
-Official WebExpressCR code for public landing page
+# WebExpressCR
+Portfolio and landing page for WebExpressCR — freelance web development studio based in Costa Rica

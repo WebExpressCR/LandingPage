@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Relojería y Joyería Don Ernesto — Demo · WebExpressCR</title>
+<meta name="description" content="Relojería y joyería familiar en San José, Costa Rica desde 1974. Reparación de relojes, joyería, grabado y restauración de piezas antiguas.">
+<link rel="icon" type="image/svg+xml" href="../../imgs/SmallLogo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Crimson+Text:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+<style>
+/* ── Variables ── */
+html.light {
+  --bg: #f5f0e8;
+  --surface: #ede5d0;
+  --text: #2c1f0e;
+  --accent: #8b4513;
+  --secondary: #556b2f;
+  --border: #c8b090;
+  --muted: #7a6040;
+}
+html.dark {
+  --bg: #1a1208;
+  --surface: #2c1f0e;
+  --text: #f5f0e8;
+  --accent: #cd853f;
+  --secondary: #6b8e23;
+  --border: #5a4020;
+  --muted: #a08060;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+::selection { background: rgba(205, 133, 63, 0.25); color: inherit; }
+body {
+  font-family: 'Crimson Text', Georgia, serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 1.05rem;
+  line-height: 1.75;
+  transition: background 0.3s, color 0.3s;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+button { cursor: pointer; font-family: inherit; }
+input, textarea, select {
+  font-family: 'Crimson Text', Georgia, serif;
+  font-size: 1rem;
+}
+
+/* ── Layout ── */
+.wrap, .container { max-width: 780px; margin: 0 auto; padding: 0 1.5rem; }
+
+/* ── Topbar ── */
+.topbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  background: rgba(237, 229, 208, 0.75);
+  border-bottom: 1px solid var(--border);
+  padding: 0.6rem 1.5rem;
+  min-height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+html.dark .topbar { background: rgba(26, 18, 8, 0.80); }
+.topbar-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+}
+.back-link {
+  font-family: 'Crimson Text', serif;
+  font-size: 0.85rem;
+  color: var(--muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: color 0.2s;
+  text-decoration: none;
+}
+.back-link:hover { color: var(--accent); text-decoration: none; }
+.topbar-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.ctrl-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--muted);
+  font-family: 'Crimson Text', serif;
+  font-size: 0.8rem;
+  padding: 0 0.6rem;
+  height: 34px;
+  transition: all 0.2s;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ctrl-btn:hover { border-color: var(--accent); color: var(--accent); }
+.ctrl-btn-icon {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--muted);
+  width: 34px;
+  height: 34px;
+  transition: all 0.2s;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ctrl-btn-icon:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ── Ornamental divider ── */
+.ornament {
+  text-align: center;
+  color: var(--accent);
+  font-size: 1.1rem;
+  letter-spacing: 0.3em;
+  margin: 2rem 0;
+  opacity: 0.7;
+}
+.ornament::before { content: '\2666 \00B7 \00B7 \00B7 \2666 \00B7 \00B7 \00B7 \2666'; }
+hr.rule {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2.5rem 0;
+  position: relative;
+}
+
+/* ── Header ── */
+.site-header {
+  padding: 5.5rem 0 3rem;
+  text-align: center;
+  background: var(--surface);
+  border-bottom: 2px solid var(--border);
+  max-height: 70vh;
+  overflow: hidden;
+}
+.header-est {
+  font-family: 'Crimson Text', serif;
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--muted);
+  letter-spacing: 0.15em;
+  margin-bottom: 0.5rem;
+}
+.header-name {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(2rem, 6vw, 3.4rem);
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.15;
+  margin-bottom: 0.5rem;
+}
+.header-tagline {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+}
+.header-address {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+/* ── Section titles ── */
+.section-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 1.5rem;
+  text-align: center;
+  position: relative;
+}
+.section-title::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 2px;
+  background: var(--accent);
+  margin: 0.5rem auto 0;
+}
+
+/* ── Section wrapper ── */
+.section { padding: 3rem 0; }
+.section + .section { border-top: 1px solid var(--border); }
+
+/* ── Tables ── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+thead th {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 0.65rem 1rem;
+  font-family: 'Playfair Display', serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--accent);
+  text-align: left;
+}
+tbody td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 1rem;
+  vertical-align: top;
+}
+tbody tr:nth-child(even) td { background: var(--surface); }
+tbody tr:hover td { background: rgba(139, 69, 19, 0.05); }
+
+/* ── About ── */
+.about-text {
+  font-size: 1.05rem;
+  line-height: 1.85;
+  color: var(--text);
+}
+.about-text p + p { margin-top: 1rem; }
+
+/* ── Gallery ── */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+.gallery-item {
+  aspect-ratio: 1;
+  border: 2px solid var(--border);
+  outline: 3px solid var(--surface);
+  outline-offset: -6px;
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  font-family: 'Crimson Text', serif;
+  font-style: italic;
+  font-size: 0.8rem;
+  color: var(--muted);
+  text-align: center;
+  padding: 0.5rem;
+  position: relative;
+  overflow: hidden;
+}
+.gallery-item-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.1) 55%, rgba(0,0,0,0) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+.gallery-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  position: relative;
+  z-index: 2;
+  color: #ffffff;
+  font-weight: 600;
+  text-shadow: 0 1px 6px rgba(0,0,0,1);
+  padding: 0 0.25rem 0.25rem;
+}
+@media(max-width: 600px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); } }
+
+/* ── Hours ── */
+.hours-table td:first-child { font-weight: 600; color: var(--accent); }
+.hours-table td:last-child { text-align: right; }
+.closed-row td { color: var(--muted); font-style: italic; }
+
+/* ── Contact form ── */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+.contact-info p { margin-bottom: 0.5rem; font-size: 0.95rem; }
+.contact-info strong { color: var(--accent); }
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-bottom: 1rem;
+}
+.form-field label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+}
+.form-field input,
+.form-field textarea,
+.form-field select {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 0.55rem 0.8rem;
+  font-size: 0.95rem;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.form-field input:focus,
+.form-field textarea:focus,
+.form-field select:focus {
+  border-color: var(--accent);
+}
+.form-field textarea { resize: vertical; min-height: 100px; }
+.form-btn {
+  background: var(--accent);
+  color: var(--bg);
+  border: none;
+  padding: 0.65rem 2rem;
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.form-btn:hover { opacity: 0.85; }
+@media(max-width: 640px) { .contact-grid { grid-template-columns: 1fr; } }
+
+/* ── Footer (old, kept for compatibility) ── */
+.site-
+.footer-ornament {
+  font-size: 1.2rem;
+  color: var(--accent);
+  letter-spacing: 0.4em;
+  margin-bottom: 1rem;
+  opacity: 0.6;
+}
+.footer-credit {
+  font-size: 0.78rem;
+  color: var(--muted);
+  font-style: italic;
+}
+.footer-credit a { color: var(--accent); }
+
+/* ── New global footer ── */
+@media(max-width:768px){}
+
+/* ── Dropdown arrow ── */
+.form-field .select-wrap {
+  position: relative;
+}
+.form-field select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 2.5rem;
+}
+
+/* ── Field error ── */
+.field-error { font-size: 0.78rem; color: var(--accent); margin-top: 4px; display: none; }
+.field-error.visible { display: block; }
+
+/* ── Form disclaimer note ── */
+.form-disc-note { font-size: 0.72rem; opacity: 0.65; color: currentColor; text-align: center; max-width: 640px; margin-top: 0.75rem; }
+    @media(max-width:600px){ }
+            /* ── Footer ── */
+    #footer{background:#0a0a0a;border-top:1px solid rgba(255,255,255,0.08);padding:24px 48px 20px;color:#f0f0f0;}
+    #footer>div{max-width:1200px;margin:0 auto;}
+    .ft-inner{display:flex;flex-direction:column;gap:16px;}
+    .ft-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:nowrap;gap:16px;}
+    .ft-left{display:flex;flex-direction:column;align-items:flex-start;gap:4px;flex:0 0 auto;min-width:0;}
+    .ft-center{display:flex;align-items:center;gap:10px;flex:1;justify-content:center;}
+    .ft-right{display:flex;align-items:center;justify-content:flex-end;flex:0 0 auto;}
+    .ft-logo{height:32px;filter:brightness(0) invert(1);display:block;}
+    .ft-tagline{font-size:0.68rem;opacity:0.5;line-height:1.3;white-space:nowrap;}
+    .ft-btn{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,0.22);border-radius:6px;background:transparent;color:#f0f0f0;text-decoration:none;cursor:pointer;transition:border-color .2s,color .2s;padding:0;box-sizing:border-box;flex-shrink:0;}
+    .ft-btn:hover{border-color:#FF7F00;color:#FF7F00;}
+    .ft-bottom{font-size:0.68rem;opacity:0.5;text-align:center;margin:0;padding:0;line-height:1.5;white-space:normal;}
+    @media(max-width:900px){
+      #footer{padding:20px 24px 16px;}
+      .ft-top{flex-wrap:wrap;justify-content:center;gap:12px;}
+      .ft-left{align-items:center;width:100%;justify-content:center;}
+      .ft-tagline{white-space:normal;text-align:center;}
+      .ft-center{justify-content:center;}
+      .ft-right{width:auto;}
+    }
+    @media(max-width:480px){
+      .ft-top{flex-direction:column;align-items:center;}
+      .ft-right{width:100%;justify-content:center;}
+    }
+    </style>
+</head>
+<body>
+
+<!-- Topbar -->
+<div class="topbar">
+  <div style="display:flex;align-items:center;gap:1rem;">
+    <a href="../../index.html#portfolio" class="back-link" id="back-nav-link">< Portafolio</a>
+  </div>
+  <div class="topbar-center">
+    <a href="../../index.html"><img src="../../imgs/FullLogo.svg" alt="WebExpressCR" height="44" style="filter:brightness(0) invert(1);"></a>
+  </div>
+  <div class="topbar-controls">
+    <button class="ctrl-btn" id="lang-btn">EN</button>
+    <button class="ctrl-btn-icon" id="theme-btn" aria-label="Cambiar tema">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="theme-icon-sun"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="theme-icon-moon" style="display:none;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- Header -->
+<header class="site-header" style="position:relative;overflow:hidden;">
+  <img src="imgs/hero.jpg" alt="Relojería y Joyería Don Ernesto" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;display:block;">
+  <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(10,5,0,0.85),rgba(10,5,0,0.60));z-index:1;"></div>
+  <div style="position:relative;z-index:2;width:100%;">
+  <div class="wrap">
+    <p class="header-est" data-i18n="header.est" style="color:rgba(255,255,255,0.75);">Establecido en San José, Costa Rica</p>
+    <h1 class="header-name" data-i18n="header.name" style="color:#ffffff;text-shadow:0 2px 8px rgba(0,0,0,0.9);">Relojería y Joyería Don Ernesto</h1>
+    <p class="header-tagline" data-i18n="header.tagline" style="color:#f0c070;text-shadow:0 2px 8px rgba(0,0,0,0.9);">Est. 1974 &mdash; Tradición y Precisión Artesanal</p>
+    <p class="header-address" data-i18n="header.address" style="color:rgba(255,255,255,0.7);">Calle 4, Avenida 2, Barrio La Merced, San José, Costa Rica</p>
+    <div class="ornament" style="margin-top:1.5rem;"></div>
+  </div>
+  </div>
+</header>
+
+<main>
+
+<!-- Services -->
+<section class="section">
+  <div class="wrap">
+    <h2 class="section-title" data-i18n="services.title">Nuestros Servicios</h2>
+    <table>
+      <thead>
+        <tr>
+          <th data-i18n="table.service">Servicio</th>
+          <th data-i18n="table.time">Tiempo Estimado</th>
+          <th data-i18n="table.price">Rango de Precio (USD)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-i18n="srv.1.name">Reparación de Relojes de Pulsera</td>
+          <td data-i18n="srv.1.time">3–7 días hábiles</td>
+          <td data-i18n="srv.1.price">$15 – $120</td>
+        </tr>
+        <tr>
+          <td data-i18n="srv.2.name">Reparación de Relojes de Pared y Cuco</td>
+          <td data-i18n="srv.2.time">7–15 días hábiles</td>
+          <td data-i18n="srv.2.price">$40 – $200</td>
+        </tr>
+        <tr>
+          <td data-i18n="srv.3.name">Joyería y Engastes</td>
+          <td data-i18n="srv.3.time">2–5 días hábiles</td>
+          <td data-i18n="srv.3.price">$10 – $80</td>
+        </tr>
+        <tr>
+          <td data-i18n="srv.4.name">Grabado Personalizado</td>
+          <td data-i18n="srv.4.time">1–3 días hábiles</td>
+          <td data-i18n="srv.4.price">$8 – $35</td>
+        </tr>
+        <tr>
+          <td data-i18n="srv.5.name">Restauración de Piezas Antiguas</td>
+          <td data-i18n="srv.5.time">15–30 días hábiles</td>
+          <td data-i18n="srv.5.price">$60 – $350</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-size:0.85rem;font-style:italic;color:var(--muted);" data-i18n="services.note">* Los precios son orientativos. Se entrega presupuesto sin costo previo a cualquier trabajo.</p>
+  </div>
+</section>
+
+<div class="ornament" style="margin:0;"></div>
+
+<!-- About -->
+<section class="section">
+  <div class="wrap">
+    <h2 class="section-title" data-i18n="about.title">Don Ernesto y la Historia del Taller</h2>
+    <div class="about-text">
+      <p data-i18n="about.p1">Don Ernesto Jiménez Vargas abrió las puertas de su pequeño taller en 1974, en un local de apenas doce metros cuadrados sobre la Calle 4 de San José. Había aprendido el oficio de manos de su padre, quien a su vez lo aprendió de un relojero suizo que llegó al país en los años cuarenta. Desde el primer día, Don Ernesto entendió que reparar un reloj no es simplemente ajustar engranajes: es devolver el tiempo a las manos que lo atesoraron.</p>
+      <p data-i18n="about.p2">A lo largo de cinco décadas, el taller ha sobrevivido a cambios de moneda, terremotos, y la llegada del cuarzo y la era digital. Mientras otros cerraban sus puertas, Don Ernesto y su familia adaptaban, aprendían, y persistían. Hoy, sus hijos y nietos trabajan a su lado, herederos de una disciplina que exige paciencia, vista fina y manos seguras.</p>
+      <p data-i18n="about.p3">El taller no solo repara relojes. A través de los años, la clientela fue trayendo también piezas de joyería — anillos de bodas que necesitaban ajuste, broches de herencia que perdían su cierre, medallas de bautismo que requerían nueva cadena. Hoy, los servicios de joyería son una parte integral del negocio, siempre con el mismo cuidado artesanal que distinguió al taller desde sus inicios.</p>
+      <p data-i18n="about.p4">Don Ernesto cumplió 78 años el pasado febrero. Sigue llegando al taller todas las mañanas, aunque ya delega las piezas más complejas a su hijo mayor. Dice que mientras pueda sostener una lupa, seguirá trabajando. Sus clientes, muchos de ellos hijos de sus primeros clientes, lo saben bien: hay cosas que el tiempo no desgasta.</p>
+    </div>
+  </div>
+</section>
+
+<div class="ornament" style="margin:0;"></div>
+
+<!-- Gallery -->
+<section class="section">
+  <div class="wrap">
+    <h2 class="section-title" data-i18n="gallery.title">Nuestros Trabajos</h2>
+    <div class="gallery-grid">
+      <div class="gallery-item" style="padding:0;">
+        <img src="imgs/trabajo-1.jpg" alt="Reloj de bolsillo restaurado" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+        <div class="gallery-item-overlay"></div>
+        <span class="gallery-label" data-i18n="gallery.1">Reloj de bolsillo restaurado, circa 1930</span>
+      </div>
+      <div class="gallery-item" style="padding:0;">
+        <img src="imgs/trabajo-2.jpg" alt="Reloj de pared estilo Tudor" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+        <div class="gallery-item-overlay"></div>
+        <span class="gallery-label" data-i18n="gallery.2">Reloj de pared estilo Tudor, familia Montero</span>
+      </div>
+      <div class="gallery-item" style="padding:0;">
+        <img src="imgs/trabajo-3.jpg" alt="Ajuste de anillos de oro" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+        <div class="gallery-item-overlay"></div>
+        <span class="gallery-label" data-i18n="gallery.3">Ajuste de anillos de oro 18K</span>
+      </div>
+      <div class="gallery-item" style="padding:0;">
+        <img src="imgs/trabajo-4.jpg" alt="Grabado en placa conmemorativa" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+        <div class="gallery-item-overlay"></div>
+        <span class="gallery-label" data-i18n="gallery.4">Grabado en placa conmemorativa de plata</span>
+      </div>
+      <div class="gallery-item" style="padding:0;">
+        <img src="imgs/trabajo-5.jpg" alt="Reloj suizo de cuerda" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+        <div class="gallery-item-overlay"></div>
+        <span class="gallery-label" data-i18n="gallery.5">Reloj suizo de cuerda revisado y lubricado</span>
+      </div>
+      <div class="gallery-item" style="padding:0;">
+        <img src="imgs/tienda.jpg" alt="Broche de herencia restaurado" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+        <div class="gallery-item-overlay"></div>
+        <span class="gallery-label" data-i18n="gallery.6">Broche de herencia restaurado, circa 1950</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ornament" style="margin:0;"></div>
+
+<!-- Hours -->
+<section class="section">
+  <div class="wrap">
+    <h2 class="section-title" data-i18n="hours.title">Horario de Atención</h2>
+    <table class="hours-table">
+      <tbody>
+        <tr>
+          <td data-i18n="day.lun">Lunes</td>
+          <td data-i18n="hours.weekday">8:00 a.m. – 5:30 p.m.</td>
+        </tr>
+        <tr>
+          <td data-i18n="day.mar">Martes</td>
+          <td data-i18n="hours.weekday">8:00 a.m. – 5:30 p.m.</td>
+        </tr>
+        <tr>
+          <td data-i18n="day.mie">Miércoles</td>
+          <td data-i18n="hours.weekday">8:00 a.m. – 5:30 p.m.</td>
+        </tr>
+        <tr>
+          <td data-i18n="day.jue">Jueves</td>
+          <td data-i18n="hours.weekday">8:00 a.m. – 5:30 p.m.</td>
+        </tr>
+        <tr>
+          <td data-i18n="day.vie">Viernes</td>
+          <td data-i18n="hours.weekday">8:00 a.m. – 5:30 p.m.</td>
+        </tr>
+        <tr>
+          <td data-i18n="day.sab">Sábado</td>
+          <td data-i18n="hours.saturday">8:00 a.m. – 1:00 p.m.</td>
+        </tr>
+        <tr class="closed-row">
+          <td data-i18n="day.dom">Domingo</td>
+          <td data-i18n="hours.closed">Cerrado</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<div class="ornament" style="margin:0;"></div>
+
+<!-- Contact -->
+<section class="section">
+  <div class="wrap">
+    <h2 class="section-title" data-i18n="contact.title">Contacto y Consultas</h2>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <p><strong data-i18n="contact.address.label">Dirección:</strong><br><span data-i18n="contact.address">Calle 4, Avenida 2, Barrio La Merced<br>San José, Costa Rica</span></p>
+        <p><strong data-i18n="contact.phone.label">Teléfono:</strong><br>(506) 2222-1974</p>
+        <p><strong data-i18n="contact.email.label">Correo:</strong><br>donernesto@ejemplo.cr</p>
+        <p style="margin-top:1rem;font-size:0.88rem;font-style:italic;color:var(--muted);" data-i18n="contact.note">Aceptamos piezas por valoración sin compromiso. Traiga su reloj o joya y le daremos un presupuesto gratuito.</p>
+      </div>
+      <form id="ernesto-form" novalidate>
+        <div class="form-field">
+          <label for="ern-name" data-i18n="form.name">Nombre completo<span aria-hidden="true" style="color: var(--accent); margin-left: 2px;">*</span></label>
+          <input type="text" id="ern-name" required autocomplete="name">
+          <span class="field-error" id="ern-name-err"></span>
+        </div>
+        <div class="form-field">
+          <label for="ern-phone" data-i18n="form.phone">Teléfono<span aria-hidden="true" style="color: var(--accent); margin-left: 2px;">*</span></label>
+          <input type="tel" id="ern-phone" required inputmode="numeric" pattern="[0-9]*" autocomplete="tel" maxlength="8" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,8)">
+          <span class="field-error" id="ern-phone-err"></span>
+        </div>
+        <div class="form-field">
+          <label for="ern-service" data-i18n="form.service">Tipo de servicio<span aria-hidden="true" style="color: var(--accent); margin-left: 2px;">*</span></label>
+          <div class="select-wrap" style="position:relative;">
+            <select id="ern-service" required style="appearance:none;-webkit-appearance:none;padding-right:2.75rem;">
+              <option value="" data-i18n="form.service.opt0">Seleccione...</option>
+              <option value="pulsera" data-i18n="form.service.opt1">Reloj de pulsera</option>
+              <option value="pared" data-i18n="form.service.opt2">Reloj de pared</option>
+              <option value="joyeria" data-i18n="form.service.opt3">Joyería y engastes</option>
+              <option value="grabado" data-i18n="form.service.opt4">Grabado personalizado</option>
+              <option value="restauracion" data-i18n="form.service.opt5">Restauración de pieza antigua</option>
+            
+<option value="otro" data-i18n="form.other">Otro</option>
+</select>
+            <svg style="position:absolute;right:0.85rem;top:50%;transform:translateY(-50%);pointer-events:none;z-index:1;color:currentColor;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <span class="field-error" id="ern-service-err"></span>
+        </div>
+        <div class="form-field">
+          <label for="ern-notes" data-i18n="form.notes">Notas adicionales<span aria-hidden="true" style="color: var(--accent); margin-left: 2px;">*</span></label>
+          <textarea id="ern-notes" rows="4" required></textarea>
+          <span class="field-error" id="ern-notes-err"></span>
+        </div>
+        <button type="submit" class="form-btn" data-i18n="form.submit">Enviar Consulta</button>
+        <p class="form-disc-note" id="form-disc-ernesto"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- Footer -->
+<footer id="footer">
+  <div class="ft-inner">
+
+    <div class="ft-top">
+      <div class="ft-left">
+        <img src="../../imgs/FullLogo.svg" alt="WebExpressCR" class="ft-logo">
+      </div>
+      <div class="ft-center">
+        <a href="https://www.instagram.com/webexpresscr/" class="ft-btn" aria-label="Instagram">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/company/webexpresscr" class="ft-btn" aria-label="LinkedIn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+        <a href="https://www.facebook.com/webexpresscr" class="ft-btn" aria-label="Facebook">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+        <a href="https://wa.me/50670553656" target="_blank" class="ft-btn" aria-label="WhatsApp">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M20.52 3.48A11.93 11.93 0 0 0 12 0C5.37 0 0 5.37 0 12c0 2.11.55 4.16 1.6 5.97L0 24l6.19-1.62A11.94 11.94 0 0 0 12 24c6.63 0 12-5.37 12-12 0-3.2-1.25-6.21-3.48-8.52zm-8.52 18.4a9.9 9.9 0 0 1-5.05-1.38l-.36-.21-3.73.98.99-3.63-.24-.38A9.9 9.9 0 0 1 2.1 12c0-5.46 4.44-9.9 9.9-9.9 2.65 0 5.13 1.03 7 2.9a9.87 9.87 0 0 1 2.9 7c0 5.46-4.44 9.9-9.9 9.9zm5.43-7.4c-.3-.15-1.77-.87-2.04-.97-.28-.1-.48-.15-.68.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.68-1.63-.93-2.23-.24-.59-.49-.51-.68-.52h-.58c-.2 0-.52.07-.79.37-.27.3-1.03 1.01-1.03 2.46s1.06 2.85 1.2 3.05c.15.2 2.08 3.18 5.04 4.46.7.3 1.25.48 1.68.62.71.22 1.35.19 1.86.12.57-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35z"/></svg>
+        </a>
+        <a href="mailto:webexpresscr@gmail.com" class="ft-btn" aria-label="Email">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </a>
+      </div>
+      <div class="ft-right">
+        <button class="ft-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Volver arriba">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <p class="ft-bottom" data-i18n="footer.disclaimer"></p>
+
+  </div>
+</footer>
+
+<script>
+'use strict';
+
+/* ── Translations ── */
+const T = {
+  es: {
+    'nav.back': '< Portafolio',
+    'header.est': 'Establecido en San José, Costa Rica',
+    'header.name': 'Relojería y Joyería Don Ernesto',
+    'header.tagline': 'Est. 1974 — Tradición y Precisión Artesanal',
+    'header.address': 'Calle 4, Avenida 2, Barrio La Merced, San José, Costa Rica',
+    'services.title': 'Nuestros Servicios',
+    'table.service': 'Servicio',
+    'table.time': 'Tiempo Estimado',
+    'table.price': 'Rango de Precio (USD)',
+    'srv.1.name': 'Reparación de Relojes de Pulsera',
+    'srv.1.time': '3–7 días hábiles',
+    'srv.1.price': '$15 – $120',
+    'srv.2.name': 'Reparación de Relojes de Pared y Cuco',
+    'srv.2.time': '7–15 días hábiles',
+    'srv.2.price': '$40 – $200',
+    'srv.3.name': 'Joyería y Engastes',
+    'srv.3.time': '2–5 días hábiles',
+    'srv.3.price': '$10 – $80',
+    'srv.4.name': 'Grabado Personalizado',
+    'srv.4.time': '1–3 días hábiles',
+    'srv.4.price': '$8 – $35',
+    'srv.5.name': 'Restauración de Piezas Antiguas',
+    'srv.5.time': '15–30 días hábiles',
+    'srv.5.price': '$60 – $350',
+    'services.note': '* Los precios son orientativos. Se entrega presupuesto sin costo previo a cualquier trabajo.',
+    'about.title': 'Don Ernesto y la Historia del Taller',
+    'about.p1': 'Don Ernesto Jiménez Vargas abrió las puertas de su pequeño taller en 1974, en un local de apenas doce metros cuadrados sobre la Calle 4 de San José. Había aprendido el oficio de manos de su padre, quien a su vez lo aprendió de un relojero suizo que llegó al país en los años cuarenta. Desde el primer día, Don Ernesto entendió que reparar un reloj no es simplemente ajustar engranajes: es devolver el tiempo a las manos que lo atesoraron.',
+    'about.p2': 'A lo largo de cinco décadas, el taller ha sobrevivido a cambios de moneda, terremotos, y la llegada del cuarzo y la era digital. Mientras otros cerraban sus puertas, Don Ernesto y su familia adaptaban, aprendían, y persistían. Hoy, sus hijos y nietos trabajan a su lado, herederos de una disciplina que exige paciencia, vista fina y manos seguras.',
+    'about.p3': 'El taller no solo repara relojes. A través de los años, la clientela fue trayendo también piezas de joyería — anillos de bodas que necesitaban ajuste, broches de herencia que perdían su cierre, medallas de bautismo que requerían nueva cadena. Hoy, los servicios de joyería son una parte integral del negocio, siempre con el mismo cuidado artesanal que distinguió al taller desde sus inicios.',
+    'about.p4': 'Don Ernesto cumplió 78 años el pasado febrero. Sigue llegando al taller todas las mañanas, aunque ya delega las piezas más complejas a su hijo mayor. Dice que mientras pueda sostener una lupa, seguirá trabajando. Sus clientes, muchos de ellos hijos de sus primeros clientes, lo saben bien: hay cosas que el tiempo no desgasta.',
+    'gallery.title': 'Nuestros Trabajos',
+    'gallery.1': 'Reloj de bolsillo restaurado, circa 1930',
+    'gallery.2': 'Reloj de pared estilo Tudor, familia Montero',
+    'gallery.3': 'Ajuste de anillos de oro 18K',
+    'gallery.4': 'Grabado en placa conmemorativa de plata',
+    'gallery.5': 'Reloj suizo de cuerda revisado y lubricado',
+    'gallery.6': 'Broche de herencia restaurado, circa 1950',
+    'hours.title': 'Horario de Atención',
+    'day.lun': 'Lunes', 'day.mar': 'Martes', 'day.mie': 'Miércoles',
+    'day.jue': 'Jueves', 'day.vie': 'Viernes', 'day.sab': 'Sábado', 'day.dom': 'Domingo',
+    'hours.weekday': '8:00 a.m. – 5:30 p.m.',
+    'hours.saturday': '8:00 a.m. – 1:00 p.m.',
+    'hours.closed': 'Cerrado',
+    'contact.title': 'Contacto y Consultas',
+    'contact.address.label': 'Dirección:',
+    'contact.address': 'Calle 4, Avenida 2, Barrio La Merced\nSan José, Costa Rica',
+    'contact.phone.label': 'Teléfono:',
+    'contact.email.label': 'Correo:',
+    'contact.note': 'Aceptamos piezas por valoración sin compromiso. Traiga su reloj o joya y le daremos un presupuesto gratuito.',
+    'form.name': 'Nombre completo',
+    'form.phone': 'Teléfono',
+    'form.service': 'Tipo de servicio',
+    'form.service.opt0': 'Seleccione...',
+    'form.service.opt1': 'Reloj de pulsera',
+    'form.service.opt2': 'Reloj de pared',
+    'form.service.opt3': 'Joyería y engastes',
+    'form.service.opt4': 'Grabado personalizado',
+    'form.service.opt5': 'Restauración de pieza antigua',
+    'form.notes': 'Notas adicionales',
+    'form.submit': 'Enviar Consulta',
+    'form.disc': 'Sitio con fines demostrativos: Ninguna transacción será procesada ni ningún dato almacenado.',
+    'err.required': 'Este campo es obligatorio.',
+    'err.phone': 'Ingrese al menos 8 dígitos.',
+    'err.select': 'Por favor seleccione una opción.',
+    'err.textarea': 'Por favor ingrese al menos 10 caracteres.','form.other':'Otro','footer.tagline':'Creación de páginas web · Costa Rica','footer.disclaimer':'Sitio con fines demostrativos: Ninguna transacción será procesada ni ningún dato almacenado.  © 2026 WebExpressCR. Todos los derechos reservados.  Las imágenes utilizadas pertenecen a sus respectivos autores y se usan únicamente con fines ilustrativos.'},
+  en: {
+    'nav.back': '< Portfolio',
+    'header.est': 'Established in San José, Costa Rica',
+    'header.name': 'Don Ernesto Watch Repair & Jewelry',
+    'header.tagline': 'Est. 1974 — Tradition and Artisan Precision',
+    'header.address': 'Calle 4, Avenida 2, Barrio La Merced, San José, Costa Rica',
+    'services.title': 'Our Services',
+    'table.service': 'Service',
+    'table.time': 'Estimated Time',
+    'table.price': 'Price Range (USD)',
+    'srv.1.name': 'Wristwatch Repair',
+    'srv.1.time': '3–7 business days',
+    'srv.1.price': '$15 – $120',
+    'srv.2.name': 'Wall & Cuckoo Clock Repair',
+    'srv.2.time': '7–15 business days',
+    'srv.2.price': '$40 – $200',
+    'srv.3.name': 'Jewelry & Stone Setting',
+    'srv.3.time': '2–5 business days',
+    'srv.3.price': '$10 – $80',
+    'srv.4.name': 'Custom Engraving',
+    'srv.4.time': '1–3 business days',
+    'srv.4.price': '$8 – $35',
+    'srv.5.name': 'Antique Piece Restoration',
+    'srv.5.time': '15–30 business days',
+    'srv.5.price': '$60 – $350',
+    'services.note': '* Prices are estimates. A free quote is provided before any work begins.',
+    'about.title': 'Don Ernesto and the History of the Workshop',
+    'about.p1': 'Don Ernesto Jiménez Vargas opened the doors of his small workshop in 1974, in a space of barely twelve square meters on Calle 4 in San José. He had learned the craft from his father, who in turn learned it from a Swiss watchmaker who arrived in the country in the 1940s. From day one, Don Ernesto understood that repairing a watch is not simply adjusting gears: it is returning time to the hands that treasured it.',
+    'about.p2': 'Over five decades, the workshop has survived currency changes, earthquakes, and the arrival of quartz and the digital age. While others closed their doors, Don Ernesto and his family adapted, learned, and persisted. Today his children and grandchildren work alongside him, heirs to a discipline that demands patience, sharp eyes, and steady hands.',
+    'about.p3': 'The workshop does not only repair watches. Over the years, customers began bringing jewelry pieces as well — wedding rings needing adjustment, heirloom brooches losing their clasp, baptism medals needing a new chain. Today, jewelry services are an integral part of the business, always with the same artisan care that distinguished the workshop from the start.',
+    'about.p4': 'Don Ernesto turned 78 last February. He still comes to the workshop every morning, though he now delegates the more complex pieces to his eldest son. He says that as long as he can hold a magnifying glass, he will keep working. His customers — many of them children of his first customers — know it well: there are some things that time does not wear down.',
+    'gallery.title': 'Our Work',
+    'gallery.1': 'Restored pocket watch, circa 1930',
+    'gallery.2': 'Tudor-style wall clock, Montero family',
+    'gallery.3': '18K gold ring sizing',
+    'gallery.4': 'Engraving on commemorative silver plate',
+    'gallery.5': 'Swiss wind-up watch serviced and lubricated',
+    'gallery.6': 'Restored heirloom brooch, circa 1950',
+    'hours.title': 'Business Hours',
+    'day.lun': 'Monday', 'day.mar': 'Tuesday', 'day.mie': 'Wednesday',
+    'day.jue': 'Thursday', 'day.vie': 'Friday', 'day.sab': 'Saturday', 'day.dom': 'Sunday',
+    'hours.weekday': '8:00 a.m. – 5:30 p.m.',
+    'hours.saturday': '8:00 a.m. – 1:00 p.m.',
+    'hours.closed': 'Closed',
+    'contact.title': 'Contact and Inquiries',
+    'contact.address.label': 'Address:',
+    'contact.address': 'Calle 4, Avenida 2, Barrio La Merced\nSan José, Costa Rica',
+    'contact.phone.label': 'Phone:',
+    'contact.email.label': 'Email:',
+    'contact.note': 'We accept pieces for a no-obligation evaluation. Bring your watch or jewelry and we will give you a free quote.',
+    'form.name': 'Full name',
+    'form.phone': 'Phone',
+    'form.service': 'Service type',
+    'form.service.opt0': 'Select...',
+    'form.service.opt1': 'Wristwatch',
+    'form.service.opt2': 'Wall clock',
+    'form.service.opt3': 'Jewelry & setting',
+    'form.service.opt4': 'Custom engraving',
+    'form.service.opt5': 'Antique restoration',
+    'form.notes': 'Additional notes',
+    'form.submit': 'Send Inquiry',
+    'form.disc': 'Demonstration site: No transactions will be processed or data stored.',
+    'err.required': 'This field is required.',
+    'err.phone': 'Please enter at least 8 digits.',
+    'err.select': 'Please select an option.',
+    'err.textarea': 'Please enter at least 10 characters.','form.other':'Other','footer.tagline':'Web development · Costa Rica','footer.disclaimer':'Demonstration site: No transactions will be processed or data stored.  © 2026 WebExpressCR. All rights reserved.  Images used belong to their respective authors and are used for illustrative purposes only.'}
+};
+
+let lang = localStorage.getItem('ernesto-lang') || 'es';
+let theme = localStorage.getItem('ernesto-theme') || 'dark';
+
+function applyTheme(t) {
+  theme = t;
+  document.documentElement.className = t;
+  localStorage.setItem('ernesto-theme', t);
+  const sunIcon = document.getElementById('theme-icon-sun');
+  const moonIcon = document.getElementById('theme-icon-moon');
+  if (t === 'dark') {
+    sunIcon.style.display = 'block';
+    moonIcon.style.display = 'none';
+  } else {
+    sunIcon.style.display = 'none';
+    moonIcon.style.display = 'block';
+  }
+}
+
+function applyLang(l) {
+  lang = l;
+  document.documentElement.lang = l;
+  const dict = T[l];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const k = el.getAttribute('data-i18n');
+    if (dict[k] !== undefined) el.textContent = dict[k];
+  });
+  document.getElementById('lang-btn').textContent = l === 'es' ? 'EN' : 'ES';
+  // Back button
+  const backLink = document.getElementById('back-nav-link');
+  if (backLink) backLink.textContent = dict['nav.back'];
+  // Footer disclaimer
+  const fd1 = document.getElementById('ernesto-footer-disc1');
+  if(fd1) fd1.textContent = l==='es' ? 'Sitio con fines demostrativos: Ninguna transacción será procesada ni ningún dato almacenado.' : 'Demonstration site: No transactions will be processed or data stored.';
+  const fd2 = document.getElementById('ernesto-footer-disc2');
+  if(fd2) fd2.textContent = l==='es' ? 'Las imágenes utilizadas pertenecen a sus respectivos autores y se usan únicamente con fines ilustrativos.' : 'Images used belong to their respective authors and are used for illustrative purposes only.';
+  // Form disclaimer note
+  const formDiscEl = document.getElementById('form-disc-ernesto');
+  if (formDiscEl) formDiscEl.textContent = dict['form.disc'];
+  localStorage.setItem('ernesto-lang', l);
+}
+
+document.getElementById('theme-btn').addEventListener('click', () => {
+  applyTheme(theme === 'dark' ? 'light' : 'dark');
+});
+document.getElementById('lang-btn').addEventListener('click', () => {
+  applyLang(lang === 'es' ? 'en' : 'es');
+});
+
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+  if (!localStorage.getItem('ernesto-theme')) applyTheme(e.matches ? 'dark' : 'light');
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  applyTheme(theme);
+  applyLang(lang);
+
+  // ── Form validation ──
+  const form = document.getElementById('ernesto-form');
+  if (form) {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const dict = T[lang];
+      let valid = true;
+
+      function showErr(id, msg) {
+        const el = document.getElementById(id);
+        if (el) { el.textContent = msg; el.classList.add('visible'); }
+        valid = false;
+      }
+      function clearErr(id) {
+        const el = document.getElementById(id);
+        if (el) { el.textContent = ''; el.classList.remove('visible'); }
+      }
+
+      // Name
+      const nameVal = document.getElementById('ern-name').value.trim();
+      clearErr('ern-name-err');
+      if (!nameVal) showErr('ern-name-err', dict['err.required']);
+
+      // Phone
+      const phoneVal = document.getElementById('ern-phone').value.trim();
+      clearErr('ern-phone-err');
+      if (!phoneVal) showErr('ern-phone-err', dict['err.required']);
+      else if (phoneVal.replace(/[^0-9]/g, '').length < 8) showErr('ern-phone-err', dict['err.phone']);
+
+      // Service
+      const serviceVal = document.getElementById('ern-service').value;
+      clearErr('ern-service-err');
+      if (!serviceVal) showErr('ern-service-err', dict['err.select']);
+
+      // Notes
+      const notesVal = document.getElementById('ern-notes').value.trim();
+      clearErr('ern-notes-err');
+      if (!notesVal) showErr('ern-notes-err', dict['err.required']);
+      else if (notesVal.length < 10) showErr('ern-notes-err', dict['err.textarea']);
+
+      if (valid) {
+        showToast(lang === 'es' ? '¡Consulta enviada con éxito!' : 'Inquiry sent successfully!');
+        form.reset();
+      }
+    });
+  }
+});
+
+function showToast(msg, accent) {
+  var ac = accent || 'var(--accent, #FF7F00)';
+  var t = document.createElement('div');
+  t.style.cssText = 'position:fixed;bottom:24px;left:24px;z-index:9999;background:' + ac + ';color:#fff;border-radius:8px;padding:14px 20px;box-shadow:0 4px 16px rgba(0,0,0,.25);display:flex;align-items:center;gap:8px;opacity:0;transition:opacity .5s ease;pointer-events:none;font-size:.9rem;font-family:inherit;max-width:420px;';
+  t.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11"/></svg><span>' + msg + '</span>';
+  document.body.appendChild(t);
+  requestAnimationFrame(function(){ t.style.opacity = '1'; });
+  setTimeout(function(){ t.style.opacity = '0'; setTimeout(function(){ t.remove(); }, 500); }, 4000);
+}
+</script>
+</body>
+</html>

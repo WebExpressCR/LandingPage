@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Soda La Macha — Demo · WebExpressCR</title>
+<link rel="icon" type="image/svg+xml" href="../../imgs/SmallLogo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<style>
+:root{--max:1100px;--tr:.25s ease;}
+html.dark{--bg:#1a0e08;--sur:#2c1a0e;--sur2:#3a2212;--bor:#4a3020;--txt:#f5e6cc;--mut:#c4a882;--acc:#e07b54;--acc2:#8b3a1a;}
+html.light{--bg:#fdf6ec;--sur:#f5e6cc;--sur2:#eddcb8;--bor:#d4b896;--txt:#2c1a0e;--mut:#6b4a2a;--acc:#c0392b;--acc2:#922b21;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+::selection { background: rgba(224, 123, 84, 0.25); color: inherit; }
+body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--txt);line-height:1.7;transition:background var(--tr),color var(--tr);overflow-x:hidden;}
+a{color:inherit;text-decoration:none;}
+button{cursor:pointer;font-family:inherit;}
+input,textarea{font-family:inherit;background:var(--sur2);border:1px solid var(--bor);color:var(--txt);padding:.75rem 1rem;width:100%;font-size:.95rem;transition:border-color var(--tr);}
+input:focus,textarea:focus{outline:none;border-color:var(--acc);}
+.div-dash{width:100%;height:24px;background-image:repeating-linear-gradient(90deg,var(--bor) 0,var(--bor) 8px,transparent 8px,transparent 16px);opacity:.6;}
+.div-dot{width:100%;height:20px;background-image:radial-gradient(circle,var(--bor) 1.5px,transparent 1.5px);background-size:14px 14px;opacity:.5;}
+.hero{padding:calc(76px + 5rem) 2rem 5rem;text-align:center;border-bottom:2px dashed var(--bor);}
+.eyebrow{font-size:.75rem;font-weight:600;letter-spacing:.14em;color:var(--acc);text-transform:uppercase;margin-bottom:1.5rem;}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(3rem,9vw,6rem);font-weight:900;line-height:1.05;margin-bottom:1.25rem;}
+.hero-tag{font-family:'Playfair Display',serif;font-style:italic;font-size:1.3rem;color:var(--mut);display:inline-block;position:relative;margin-bottom:2.5rem;}
+.hero-tag::after{content:'';position:absolute;bottom:-5px;left:0;right:0;height:3px;background:var(--acc);border-radius:2px;transform:rotate(-.5deg);}
+.ctas{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+.btnp{display:inline-flex;align-items:center;gap:.5rem;background:var(--acc);color:#fff;font-weight:700;font-size:.95rem;padding:.85rem 2rem;border:none;transition:all var(--tr);}
+.btnp:hover{background:var(--acc2);transform:translateY(-2px);}
+.btno{display:inline-flex;align-items:center;gap:.5rem;background:transparent;color:var(--txt);font-weight:600;font-size:.95rem;padding:.85rem 2rem;border:2px solid var(--bor);transition:all var(--tr);}
+.btno:hover{border-color:var(--acc);color:var(--acc);}
+.section{padding:5rem 2rem;}
+.wrap{max-width:var(--max);margin:0 auto;}
+.sh{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;margin-bottom:.75rem;border-left:5px solid var(--acc);padding-left:1rem;}
+.ss{color:var(--mut);font-size:1rem;margin-bottom:3rem;padding-left:calc(1rem + 5px);}
+.tabs{display:flex;border-bottom:2px solid var(--bor);margin-bottom:2.5rem;}
+.tab{background:transparent;border:none;font-family:'Playfair Display',serif;font-size:1rem;font-weight:600;color:var(--mut);padding:.75rem 1.5rem;cursor:pointer;position:relative;transition:color var(--tr);}
+.tab::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:3px;background:var(--acc);transform:scaleX(0);transition:transform var(--tr);}
+.tab.on{color:var(--acc);}
+.tab.on::after{transform:scaleX(1);}
+.pane{display:none;}
+.pane.on{display:block;}
+.mgrid { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; }
+@media(max-width:600px){ .mgrid { grid-template-columns:1fr; } }
+.mi { background:var(--sur); border:1px solid var(--bor); border-radius:8px; overflow:hidden; }
+.mi img { width:100%; aspect-ratio:4/3; object-fit:cover; display:block; }
+.mi-body { padding:1rem; }
+.mn { font-family:'Playfair Display',serif; font-size:1.05rem; font-weight:700; margin-bottom:0.25rem; }
+.md { font-size:0.85rem; color:var(--mut); margin-bottom:0.4rem; }
+.mp { font-weight:700; font-size:0.9rem; color:var(--acc); }
+.ag{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;}
+@media(max-width:768px){.ag{grid-template-columns:1fr;}}
+.at p{font-size:1rem;color:var(--mut);margin-bottom:1rem;line-height:1.8;}
+.at strong{color:var(--txt);}
+.cwrap{display:flex;justify-content:center;padding:2rem;}
+.cup{position:relative;width:140px;margin:0 auto;}
+.cbody{width:120px;height:100px;background:var(--sur);border:3px solid var(--acc);border-radius:4px 4px 24px 24px;margin:0 auto;position:relative;}
+.chandle{position:absolute;right:-22px;top:20px;width:20px;height:40px;border:3px solid var(--acc);border-left:none;border-radius:0 16px 16px 0;}
+.csteam{position:absolute;top:-32px;left:50%;transform:translateX(-50%);display:flex;gap:10px;}
+.st{width:3px;height:24px;background:var(--mut);border-radius:2px;opacity:.6;animation:stm 1.8s ease-in-out infinite;}
+.st:nth-child(2){animation-delay:.3s;}.st:nth-child(3){animation-delay:.6s;}
+@keyframes stm{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
+.saucer{width:140px;height:14px;background:var(--sur);border:3px solid var(--acc);border-radius:50%;margin:0 auto;margin-top:-4px;}
+.hlg{display:grid;grid-template-columns:1fr 1fr;gap:3rem;}
+@media(max-width:768px){.hlg{grid-template-columns:1fr;}}
+.ht{width:100%;border-collapse:collapse;}
+.ht th{font-family:'Playfair Display',serif;font-size:.85rem;font-weight:700;text-align:left;padding:.5rem .75rem;border-bottom:2px solid var(--acc);color:var(--acc);}
+.ht td{padding:.5rem .75rem;border-bottom:1px dashed var(--bor);font-size:.9rem;}
+.maph{background:var(--sur);border:2px dashed var(--bor);padding:2rem;text-align:center;min-height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.75rem;color:var(--mut);font-size:.85rem;}
+.addr{margin-top:1.5rem;padding:1.25rem;border-left:4px solid var(--acc);background:var(--sur);}
+.addr p{font-size:.9rem;color:var(--mut);margin-bottom:.2rem;}
+.addr strong{color:var(--txt);}
+.wband{background:var(--acc);padding:4rem 2rem;text-align:center;}
+.wband h2{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,2.6rem);color:#fff;margin-bottom:1rem;}
+.wband p{color:rgba(255,255,255,.85);font-size:1.05rem;margin-bottom:2rem;}
+.btnw{display:inline-flex;align-items:center;gap:.6rem;background:#fff;color:var(--acc);font-weight:700;font-size:1rem;padding:.9rem 2.5rem;border:none;cursor:pointer;transition:all var(--tr);}
+.btnw:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.2);}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;}
+@media(max-width:600px){.fg{grid-template-columns:1fr;}}
+.fi{display:flex;flex-direction:column;gap:.4rem;}
+.fi.full{grid-column:1/-1;}
+.fl{font-size:.8rem;font-weight:700;color:var(--mut);letter-spacing:.04em;}
+textarea{resize:vertical;min-height:120px;}
+.fcr{font-size:.8rem;color:var(--mut);}
+.fcr a{color:var(--acc);font-weight:700;}
+.fcr a:hover{text-decoration:underline;}
+.f-social{display:flex;gap:.5rem;justify-content:center;margin-bottom:.75rem;}
+.f-social a{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border:1px solid var(--bor);color:var(--mut);transition:color 0.3s ease,border-color 0.3s ease;}
+@media(max-width:480px){.section{padding-left:1rem;padding-right:1rem;}.tab{padding:.6rem .75rem;font-size:.85rem;}}
+footer .container { max-width:var(--max); margin:0 auto; padding:0 2rem; }
+@media (max-width:768px) { }
+.calendar-icon-light { display: inline-block; }
+.calendar-icon-dark  { display: none; }
+html.dark .calendar-icon-light { display: none; }
+html.dark .calendar-icon-dark  { display: inline-block; }
+.date-wrapper { position: relative; display: flex; align-items: center; }
+.date-wrapper input[type="date"] { padding-right: 2.5rem; width: 100%; }
+.cal-icon { position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; cursor: pointer; pointer-events: all; }
+.field-error { font-size: 0.78rem; color: var(--acc); margin-top: 4px; display: none; }
+.field-error.visible { display: block; }
+    @media(max-width:600px){ }
+            /* ── Footer ── */
+    #footer{background:#0a0a0a;border-top:1px solid rgba(255,255,255,0.08);padding:24px 48px 20px;color:#f0f0f0;}
+    #footer>div{max-width:1200px;margin:0 auto;}
+    .ft-inner{display:flex;flex-direction:column;gap:16px;}
+    .ft-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:nowrap;gap:16px;}
+    .ft-left{display:flex;flex-direction:column;align-items:flex-start;gap:4px;flex:0 0 auto;min-width:0;}
+    .ft-center{display:flex;align-items:center;gap:10px;flex:1;justify-content:center;}
+    .ft-right{display:flex;align-items:center;justify-content:flex-end;flex:0 0 auto;}
+    .ft-logo{height:32px;filter:brightness(0) invert(1);display:block;}
+    .ft-tagline{font-size:0.68rem;opacity:0.5;line-height:1.3;white-space:nowrap;}
+    .ft-btn{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,0.22);border-radius:6px;background:transparent;color:#f0f0f0;text-decoration:none;cursor:pointer;transition:border-color .2s,color .2s;padding:0;box-sizing:border-box;flex-shrink:0;}
+    .ft-btn:hover{border-color:#FF7F00;color:#FF7F00;}
+    .ft-bottom{font-size:0.68rem;opacity:0.5;text-align:center;margin:0;padding:0;line-height:1.5;white-space:normal;}
+    @media(max-width:900px){
+      #footer{padding:20px 24px 16px;}
+      .ft-top{flex-wrap:wrap;justify-content:center;gap:12px;}
+      .ft-left{align-items:center;width:100%;justify-content:center;}
+      .ft-tagline{white-space:normal;text-align:center;}
+      .ft-center{justify-content:center;}
+      .ft-right{width:auto;}
+    }
+    @media(max-width:480px){
+      .ft-top{flex-direction:column;align-items:center;}
+      .ft-right{width:100%;justify-content:center;}
+    }
+    </style>
+</head>
+<body>
+<header style="position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(20,8,0,0.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.08);padding:0 1.5rem;">
+  <div style="display:flex;align-items:center;justify-content:space-between;height:76px;max-width:1100px;margin:0 auto;position:relative;">
+    <a href="../../index.html#portfolio" id="back-label-link" style="color:#aaa;font-size:0.85rem;font-weight:600;font-family:'Source Sans 3',sans-serif;text-decoration:none;transition:color 0.2s;" onmouseenter="this.style.color='#e07b54'" onmouseleave="this.style.color='#aaa'">
+      <span id="back-label">< Portafolio</span>
+    </a>
+    <a href="#" style="position:absolute;left:50%;transform:translateX(-50%);">
+      <img src="../../imgs/FullLogo.svg" alt="WebExpressCR" height="44" style="filter:brightness(0) invert(1);" />
+    </a>
+    <div style="display:flex;gap:0.5rem;align-items:center;">
+      <button id="lng" style="padding:0.4rem 0.7rem;border-radius:6px;border:1px solid #444;background:transparent;color:#aaa;font-size:0.8rem;font-weight:600;cursor:pointer;transition:all 0.2s;" onmouseenter="this.style.borderColor='#e07b54'" onmouseleave="this.style.borderColor='#444'">EN</button>
+      <button id="thm" style="padding:0.4rem 0.7rem;border-radius:6px;border:1px solid #444;background:transparent;color:#aaa;font-size:0.8rem;font-weight:600;cursor:pointer;transition:all 0.2s;" onmouseenter="this.style.borderColor='#e07b54'" onmouseleave="this.style.borderColor='#444'">
+        <i data-lucide="sun" width="15" height="15" id="si"></i><i data-lucide="moon" width="15" height="15" id="mi" style="display:none"></i>
+      </button>
+    </div>
+  </div>
+</header>
+
+<section class="hero" style="position:relative;overflow:hidden;">
+  <img src="imgs/hero.jpg" alt="Soda La Macha" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;display:block;">
+  <div style="position:absolute;inset:0;background:linear-gradient(rgba(20,8,0,0.68),rgba(20,8,0,0.52));z-index:1;"></div>
+  <div style="position:relative;z-index:2;width:100%;">
+  <p class="eyebrow" data-i18n="eyebrow">San José, Costa Rica · desde 1994</p>
+  <h1 class="hero-title">Soda La Macha</h1>
+  <p class="hero-tag" data-i18n="tagline">Comida casera de verdad</p>
+  <div class="ctas">
+    <a href="#menu" class="btnp"><i data-lucide="book-open" width="16" height="16"></i><span data-i18n="c1">Ver el menú</span></a>
+    <a href="#pedido" class="btno"><i data-lucide="message-circle" width="16" height="16"></i><span data-i18n="c2">Hacer un pedido</span></a>
+  </div>
+  </div>
+</section>
+<div class="div-dash"></div>
+
+<section class="section" id="menu">
+  <div class="wrap">
+    <h2 class="sh" data-i18n="mh">Nuestro menú</h2>
+    <p class="ss" data-i18n="ms">Todo hecho en casa, con productos frescos del mercado.</p>
+    <div class="tabs">
+      <button class="tab on" onclick="showT('des',this)" data-i18n="t1">Desayunos</button>
+      <button class="tab" onclick="showT('alm',this)" data-i18n="t2">Almuerzos</button>
+      <button class="tab" onclick="showT('ref',this)" data-i18n="t3">Refrescos</button>
+      <button class="tab" onclick="showT('pos',this)" data-i18n="t4">Postres</button>
+    </div>
+    <div id="des" class="pane on">
+<div class="mgrid">
+  <div class="mi"><img src="imgs/menu-gallopinto.jpg" alt="Gallo Pinto con Huevo"><div class="mi-body"><div class="mn" data-i18n="d1n">Gallo Pinto con Huevo</div><div class="md" data-i18n="d1d">Arroz, frijoles, tortilla, natilla y plátano maduro</div><div class="mp">₡2,500</div></div></div>
+  <div class="mi"><img src="imgs/desayuno-picadillo.jpg" alt="Casado de Desayuno"><div class="mi-body"><div class="mn" data-i18n="d2n">Casado de Desayuno</div><div class="md" data-i18n="d2d">Pinto, picadillo, carne molida, tortilla y café</div><div class="mp">₡3,200</div></div></div>
+  <div class="mi"><img src="imgs/pancakes.jpg" alt="Pancakes con Miel"><div class="mi-body"><div class="mn" data-i18n="d3n">Pancakes con Miel</div><div class="md" data-i18n="d3d">Tres pancakes esponjosos con miel de abeja y mantequilla</div><div class="mp">₡2,800</div></div></div>
+  <div class="mi"><img src="imgs/tamal.jpg" alt="Tamal de Maíz"><div class="mi-body"><div class="mn" data-i18n="d4n">Tamal de Maíz</div><div class="md" data-i18n="d4d">Receta artesanal con pollo y verduras, hoja de plátano</div><div class="mp">₡1,800</div></div></div>
+</div>
+</div>
+    <div id="alm" class="pane">
+<div class="mgrid">
+  <div class="mi"><img src="imgs/menu-casado.jpg" alt="Casado Completo"><div class="mi-body"><div class="mn" data-i18n="a1n">Casado Completo</div><div class="md" data-i18n="a1d">Arroz, frijoles, ensalada, patacones y proteína a escoger</div><div class="mp">₡4,500</div></div></div>
+  <div class="mi"><img src="imgs/sopa.jpg" alt="Sopa Negra"><div class="mi-body"><div class="mn" data-i18n="a2n">Sopa Negra</div><div class="md" data-i18n="a2d">Frijoles negros, huevo duro, chile dulce y cilantro</div><div class="mp">₡2,900</div></div></div>
+  <div class="mi"><img src="imgs/olla.jpg" alt="Olla de Carne"><div class="mi-body"><div class="mn" data-i18n="a3n">Olla de Carne</div><div class="md" data-i18n="a3d">Caldo casero, yuca, papa, plátano y res</div><div class="mp">₡5,200</div></div></div>
+  <div class="mi"><img src="imgs/picadillo.jpg" alt="Picadillo de Arracache"><div class="mi-body"><div class="mn" data-i18n="a4n">Picadillo de Arracache</div><div class="md" data-i18n="a4d">Con arroz blanco y tortillas</div><div class="mp">₡3,800</div></div></div>
+</div>
+</div>
+    <div id="ref" class="pane">
+<div class="mgrid">
+  <div class="mi"><img src="imgs/agua-de-pipa.jpg" alt="Agua de Pipa"><div class="mi-body"><div class="mn" data-i18n="r4n">Agua de Pipa</div><div class="md" data-i18n="r4d">Directa de la pipa, bien fría</div><div class="mp">₡1,200</div></div></div>
+  <div class="mi"><img src="imgs/horchata.jpg" alt="Horchata"><div class="mi-body"><div class="mn" data-i18n="r2n">Horchata</div><div class="md" data-i18n="r2d">Receta de la abuela, con canela y vainilla</div><div class="mp">₡1,100</div></div></div>
+  <div class="mi"><img src="imgs/menu-refresco.jpg" alt="Refresco de Cas"><div class="mi-body"><div class="mn" data-i18n="r1n">Refresco de Cas</div><div class="md" data-i18n="r1d">Natural, agua o leche</div><div class="mp">₡900</div></div></div>
+  <div class="mi"><img src="imgs/cafe-chorreado.jpg" alt="Café Chorreado"><div class="mi-body"><div class="mn" data-i18n="r3n">Café Chorreado</div><div class="md" data-i18n="r3d">Grano 100% costarricense, chorro fresco</div><div class="mp">₡800</div></div></div>
+</div>
+</div>
+    <div id="pos" class="pane">
+<div class="mgrid">
+  <div class="mi"><img src="imgs/menu-postre.jpg" alt="Tres Leches"><div class="mi-body"><div class="mn" data-i18n="p1n">Tres Leches</div><div class="md" data-i18n="p1d">Bizcocho bañado en crema, leche condensada y leche evaporada</div><div class="mp">₡1,500</div></div></div>
+  <div class="mi"><img src="imgs/arrozconleche.jpg" alt="Arroz con Leche"><div class="mi-body"><div class="mn" data-i18n="p2n">Arroz con Leche</div><div class="md" data-i18n="p2d">Con canela y pasas, servido frío</div><div class="mp">₡1,200</div></div></div>
+  <div class="mi"><img src="imgs/cajeta.jpg" alt="Cajeta de Coco"><div class="mi-body"><div class="mn" data-i18n="p3n">Cajeta de Coco</div><div class="md" data-i18n="p3d">Dulce artesanal, receta de Puntarenas</div><div class="mp">₡800</div></div></div>
+  <div class="mi"><img src="imgs/chiverre.jpg" alt="Chiverre con Mieles"><div class="mi-body"><div class="mn" data-i18n="p4n">Chiverre con Mieles</div><div class="md" data-i18n="p4d">Dulce de chiverre cocinado en tapa de dulce</div><div class="mp">₡900</div></div></div>
+</div>
+</div>
+  </div>
+</section>
+<div class="div-dot"></div>
+
+<section class="section" style="background:var(--sur)">
+  <div class="wrap">
+    <div class="ag">
+      <div class="at">
+        <h2 class="sh" data-i18n="ah">Nuestra historia</h2>
+        <p data-i18n="ap1">La Soda La Macha nació en 1994 de las manos de doña Carmen Salazar, una mujer de Cartago que quería que todo vecino del barrio comiera bien, con porciones generosas y precios justos.</p>
+        <p data-i18n="ap2">Treinta años después, su hija Marianela continúa la tradición: mismas recetas, misma sazón, mismo amor por la cocina tica. Nada de industrializados — todo fresco, todo casero.</p>
+        <p><strong data-i18n="ap3">Más de 3,000 casados vendidos cada mes. Eso no miente.</strong></p>
+      </div>
+      <div style="display:flex;justify-content:center;align-items:center;overflow:hidden;border-radius:8px;">
+        <img src="imgs/about.jpg" alt="Soda La Macha" loading="lazy" style="width:100%;max-width:400px;height:300px;object-fit:cover;display:block;border-radius:8px;">
+      </div>
+    </div>
+  </div>
+</section>
+<div class="div-dash"></div>
+
+<section class="section" id="horarios">
+  <div class="wrap">
+    <h2 class="sh" data-i18n="hh">Horarios y ubicación</h2>
+    <div class="hlg">
+      <div>
+        <table class="ht">
+          <thead><tr><th data-i18n="hday">Día</th><th data-i18n="htme">Horario</th></tr></thead>
+          <tbody>
+            <tr><td data-i18n="hlun">Lunes – Viernes</td><td>6:00am – 4:00pm</td></tr>
+            <tr><td data-i18n="hsab">Sábado</td><td>6:00am – 2:00pm</td></tr>
+            <tr><td data-i18n="hdom">Domingo</td><td>7:00am – 12:00pm</td></tr>
+          </tbody>
+        </table>
+        <div class="addr">
+          <p><strong data-i18n="an">Soda La Macha</strong></p>
+          <p data-i18n="as">100 metros al norte del Mercado Central, San José</p>
+          <p data-i18n="ac">San José Centro, Costa Rica</p>
+          <p>Tel: 2551-8877</p>
+        </div>
+      </div>
+      <div>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3929.8956!2d-84.0795!3d9.9341!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8fa0e34c3b6b2b93%3A0x2e5b5e8b6e2a3e1a!2sSan%20Jos%C3%A9%20Centro!5e0!3m2!1ses!2scr!4v1234567890" width="100%" height="280" style="border:0; border-radius:4px;" allowfullscreen="" loading="lazy"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="div-dot"></div>
+
+<section class="wband" id="pedido">
+  <h2 data-i18n="wt">¿Quieres pedir para llevar?</h2>
+  <p data-i18n="ws">Escríbenos por WhatsApp y tenemos tu pedido listo en 20 minutos. Sin filas, sin espera.</p>
+  <a href="https://wa.me/50625518877" class="btnw"><i data-lucide="message-circle" width="18" height="18"></i><span data-i18n="wb">Pedir por WhatsApp</span></a>
+</section>
+
+<section class="section" style="background:var(--sur)" id="contacto">
+  <div class="wrap">
+    <h2 class="sh" data-i18n="ch">Escríbenos</h2>
+    <p class="ss" data-i18n="cs">Para pedidos especiales, catering o consultas generales.</p>
+    <form class="fg" onsubmit="onForm(event)" novalidate>
+      <div class="fi"><label class="fl" data-i18n="fn">Nombre<span aria-hidden="true" style="color: var(--acc); margin-left: 2px;">*</span></label><input type="text" required id="soda-name" autocomplete="name"><span class="field-error" id="err-name"></span></div>
+      <div class="fi"><label class="fl" data-i18n="fp">Teléfono</label><input type="tel" inputmode="numeric" pattern="[0-9]*" id="phone-input" maxlength="8" autocomplete="tel"></div>
+      <div class="fi full"><label class="fl" data-i18n="fm">Mensaje<span aria-hidden="true" style="color: var(--acc); margin-left: 2px;">*</span></label><textarea id="soda-msg" required autocomplete="off"></textarea><span class="field-error" id="err-msg"></span></div>
+      <div class="fi full">
+        <button type="submit" class="btnp" style="width:fit-content"><i data-lucide="send" width="15" height="15"></i><span data-i18n="fsub">Enviar mensaje</span></button>
+        <p class="form-disc-note" id="form-disc-soda" style="font-size:0.72rem;opacity:0.6;text-align:center;margin-top:8px;"></p>
+      </div>
+    </form>
+  </div>
+</section>
+
+<footer id="footer">
+  <div class="ft-inner">
+
+    <div class="ft-top">
+      <div class="ft-left">
+        <img src="../../imgs/FullLogo.svg" alt="WebExpressCR" class="ft-logo">
+      </div>
+      <div class="ft-center">
+        <a href="https://www.instagram.com/webexpresscr/" class="ft-btn" aria-label="Instagram">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/company/webexpresscr" class="ft-btn" aria-label="LinkedIn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+        <a href="https://www.facebook.com/webexpresscr" class="ft-btn" aria-label="Facebook">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+        <a href="https://wa.me/50670553656" target="_blank" class="ft-btn" aria-label="WhatsApp">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M20.52 3.48A11.93 11.93 0 0 0 12 0C5.37 0 0 5.37 0 12c0 2.11.55 4.16 1.6 5.97L0 24l6.19-1.62A11.94 11.94 0 0 0 12 24c6.63 0 12-5.37 12-12 0-3.2-1.25-6.21-3.48-8.52zm-8.52 18.4a9.9 9.9 0 0 1-5.05-1.38l-.36-.21-3.73.98.99-3.63-.24-.38A9.9 9.9 0 0 1 2.1 12c0-5.46 4.44-9.9 9.9-9.9 2.65 0 5.13 1.03 7 2.9a9.87 9.87 0 0 1 2.9 7c0 5.46-4.44 9.9-9.9 9.9zm5.43-7.4c-.3-.15-1.77-.87-2.04-.97-.28-.1-.48-.15-.68.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.68-1.63-.93-2.23-.24-.59-.49-.51-.68-.52h-.58c-.2 0-.52.07-.79.37-.27.3-1.03 1.01-1.03 2.46s1.06 2.85 1.2 3.05c.15.2 2.08 3.18 5.04 4.46.7.3 1.25.48 1.68.62.71.22 1.35.19 1.86.12.57-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35z"/></svg>
+        </a>
+        <a href="mailto:webexpresscr@gmail.com" class="ft-btn" aria-label="Email">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </a>
+      </div>
+      <div class="ft-right">
+        <button class="ft-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Volver arriba">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <p class="ft-bottom" data-i18n="footer.disclaimer"></p>
+
+  </div>
+</footer>
+
+<script>
+const html=document.documentElement;
+const T={
+es:{back:'< Portafolio',eyebrow:'San José, Costa Rica · desde 1994',tagline:'Comida casera de verdad',c1:'Ver el menú',c2:'Hacer un pedido',mh:'Nuestro menú',ms:'Todo hecho en casa, con productos frescos del mercado.',t1:'Desayunos',t2:'Almuerzos',t3:'Refrescos',t4:'Postres',d1n:'Gallo Pinto con Huevo',d1d:'Arroz, frijoles, tortilla, natilla y plátano maduro',d2n:'Casado de Desayuno',d2d:'Pinto, picadillo, carne molida, tortilla y café',d3n:'Pancakes con Miel',d3d:'Tres pancakes esponjosos con miel de abeja y mantequilla',d4n:'Tamal de Maíz',d4d:'Receta artesanal con pollo y verduras, hoja de plátano',a1n:'Casado Completo',a1d:'Arroz, frijoles, ensalada, patacones y proteína a escoger',a2n:'Sopa Negra',a2d:'Frijoles negros, huevo duro, chile dulce y cilantro',a3n:'Olla de Carne',a3d:'Caldo casero, yuca, papa, plátano y res',a4n:'Picadillo de Arracache',a4d:'Con arroz blanco y tortillas',r1n:'Refresco de Cas',r1d:'Natural, agua o leche',r2n:'Horchata',r2d:'Receta de la abuela, con canela y vainilla',r3n:'Café Chorreado',r3d:'Grano 100% costarricense, chorro fresco',r4n:'Agua de Pipa',r4d:'Directa de la pipa, bien fría',p1n:'Tres Leches',p1d:'Bizcocho bañado en crema, leche condensada y leche evaporada',p2n:'Arroz con Leche',p2d:'Con canela y pasas, servido frío',p3n:'Cajeta de Coco',p3d:'Dulce artesanal, receta de Puntarenas',p4n:'Chiverre con Mieles',p4d:'Dulce de chiverre cocinado en tapa de dulce',ah:'Nuestra historia',ap1:'La Soda La Macha nació en 1994 de las manos de doña Carmen Salazar, una mujer de Cartago que quería que todo vecino del barrio comiera bien, con porciones generosas y precios justos.',ap2:'Treinta años después, su hija Marianela continúa la tradición: mismas recetas, misma sazón, mismo amor por la cocina tica. Nada de industrializados — todo fresco, todo casero.',ap3:'Más de 3,000 casados vendidos cada mes. Eso no miente.',hh:'Horarios y ubicación',hday:'Día',htme:'Horario',hlun:'Lunes – Viernes',hsab:'Sábado',hdom:'Domingo',an:'Soda La Macha',as:'100 metros al norte del Mercado Central, San José',ac:'San José Centro, Costa Rica',ml:'San José Centro',fdisclaim:'Sitio con fines demostrativos: Ninguna transacción será procesada ni ningún dato almacenado. Las imágenes utilizadas pertenecen a sus respectivos autores y se usan únicamente con fines ilustrativos.',formdisc:'Sitio con fines demostrativos: Ninguna transacción será procesada ni ningún dato almacenado.',errReq:'Este campo es obligatorio.',errShort:'Este campo es demasiado corto.',wt:'¿Quieres pedir para llevar?',ws:'Escríbenos por WhatsApp y tenemos tu pedido listo en 20 minutos. Sin filas, sin espera.',wb:'Pedir por WhatsApp',ch:'Escríbenos',cs:'Para pedidos especiales, catering o consultas generales.',fn:'Nombre',fp:'Teléfono',fm:'Mensaje',fsub:'Enviar mensaje',fc:'Sitio creado por','footer.tagline':'Creación de páginas web · Costa Rica','footer.disclaimer':'Sitio con fines demostrativos: Ninguna transacción será procesada ni ningún dato almacenado.  © 2026 WebExpressCR. Todos los derechos reservados.  Las imágenes utilizadas pertenecen a sus respectivos autores y se usan únicamente con fines ilustrativos.'},
+en:{back:'< Portfolio',eyebrow:'San José, Costa Rica · since 1994',tagline:'Real home cooking',c1:'See the menu',c2:'Place an order',mh:'Our menu',ms:'Everything made in-house, with fresh market ingredients.',t1:'Breakfast',t2:'Lunch',t3:'Drinks',t4:'Desserts',d1n:'Rice and Beans with Egg',d1d:'Rice, beans, tortilla, sour cream and sweet plantain',d2n:'Breakfast Plate',d2d:'Rice & beans, hash, ground beef, tortilla and coffee',d3n:'Pancakes with Honey',d3d:'Three fluffy pancakes with honey and butter',d4n:'Corn Tamale',d4d:'Artisan recipe with chicken and vegetables, wrapped in banana leaf',a1n:'Full Casado',a1d:'Rice, beans, salad, tostones and your choice of protein',a2n:'Black Bean Soup',a2d:'Black beans, hard-boiled egg, sweet pepper and cilantro',a3n:'Beef Pot Stew',a3d:'Homemade broth, yuca, potato, plantain and beef',a4n:'Arracache Hash',a4d:'With white rice and corn tortillas',r1n:'Cas Fruit Juice',r1d:'Fresh, water or milk base',r2n:'Horchata',r2d:"Grandma's recipe, with cinnamon and vanilla",r3n:'Drip Coffee',r3d:'100% Costa Rican bean, freshly brewed',r4n:'Coconut Water',r4d:'Straight from the coconut, ice cold',p1n:'Tres Leches',p1d:'Sponge cake soaked in cream, condensed and evaporated milk',p2n:'Rice Pudding',p2d:'With cinnamon and raisins, served cold',p3n:'Coconut Candy',p3d:'Artisan sweet, Puntarenas recipe',p4n:'Chiverre Squash Preserve',p4d:'Squash cooked in raw cane sugar',ah:'Our story',ap1:'Soda La Macha was born in 1994 by the hands of doña Carmen Salazar, a Cartago woman who wanted every neighbor to eat well, with generous portions and fair prices.',ap2:"Thirty years later, her daughter Marianela carries on the tradition: same recipes, same seasoning, same love for Costa Rican cooking. No processed food — everything fresh, everything homemade.",ap3:'Over 3,000 casados sold every month. That speaks for itself.',hh:'Hours and location',hday:'Day',htme:'Hours',hlun:'Monday – Friday',hsab:'Saturday',hdom:'Sunday',an:'Soda La Macha',as:'100 meters north of the Central Market, San José',ac:'San José Centro, Costa Rica',ml:'San José Centro',fdisclaim:'Demonstration site: No transactions will be processed or data stored. Images used belong to their respective authors and are used for illustrative purposes only.',formdisc:'Demonstration site: No transactions will be processed or data stored.',errReq:'This field is required.',errShort:'This field is too short.',wt:'Want to order for pickup?',ws:'Message us on WhatsApp and your order will be ready in 20 minutes. No lines, no waiting.',wb:'Order via WhatsApp',ch:'Write to us',cs:'For special orders, catering or general inquiries.',fn:'Name',fp:'Phone',fm:'Message',fsub:'Send message',fc:'Site built by','footer.tagline':'Web development · Costa Rica','footer.disclaimer':'Demonstration site: No transactions will be processed or data stored.  © 2026 WebExpressCR. All rights reserved.  Images used belong to their respective authors and are used for illustrative purposes only.'}
+};
+let lg=localStorage.getItem('sm-lang')||'es',th=localStorage.getItem('sm-theme')||'dark';
+html.className=th;
+function upTh(){const d=html.classList.contains('dark');document.getElementById('si').style.display=d?'block':'none';document.getElementById('mi').style.display=d?'none':'block';}
+upTh();
+document.getElementById('thm').addEventListener('click',()=>{th=th==='dark'?'light':'dark';html.className=th;localStorage.setItem('sm-theme',th);upTh();});
+function applyL(l){document.getElementById('lng').textContent=l==='es'?'EN':'ES';document.querySelectorAll('[data-i18n]').forEach(e=>{const k=e.getAttribute('data-i18n');if(T[l][k]!==undefined)e.innerHTML=T[l][k];});document.getElementById('back-label').textContent=T[l].back;const fcp=document.getElementById('footer-copy-text');if(fcp)fcp.textContent=l==='es'?'© 2026 WebExpressCR. Todos los derechos reservados.':'© 2026 WebExpressCR. All rights reserved.';const fd1=document.getElementById('footer-disclaimer1');if(fd1)fd1.textContent=l==='es'?'Sitio con fines demostrativos: Ninguna transacción será procesada ni ningún dato almacenado.':'Demonstration site: No transactions will be processed or data stored.';const fd2=document.getElementById('footer-disclaimer2');if(fd2)fd2.textContent=l==='es'?'Las imágenes utilizadas pertenecen a sus respectivos autores y se usan únicamente con fines ilustrativos.':'Images used belong to their respective authors and are used for illustrative purposes only.';const fd=document.getElementById('form-disc-soda');if(fd)fd.textContent=T[l].formdisc;lucide.createIcons();}
+applyL(lg);
+document.getElementById('lng').addEventListener('click',()=>{lg=lg==='es'?'en':'es';localStorage.setItem('sm-lang',lg);applyL(lg);});
+function showT(id,btn){document.querySelectorAll('.pane').forEach(p=>p.classList.remove('on'));document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));document.getElementById(id).classList.add('on');btn.classList.add('on');}
+function showErr(id,msg){const el=document.getElementById(id);if(el){el.textContent=msg;el.classList.add('visible');}}
+function clearErr(id){const el=document.getElementById(id);if(el){el.textContent='';el.classList.remove('visible');}}
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.style.cssText = 'position:fixed;bottom:24px;left:24px;z-index:9999;background:var(--acc);color:#fff;border-radius:8px;padding:14px 20px;box-shadow:0 4px 16px rgba(0,0,0,.25);display:flex;align-items:center;gap:8px;opacity:0;transition:opacity .5s ease;pointer-events:none;font-size:.9rem;font-family:inherit;max-width:420px;';
+  t.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11"/></svg><span>' + msg + '</span>';
+  document.body.appendChild(t);
+  requestAnimationFrame(() => t.style.opacity = '1');
+  setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 500); }, 4000);
+}
+function onForm(e){e.preventDefault();let ok=true;const nm=document.getElementById('soda-name');const mg=document.getElementById('soda-msg');if(nm){nm.addEventListener('input',()=>clearErr('err-name'),{once:true});if(!nm.value.trim()){showErr('err-name',T[lg].errReq);ok=false;}}if(mg){mg.addEventListener('input',()=>clearErr('err-msg'),{once:true});if(!mg.value.trim()||mg.value.trim().length<10){showErr('err-msg',mg.value.trim().length===0?T[lg].errReq:T[lg].errShort);ok=false;}}if(!ok) return;
+  const msg = lg === 'es' ? 'Tu mensaje ha sido enviado con éxito.' : 'Your message has been sent successfully.';
+  showToast(msg);
+  e.target.reset();
+}
+lucide.createIcons();
+const phoneEl=document.getElementById('phone-input');
+if(phoneEl){phoneEl.addEventListener('input',()=>{phoneEl.value=phoneEl.value.replace(/[^0-9]/g,'').slice(0,8);});}
+</script>
+</body>
+</html>
