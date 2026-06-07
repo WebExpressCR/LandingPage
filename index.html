@@ -7,6 +7,12 @@
     const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     const initialTheme = storedTheme ? storedTheme : (systemPrefersDark ? 'dark' : 'light');
     document.documentElement.classList.add(initialTheme);
+
+    const storedLang = localStorage.getItem('wecr-lang');
+    const browserLang = navigator.language ? navigator.language.slice(0, 2).toLowerCase() : 'es';
+    const supportedLangs = ['es', 'en'];
+    const initialLang = storedLang ? storedLang : (supportedLangs.includes(browserLang) ? browserLang : 'es');
+    document.documentElement.lang = initialLang;
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>WebExpressCR — Desarrollo Web en Costa Rica</title>
@@ -2020,7 +2026,10 @@ const translations = {
 };
 
 /* ── State ── */
-let currentLang = localStorage.getItem('wecr-lang') || 'es';
+const storedLang = localStorage.getItem('wecr-lang');
+const browserLang = navigator.language ? navigator.language.slice(0, 2).toLowerCase() : 'es';
+const supportedLangs = ['es', 'en'];
+let currentLang = storedLang ? storedLang : (supportedLangs.includes(browserLang) ? browserLang : 'es');
 const _storedTheme = localStorage.getItem('wecr-theme');
 let currentTheme = _storedTheme
   ? _storedTheme
