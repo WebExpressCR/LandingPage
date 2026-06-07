@@ -1,7 +1,13 @@
 <!DOCTYPE html>
-<html lang="es" class="dark">
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
+  <script>
+    const storedTheme = localStorage.getItem('wecr-theme');
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initialTheme = storedTheme ? storedTheme : (systemPrefersDark ? 'dark' : 'light');
+    document.documentElement.classList.add(initialTheme);
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>WebExpressCR — Desarrollo Web en Costa Rica</title>
   <meta name="description" content="Estudio freelance de desarrollo web en Costa Rica. Sitios web rápidos, profesionales y accesibles para pymes y emprendedores locales." />
