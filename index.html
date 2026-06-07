@@ -3,16 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <script>
-    const storedTheme = localStorage.getItem('wecr-theme');
-    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const initialTheme = storedTheme ? storedTheme : (systemPrefersDark ? 'dark' : 'light');
-    document.documentElement.classList.add(initialTheme);
+    (function() {
+      try {
+        const storedTheme = localStorage.getItem('wecr-theme');
+        const systemPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const initialTheme = storedTheme ? storedTheme : (systemPrefersDark ? 'dark' : 'light');
+        document.documentElement.classList.add(initialTheme);
+      } catch (err) {
+        document.documentElement.classList.add('dark');
+      }
 
-    const storedLang = localStorage.getItem('wecr-lang');
-    const browserLang = navigator.language ? navigator.language.slice(0, 2).toLowerCase() : 'es';
-    const supportedLangs = ['es', 'en'];
-    const initialLang = storedLang ? storedLang : (supportedLangs.includes(browserLang) ? browserLang : 'es');
-    document.documentElement.lang = initialLang;
+      try {
+        const storedLang = localStorage.getItem('wecr-lang');
+        const browserLang = (typeof navigator !== 'undefined' && navigator.language) ? navigator.language.slice(0, 2).toLowerCase() : 'es';
+        const supportedLangs = ['es', 'en'];
+        const initialLang = storedLang ? storedLang : (supportedLangs.includes(browserLang) ? browserLang : 'es');
+        document.documentElement.lang = initialLang;
+      } catch (err) {
+        document.documentElement.lang = 'es';
+      }
+    })();
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>WebExpressCR — Desarrollo Web en Costa Rica</title>
