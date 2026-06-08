@@ -1690,16 +1690,18 @@
           </div>
           <div class="form-group recaptcha-wrap">
             <label data-i18n="form.recaptcha">No soy un robot</label>
-            <div
-              id="recaptcha-widget"
-              class="g-recaptcha"
-              data-sitekey="6Lf78xItAAAAAGqB5Wqsmf3ygS8KP5XyreZw-KD8"
-              data-theme="dark"
-              data-callback="onRecaptchaChange"
-            ></div>
+            <!-- Spanish reCAPTCHA -->
+            <div id="recaptcha-es" style="display:none;"></div>
+            <!-- English reCAPTCHA -->
+            <div id="recaptcha-en" style="display:none;"></div>
             <span class="field-error" id="recaptcha-error"></span>
           </div>
+          <script id="recaptcha-es-script" async defer></script>
+          <script id="recaptcha-en-script" async defer></script>
           <script>
+            let recaptchaEsRendered = false;
+            let recaptchaEnRendered = false;
+
             function onRecaptchaChange() {
               const err = document.getElementById('recaptcha-error')
               if (err) err.classList.remove('visible')
@@ -2089,10 +2091,18 @@ function applyTheme(theme) {
   currentTheme = theme;
   localStorage.setItem('wecr-theme', theme);
   updateThemeIcons();
-    if (typeof grecaptcha !== 'undefined' && document.querySelector('.g-recaptcha')) {
-      document.querySelector('.g-recaptcha').setAttribute('data-theme', theme)
-      grecaptcha.reset()
+  if (typeof grecaptcha !== 'undefined') {
+    const esWidget = document.getElementById('recaptcha-es');
+    const enWidget = document.getElementById('recaptcha-en');
+    if (esWidget && recaptchaEsRendered) {
+      esWidget.setAttribute('data-theme', theme);
+      grecaptcha.reset();
     }
+    if (enWidget && recaptchaEnRendered) {
+      enWidget.setAttribute('data-theme', theme);
+      grecaptcha.reset();
+    }
+  }
 }
 
 function updateThemeIcons() {
@@ -2108,42 +2118,62 @@ function updateThemeIcons() {
 }
 
 /* ── Apply language ── */
+function initRecaptchaScripts() {
+  // Load Spanish reCAPTCHA
+  const scriptEs = document.getElementById('recaptcha-es-script');
+  if (scriptEs && !scriptEs.src) {
+    scriptEs.src = 'https://www.google.com/recaptcha/api.js?hl=es&onload=renderRecaptchaEs&render=explicit';
+  }
+  
+  // Load English reCAPTCHA
+  const scriptEn = document.getElementById('recaptcha-en-script');
+  if (scriptEn && !scriptEn.src) {
+    scriptEn.src = 'https://www.google.com/recaptcha/api.js?onload=renderRecaptchaEn&render=explicit';
+  }
+}
+
+// Render Spanish widget
+window.renderRecaptchaEs = function() {
+  if (typeof grecaptcha !== 'undefined' && !recaptchaEsRendered && document.getElementById('recaptcha-es')) {
+    grecaptcha.render('recaptcha-es', {
+      sitekey: '6Lf78xItAAAAAGqB5Wqsmf3ygS8KP5XyreZw-KD8',
+      theme: currentTheme,
+      callback: 'onRecaptchaChange'
+    });
+    recaptchaEsRendered = true;
+  }
+};
+
+// Render English widget
+window.renderRecaptchaEn = function() {
+  if (typeof grecaptcha !== 'undefined' && !recaptchaEnRendered && document.getElementById('recaptcha-en')) {
+    grecaptcha.render('recaptcha-en', {
+      sitekey: '6Lf78xItAAAAAGqB5Wqsmf3ygS8KP5XyreZw-KD8',
+      theme: currentTheme,
+      callback: 'onRecaptchaChange'
+    });
+    recaptchaEnRendered = true;
+  }
+};
+
 function loadRecaptchaScript(lang) {
-  const script = document.getElementById('recaptcha-script');
-  if (!script) return;
-  const newSrc = `https://www.google.com/recaptcha/api.js${lang === 'es' ? '?hl=es' : ''}`;
-  if (script.src !== newSrc) {
-    const widget = document.getElementById('recaptcha-widget');
-    if (widget) widget.innerHTML = '';
-    
-    // Remove old script
-    script.parentNode.removeChild(script);
-    
-    // Create new script with updated language
-    const newScript = document.createElement('script');
-    newScript.id = 'recaptcha-script';
-    newScript.src = newSrc;
-    newScript.async = true;
-    newScript.defer = true;
-    
-    // Use a callback function to re-render when grecaptcha is ready
-    window.recaptchaReady = function() {
-      if (typeof grecaptcha !== 'undefined' && document.getElementById('recaptcha-widget')) {
-        const widget = document.getElementById('recaptcha-widget');
-        widget.innerHTML = '';
-        grecaptcha.render('recaptcha-widget', {
-          sitekey: '6Lf78xItAAAAAGqB5Wqsmf3ygS8KP5XyreZw-KD8',
-          theme: currentTheme,
-          callback: 'onRecaptchaChange'
-        });
-      }
-    };
-    
-    newScript.onload = function() {
-      setTimeout(() => window.recaptchaReady(), 100);
-    };
-    
-    document.head.appendChild(newScript);
+  // Toggle visibility based on language
+  const esWidget = document.getElementById('recaptcha-es');
+  const enWidget = document.getElementById('recaptcha-en');
+  
+  if (esWidget && enWidget) {
+    if (lang === 'es') {
+      esWidget.style.display = '';
+      enWidget.style.display = 'none';
+    } else {
+      esWidget.style.display = 'none';
+      enWidget.style.display = '';
+    }
+  }
+  
+  // Initialize scripts on first load
+  if (!document.getElementById('recaptcha-es-script').src) {
+    initRecaptchaScripts();
   }
 }
 
