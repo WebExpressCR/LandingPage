@@ -2113,6 +2113,14 @@ function loadRecaptchaScript(lang) {
   const src = `https://www.google.com/recaptcha/api.js${lang === 'es' ? '?hl=es' : ''}`;
   if (script.src !== src) {
     script.src = src;
+    // Reset reCAPTCHA after language change to reload widget with new language
+    if (typeof grecaptcha !== 'undefined') {
+      setTimeout(() => {
+        if (document.querySelector('.g-recaptcha')) {
+          grecaptcha.reset();
+        }
+      }, 100);
+    }
   }
 }
 
