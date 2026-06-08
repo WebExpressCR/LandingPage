@@ -46,7 +46,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <script id="recaptcha-script" async defer></script>
 
   <style>
     /* ── CSS Custom Properties ── */
@@ -959,7 +959,7 @@
       display: none;
     }
     .form-group .field-error.visible { display: block; }
-    .form-group textarea { resize: vertical; min-height: 120px; }
+    .form-group textarea { resize: vertical; min-height: 90px; }
     .form-group select option {
       background: var(--surface);
       color: var(--text);
@@ -2104,6 +2104,15 @@ function updateThemeIcons() {
 }
 
 /* ── Apply language ── */
+function loadRecaptchaScript(lang) {
+  const script = document.getElementById('recaptcha-script');
+  if (!script) return;
+  const src = `https://www.google.com/recaptcha/api.js${lang === 'es' ? '?hl=es' : ''}`;
+  if (script.src !== src) {
+    script.src = src;
+  }
+}
+
 function applyLang(lang) {
   currentLang = lang;
   localStorage.setItem('wecr-lang', lang);
@@ -2141,6 +2150,8 @@ function applyLang(lang) {
     const el = document.getElementById(id);
     if (el) el.textContent = nextLang;
   });
+
+  loadRecaptchaScript(lang);
 }
 
 /* ── Theme toggle ── */
@@ -2321,7 +2332,7 @@ form.addEventListener('submit', e => {
     { id: 'name', validate: v => v.trim().length >= 2 },
     { id: 'email', validate: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) },
     { id: 'project-type', validate: v => v !== '' },
-    { id: 'message', validate: v => v.trim().length >= 10 },
+    { id: 'message', validate: v => v.trim().length > 0 },
   ];
 
   fields.forEach(({ id, validate }) => {
@@ -2391,6 +2402,7 @@ form.querySelectorAll('input, textarea, select').forEach(el => {
 /* ── Init on load ── */
 window.addEventListener('DOMContentLoaded', () => {
   applyTheme(currentTheme);
+  loadRecaptchaScript(currentLang);
   applyLang(currentLang);
   lucide.createIcons();
   // Re-run lucide after lang to ensure icons are not lost
