@@ -2113,21 +2113,24 @@ function loadRecaptchaScript(lang) {
   if (!script) return;
   const newSrc = `https://www.google.com/recaptcha/api.js${lang === 'es' ? '?hl=es' : ''}`;
   if (script.src !== newSrc) {
+    const widget = document.getElementById('recaptcha-widget');
+    if (widget) widget.innerHTML = '';
+    
     // Remove old script
-    script.remove();
+    script.parentNode.removeChild(script);
+    
     // Create new script with updated language
     const newScript = document.createElement('script');
     newScript.id = 'recaptcha-script';
     newScript.src = newSrc;
     newScript.async = true;
     newScript.defer = true;
-    newScript.onload = function() {
-      // Re-render the widget after script loads
+    
+    // Use a callback function to re-render when grecaptcha is ready
+    window.recaptchaReady = function() {
       if (typeof grecaptcha !== 'undefined' && document.getElementById('recaptcha-widget')) {
         const widget = document.getElementById('recaptcha-widget');
-        // Clear the widget
         widget.innerHTML = '';
-        // Re-render with new language
         grecaptcha.render('recaptcha-widget', {
           sitekey: '6Lf78xItAAAAAGqB5Wqsmf3ygS8KP5XyreZw-KD8',
           theme: currentTheme,
@@ -2135,6 +2138,11 @@ function loadRecaptchaScript(lang) {
         });
       }
     };
+    
+    newScript.onload = function() {
+      setTimeout(() => window.recaptchaReady(), 100);
+    };
+    
     document.head.appendChild(newScript);
   }
 }
