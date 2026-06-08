@@ -1691,6 +1691,7 @@
           <div class="form-group recaptcha-wrap">
             <label data-i18n="form.recaptcha">No soy un robot</label>
             <div
+              id="recaptcha-widget"
               class="g-recaptcha"
               data-sitekey="6Lf78xItAAAAAGqB5Wqsmf3ygS8KP5XyreZw-KD8"
               data-theme="dark"
@@ -2110,17 +2111,31 @@ function updateThemeIcons() {
 function loadRecaptchaScript(lang) {
   const script = document.getElementById('recaptcha-script');
   if (!script) return;
-  const src = `https://www.google.com/recaptcha/api.js${lang === 'es' ? '?hl=es' : ''}`;
-  if (script.src !== src) {
-    script.src = src;
-    // Reset reCAPTCHA after language change to reload widget with new language
-    if (typeof grecaptcha !== 'undefined') {
-      setTimeout(() => {
-        if (document.querySelector('.g-recaptcha')) {
-          grecaptcha.reset();
-        }
-      }, 100);
-    }
+  const newSrc = `https://www.google.com/recaptcha/api.js${lang === 'es' ? '?hl=es' : ''}`;
+  if (script.src !== newSrc) {
+    // Remove old script
+    script.remove();
+    // Create new script with updated language
+    const newScript = document.createElement('script');
+    newScript.id = 'recaptcha-script';
+    newScript.src = newSrc;
+    newScript.async = true;
+    newScript.defer = true;
+    newScript.onload = function() {
+      // Re-render the widget after script loads
+      if (typeof grecaptcha !== 'undefined' && document.getElementById('recaptcha-widget')) {
+        const widget = document.getElementById('recaptcha-widget');
+        // Clear the widget
+        widget.innerHTML = '';
+        // Re-render with new language
+        grecaptcha.render('recaptcha-widget', {
+          sitekey: '6Lf78xItAAAAAGqB5Wqsmf3ygS8KP5XyreZw-KD8',
+          theme: currentTheme,
+          callback: 'onRecaptchaChange'
+        });
+      }
+    };
+    document.head.appendChild(newScript);
   }
 }
 
