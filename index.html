@@ -46,6 +46,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
   <style>
     /* ── CSS Custom Properties ── */
@@ -715,6 +716,20 @@
 
     /* ── Select dropdown ── */
     .form-group { position: relative; }
+    .recaptcha-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+      margin-bottom: 0;
+    }
+
+    @media (max-width: 400px) {
+      .recaptcha-wrap .g-recaptcha {
+        transform: scale(0.85);
+        transform-origin: left top;
+      }
+    }
     .form-group select {
       appearance: none;
       -webkit-appearance: none;
@@ -1673,6 +1688,21 @@
             <textarea id="message" name="message" required rows="5" data-i18n-placeholder="form.message.placeholder"></textarea>
             <span class="field-error" data-i18n="form.message.error">Por favor escribí tu mensaje.</span>
           </div>
+          <div class="form-group recaptcha-wrap">
+            <div
+              class="g-recaptcha"
+              data-sitekey="6Lf78xItAAAAAGqB5Wqsmf3ygS8KP5XyreZw-KD8"
+              data-theme="dark"
+              data-callback="onRecaptchaChange"
+            ></div>
+            <span class="field-error" id="recaptcha-error"></span>
+          </div>
+          <script>
+            function onRecaptchaChange() {
+              const err = document.getElementById('recaptcha-error')
+              if (err) err.classList.remove('visible')
+            }
+          </script>
           <button type="submit" class="btn btn-primary form-submit">
             <i data-lucide="send" width="16" height="16"></i>
             <span data-i18n="form.submit">Enviar Mensaje</span>
@@ -1881,6 +1911,7 @@ const translations = {
     'form.message': 'Mensaje',
     'form.message.placeholder': 'Contanos sobre tu proyecto...',
     'form.message.error': 'Por favor escribí tu mensaje.',
+    'form.recaptcha.error': 'Por favor confirmá que no sos un robot.',
     'form.submit': 'Enviar Mensaje',
     'form.success.title': '¡Mensaje enviado!',
     'form.success.body': 'Gracias por contactarnos. Te responderemos en menos de 24 horas.',
@@ -2025,6 +2056,7 @@ const translations = {
     'form.message': 'Message',
     'form.message.placeholder': 'Tell us about your project...',
     'form.message.error': 'Please write your message.',
+    'form.recaptcha.error': 'Please confirm you are not a robot.',
     'form.submit': 'Send Message',
     'form.success.title': 'Message sent!',
     'form.success.body': "Thank you for reaching out. We'll get back to you in less than 24 hours.",
@@ -2053,6 +2085,10 @@ function applyTheme(theme) {
   currentTheme = theme;
   localStorage.setItem('wecr-theme', theme);
   updateThemeIcons();
+    if (typeof grecaptcha !== 'undefined' && document.querySelector('.g-recaptcha')) {
+      document.querySelector('.g-recaptcha').setAttribute('data-theme', theme)
+      grecaptcha.reset()
+    }
 }
 
 function updateThemeIcons() {
@@ -2299,6 +2335,19 @@ form.addEventListener('submit', e => {
 
   if (!valid) return;
 
+  // reCAPTCHA validation
+  const recaptchaResponse = typeof grecaptcha !== 'undefined' ? grecaptcha.getResponse() : ''
+  if (!recaptchaResponse) {
+    const recaptchaErr = document.getElementById('recaptcha-error')
+    if (recaptchaErr) {
+      recaptchaErr.textContent = translations[currentLang]['form.recaptcha.error']
+      recaptchaErr.classList.add('visible')
+    }
+    valid = false
+  }
+
+  if (!valid) return;
+
   const submitBtn = form.querySelector('.form-submit');
   submitBtn.disabled = true;
   submitBtn.style.opacity = '0.6';
@@ -2314,6 +2363,9 @@ form.addEventListener('submit', e => {
   emailjs.sendForm(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, form)
     .then(() => emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_CONFIRM_TEMPLATE, formData))
     .then(() => {
+      if (typeof grecaptcha !== 'undefined') grecaptcha.reset()
+      const recaptchaErr = document.getElementById('recaptcha-error')
+      if (recaptchaErr) recaptchaErr.classList.remove('visible')
       form.style.display = 'none';
       formSuccess.classList.add('visible');
     })
