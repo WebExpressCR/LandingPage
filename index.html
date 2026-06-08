@@ -1689,19 +1689,16 @@
             <span class="field-error" data-i18n="form.message.error">Por favor escribí tu mensaje.</span>
           </div>
           <div class="form-group recaptcha-wrap">
-            <label data-i18n="form.recaptcha">No soy un robot</label>
-            <!-- Spanish reCAPTCHA -->
-            <div id="recaptcha-es" style="display:none;"></div>
-            <!-- English reCAPTCHA -->
-            <div id="recaptcha-en" style="display:none;"></div>
+            <div
+              id="g-recaptcha"
+              class="g-recaptcha"
+              data-sitekey="6Lf78xItAAAAAGqB5Wqsmf3ygS8KP5XyreZw-KD8"
+              data-theme="dark"
+              data-callback="onRecaptchaChange"
+            ></div>
             <span class="field-error" id="recaptcha-error"></span>
           </div>
-          <script id="recaptcha-es-script" async defer></script>
-          <script id="recaptcha-en-script" async defer></script>
           <script>
-            let recaptchaEsRendered = false;
-            let recaptchaEnRendered = false;
-
             function onRecaptchaChange() {
               const err = document.getElementById('recaptcha-error')
               if (err) err.classList.remove('visible')
@@ -1915,7 +1912,6 @@ const translations = {
     'form.message': 'Mensaje',
     'form.message.placeholder': 'Contanos sobre tu proyecto...',
     'form.message.error': 'Por favor escribí tu mensaje.',
-    'form.recaptcha': 'No soy un robot',
     'form.recaptcha.error': 'Por favor confirmá que no sos un robot.',
     'form.submit': 'Enviar Mensaje',
     'form.success.title': '¡Mensaje enviado!',
@@ -2061,7 +2057,6 @@ const translations = {
     'form.message': 'Message',
     'form.message.placeholder': 'Tell us about your project...',
     'form.message.error': 'Please write your message.',
-    'form.recaptcha': 'I am not a robot',
     'form.recaptcha.error': 'Please confirm you are not a robot.',
     'form.submit': 'Send Message',
     'form.success.title': 'Message sent!',
@@ -2092,14 +2087,9 @@ function applyTheme(theme) {
   localStorage.setItem('wecr-theme', theme);
   updateThemeIcons();
   if (typeof grecaptcha !== 'undefined') {
-    const esWidget = document.getElementById('recaptcha-es');
-    const enWidget = document.getElementById('recaptcha-en');
-    if (esWidget && recaptchaEsRendered) {
-      esWidget.setAttribute('data-theme', theme);
-      grecaptcha.reset();
-    }
-    if (enWidget && recaptchaEnRendered) {
-      enWidget.setAttribute('data-theme', theme);
+    const widget = document.getElementById('g-recaptcha');
+    if (widget) {
+      widget.setAttribute('data-theme', theme);
       grecaptcha.reset();
     }
   }
@@ -2118,62 +2108,15 @@ function updateThemeIcons() {
 }
 
 /* ── Apply language ── */
-function initRecaptchaScripts() {
-  // Load Spanish reCAPTCHA
-  const scriptEs = document.getElementById('recaptcha-es-script');
-  if (scriptEs && !scriptEs.src) {
-    scriptEs.src = 'https://www.google.com/recaptcha/api.js?hl=es&onload=renderRecaptchaEs&render=explicit';
-  }
-  
-  // Load English reCAPTCHA
-  const scriptEn = document.getElementById('recaptcha-en-script');
-  if (scriptEn && !scriptEn.src) {
-    scriptEn.src = 'https://www.google.com/recaptcha/api.js?onload=renderRecaptchaEn&render=explicit';
-  }
-}
-
-// Render Spanish widget
-window.renderRecaptchaEs = function() {
-  if (typeof grecaptcha !== 'undefined' && !recaptchaEsRendered && document.getElementById('recaptcha-es')) {
-    grecaptcha.render('recaptcha-es', {
-      sitekey: '6Lf78xItAAAAAGqB5Wqsmf3ygS8KP5XyreZw-KD8',
-      theme: currentTheme,
-      callback: 'onRecaptchaChange'
-    });
-    recaptchaEsRendered = true;
-  }
-};
-
-// Render English widget
-window.renderRecaptchaEn = function() {
-  if (typeof grecaptcha !== 'undefined' && !recaptchaEnRendered && document.getElementById('recaptcha-en')) {
-    grecaptcha.render('recaptcha-en', {
-      sitekey: '6Lf78xItAAAAAGqB5Wqsmf3ygS8KP5XyreZw-KD8',
-      theme: currentTheme,
-      callback: 'onRecaptchaChange'
-    });
-    recaptchaEnRendered = true;
-  }
-};
-
-function loadRecaptchaScript(lang) {
-  // Toggle visibility based on language
-  const esWidget = document.getElementById('recaptcha-es');
-  const enWidget = document.getElementById('recaptcha-en');
-  
-  if (esWidget && enWidget) {
-    if (lang === 'es') {
-      esWidget.style.display = '';
-      enWidget.style.display = 'none';
-    } else {
-      esWidget.style.display = 'none';
-      enWidget.style.display = '';
-    }
-  }
-  
-  // Initialize scripts on first load
-  if (!document.getElementById('recaptcha-es-script').src) {
-    initRecaptchaScripts();
+function loadRecaptchaScript() {
+  // Load reCAPTCHA script once (language-independent)
+  if (!window.recaptchaLoaded) {
+    const script = document.createElement('script');
+    script.src = 'https://www.google.com/recaptcha/api.js';
+    script.async = true;
+    script.defer = true;
+    document.head.appendChild(script);
+    window.recaptchaLoaded = true;
   }
 }
 
@@ -2214,8 +2157,6 @@ function applyLang(lang) {
     const el = document.getElementById(id);
     if (el) el.textContent = nextLang;
   });
-
-  loadRecaptchaScript(lang);
 }
 
 /* ── Theme toggle ── */
@@ -2466,7 +2407,7 @@ form.querySelectorAll('input, textarea, select').forEach(el => {
 /* ── Init on load ── */
 window.addEventListener('DOMContentLoaded', () => {
   applyTheme(currentTheme);
-  loadRecaptchaScript(currentLang);
+  loadRecaptchaScript();
   applyLang(currentLang);
   lucide.createIcons();
   // Re-run lucide after lang to ensure icons are not lost
